@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Last Blessing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game">
+
+    <!-- ================================================
+         TITLE SCREEN
+         ================================================ -->
+    <div id="screen-title" class="screen active">
+      <div class="title-bg"></div>
+      <div class="title-content">
+        <div class="title-logo">
+          <div class="title-eyebrow">The Seventh Blessing Has Been Given</div>
+          <h1 class="title-main">The Last Blessing</h1>
+          <div class="title-divider"></div>
+          <p class="title-quote">"Go forth," she said. Then silence.</p>
+        </div>
+        <nav class="title-nav">
+          <button class="btn-primary" id="btn-new-game">New Journey</button>
+          <button class="btn-secondary" id="btn-load-game">Continue Journey</button>
+        </nav>
+        <div class="title-version">v0.1.0 — Early Access</div>
+      </div>
+    </div>
+
+    <!-- ================================================
+         CHARACTER CREATION
+         ================================================ -->
+    <div id="screen-creation" class="screen">
+      <div class="creation-container">
+        <div class="creation-header">
+          <div class="creation-eyebrow">New Journey</div>
+          <h2>Begin Your Record</h2>
+          <div class="creation-progress">
+            <span class="step-dot active" data-step="1" title="Name"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" data-step="2" title="Race"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" data-step="3" title="Confirm"></span>
+          </div>
+        </div>
+
+        <!-- Step 1: Name -->
+        <div class="creation-step active" id="step-name">
+          <h3>What is your name, Adventurer?</h3>
+          <p class="step-desc">You have answered the call of the Eye. The Last City awaits your arrival.</p>
+          <div class="input-group">
+            <input type="text" id="input-name" placeholder="Enter your name..." maxlength="20" autocomplete="off" spellcheck="false">
+            <div class="input-hint">2–20 characters</div>
+          </div>
+          <div class="step-nav">
+            <button class="btn-primary" id="btn-name-next">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Race -->
+        <div class="creation-step" id="step-race">
+          <h3>What are you?</h3>
+          <p class="step-desc">Three peoples share the last refuge. Choose your lineage.</p>
+          <div class="race-cards" id="race-cards">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-nav">
+            <button class="btn-ghost" id="btn-race-back">← Back</button>
+            <button class="btn-primary" id="btn-race-next" disabled>Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Confirm -->
+        <div class="creation-step" id="step-confirm">
+          <h3>Your Record</h3>
+          <p class="step-desc">Review your details before entering the world.</p>
+          <div class="confirm-card" id="confirm-details">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-nav">
+            <button class="btn-ghost" id="btn-confirm-back">← Back</button>
+            <button class="btn-primary" id="btn-confirm-start">Enter the World</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================
+         MAIN GAME
+         ================================================ -->
+    <div id="screen-game" class="screen">
+
+      <!-- HUD -->
+      <header id="hud">
+        <div class="hud-left">
+          <span class="hud-title">The Last Blessing</span>
+        </div>
+        <div class="hud-center">
+          <div class="hud-player">
+            <span id="hud-name" class="hud-player-name">—</span>
+            <span id="hud-class" class="hud-player-class">—</span>
+            <span id="hud-level" class="hud-player-level">Lv.1</span>
+          </div>
+          <div class="hud-bars">
+            <div class="bar-group">
+              <span class="bar-label">HP</span>
+              <div class="bar hp-bar-track">
+                <div class="bar-fill hp-fill" id="hp-fill"></div>
+              </div>
+              <span class="bar-value" id="hp-value">—</span>
+            </div>
+            <div class="bar-group">
+              <span class="bar-label">MP</span>
+              <div class="bar mp-bar-track">
+                <div class="bar-fill mp-fill" id="mp-fill"></div>
+              </div>
+              <span class="bar-value" id="mp-value">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="hud-right">
+          <span class="gold-display">
+            <span class="gold-icon">◈</span>
+            <span id="hud-gold">0</span>
+          </span>
+          <button class="hud-btn" id="btn-inventory">Pack</button>
+          <button class="hud-btn" id="btn-status">Status</button>
+        </div>
+      </header>
+
+      <!-- VIEWPORT -->
+      <div id="viewport">
+
+        <!-- Scene Panel -->
+        <div id="scene-panel">
+          <div id="location-header">
+            <div class="location-area" id="location-area">—</div>
+            <h2 id="location-name">—</h2>
+            <p id="location-desc">—</p>
+          </div>
+          <div id="scene-text"></div>
+        </div>
+
+        <!-- Action Panel -->
+        <div id="action-panel">
+          <div class="panel-header">Actions</div>
+          <div id="action-buttons"></div>
+        </div>
+
+      </div>
+
+      <!-- Message Log -->
+      <div id="message-log">
+        <div class="log-header">
+          <span>Log</span>
+          <button class="log-clear" id="btn-clear-log">Clear</button>
+        </div>
+        <div id="log-entries"></div>
+      </div>
+
+    </div>
+
+    <!-- ================================================
+         MODAL OVERLAY
+         ================================================ -->
+    <div id="modal-overlay" class="hidden">
+      <div id="modal-box">
+        <div id="modal-title"></div>
+        <div id="modal-content"></div>
+        <div id="modal-actions"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
