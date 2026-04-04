@@ -5,56 +5,150 @@
 
 const DATA = {
 
-  // ---- RACES ----
-  races: {
-    elf: {
-      id: 'elf',
-      name: 'Elf',
-      lore: 'Born from sap and spirit, Elves speak to the planet itself. Rotund, plant-like beings whose roots remember the world before the dome.',
-      statBonuses: { int: 3, mp: 30 },
-      statDisplay: ['+3 INT', '+30 MP', 'High Magic'],
-      startingHp: 80,
-      startingMp: 80,
+  // ---- SPECIES (6 sub-races across 3 Beings) ----
+  species: {
+    fole: {
+      id: 'fole', being: 'Elf', name: 'Fole', faction: 'Briar Collective',
+      lore: 'Root-walkers of the deep groves. Sturdier than their cousins, the Fole maintain the old bark-rites and speak to soil rather than sky.',
+      mods: { HP: 5, SP: 0, TP: 0, MP: 0 },
+      modDisplay: ['HP+5'],
+      bannedClass: 'Guard Knight',
     },
-    human: {
-      id: 'human',
-      name: 'Human',
-      lore: 'Forged from stone and sky to endure where Elves could not. Versatile and driven — they built the bridges, they manned the walls.',
-      statBonuses: { str: 2, vit: 2 },
-      statDisplay: ['+2 STR', '+2 VIT', 'Balanced'],
-      startingHp: 100,
-      startingMp: 50,
+    nume: {
+      id: 'nume', being: 'Elf', name: 'Nume', faction: 'Sylvan Collective',
+      lore: 'Canopy-singers with an affinity for wave magic. More fragile than other Elves, but their connection to the aether runs deep.',
+      mods: { HP: -5, SP: 0, TP: 0, MP: 5 },
+      modDisplay: ['HP−5', 'MP+5'],
+      bannedClass: 'Branded Barbarian',
     },
-    beast: {
-      id: 'beast',
-      name: 'Beast',
-      lore: 'Lifted to sentience by the Goddess in the age of war. They carry the old wild within them — harder to kill, and harder to ignore.',
-      statBonuses: { str: 3, vit: 3 },
-      statDisplay: ['+3 STR', '+3 VIT', 'High Endurance'],
-      startingHp: 120,
-      startingMp: 30,
+    kkyn: {
+      id: 'kkyn', being: 'Human', name: 'Kkyn', faction: 'Steel Clan',
+      lore: 'Forge-born and battle-hardened. The Kkyn built the walls and manned them. They trade in iron and oaths.',
+      mods: { HP: 10, SP: 0, TP: 5, MP: 0 },
+      modDisplay: ['HP+10', 'TP+5'],
+      bannedClass: null,
+    },
+    oeld: {
+      id: 'oeld', being: 'Human', name: 'Oeld', faction: 'Oak Clan',
+      lore: 'Scholars and wayfarers. The Oeld preserved knowledge through the dark years — what the dome destroyed, they remembered.',
+      mods: { HP: 0, SP: 0, TP: 0, MP: 10 },
+      modDisplay: ['MP+10'],
+      bannedClass: null,
+    },
+    tamo: {
+      id: 'tamo', being: 'Beast', name: 'Tamo', faction: 'Paw Tribe',
+      lore: 'Broad-shouldered and fearless. The Tamo were the first Beast-kind to cross into the Last City, and they have not stopped fighting since.',
+      mods: { HP: 15, SP: 0, TP: 0, MP: 0 },
+      modDisplay: ['HP+15'],
+      bannedClass: 'Tome Summoner',
+    },
+    wyld: {
+      id: 'wyld', being: 'Beast', name: 'Wyld', faction: 'Fang Tribe',
+      lore: 'Fast, instinct-driven, and difficult to predict. The Wyld do not follow paths — they make them.',
+      mods: { HP: 5, SP: 5, TP: 0, MP: 0 },
+      modDisplay: ['HP+5', 'SP+5'],
+      bannedClass: 'Aura Priest',
     },
   },
 
-  // ---- STARTING CLASS ----
-  startingClass: {
-    id: 'adept-rogue',
-    name: 'Adept Rogue',
-    description: 'All who register with the Guild begin their record as an Adept Rogue — untested, but full of potential. Specialization comes with time.',
+  // ---- BASE CLASSES (4 starting classes) ----
+  baseClasses: {
+    'blade-brandier': {
+      id: 0, key: 'blade-brandier',
+      name: 'Blade Brandier',
+      classType: 'Melee Physical', weight: 'Heavy',
+      weaponType: 'Blade', dmgTypes: ['Slashing', 'Piercing'],
+      desc: 'A heavy-armored swordfighter. Prioritizes raw physical power and durability over speed.',
+      noviceBox: {
+        id: 0, name: 'Novice Blade Brandier', lpCost: 5, spEarned: 25,
+        certificate: 'Blade_License',
+        statBonuses: { SP: 14, TP: 7, PATK: 4, PDEF: 1, PHIT: 3, PEVA: 1 },
+      },
+      starterWeapon: {
+        id: 'rusty-blade', name: 'Rusty Blade', type: 'weapon', weaponType: 'Blade',
+        desc: 'A chipped short sword. Standard issue for new arrivals at the Guild.',
+        quantity: 1,
+        statBonuses: { SP: 14, TP: 7, PATK: 4, PDEF: 1, PHIT: 3, PEVA: 1 },
+      },
+    },
+    'twin-blade': {
+      id: 1, key: 'twin-blade',
+      name: 'Twin Blade',
+      classType: 'Melee Physical', weight: 'Medium',
+      weaponType: 'Twin Blades', dmgTypes: ['Slashing', 'Cursing'],
+      desc: 'A dual-wielding specialist. Trades defense for speed, with minor access to cursing techniques.',
+      noviceBox: {
+        id: 18, name: 'Novice Twin Blade', lpCost: 5, spEarned: 25,
+        certificate: 'Twin_Blades_License',
+        statBonuses: { HP: 12, SP: 9, TP: 9, MP: 2, PATK: 3, PDEF: 1, PHIT: 3, PEVA: 2, MATK: 1, MDEF: 1, MHIT: 1, MEVA: 1 },
+      },
+      starterWeapon: {
+        id: 'rusty-twin-blades', name: 'Rusty Twin Blades', type: 'weapon', weaponType: 'Twin Blades',
+        desc: 'A mismatched pair of short blades. Functional, if not elegant.',
+        quantity: 1,
+        statBonuses: { SP: 6, TP: 4, PATK: 4, PDEF: 2, PHIT: 2, PEVA: 2, MDEF: 1, MHIT: 1 },
+      },
+    },
+    'wave-user': {
+      id: 2, key: 'wave-user',
+      name: 'Wave User',
+      classType: 'Melee Magical', weight: 'Light',
+      weaponType: 'Focus', dmgTypes: ['Arcane', 'Support'],
+      desc: 'A magic practitioner who channels elemental forces through a Focus. Low physical presence, high magical output.',
+      noviceBox: {
+        id: 36, name: 'Novice Wave User', lpCost: 5, spEarned: 25,
+        certificate: 'Focus_License',
+        statBonuses: { HP: 14, SP: 6, TP: 4, MP: 16, PATK: 1, PDEF: 1, PHIT: 3, PEVA: 3, MATK: 6, MDEF: 5, MHIT: 5, MEVA: 4, FIR: 1, WTR: 3, AIR: 3, LGT: 3 },
+      },
+      starterWeapon: {
+        id: 'rusty-focus', name: 'Rusty Focus', type: 'weapon', weaponType: 'Focus',
+        desc: 'A cracked aetheric focus. It still resonates, barely.',
+        quantity: 1,
+        statBonuses: { HP: 12, SP: 9, TP: 9, MP: 2, PATK: 3, PDEF: 1, PHIT: 3, PEVA: 2, MATK: 1, MDEF: 1, MHIT: 1, MEVA: 1, WTR: 1, AIR: 1, DRK: 1 },
+      },
+    },
+    'harvest-cleric': {
+      id: 3, key: 'harvest-cleric',
+      name: 'Harvest Cleric',
+      classType: 'Ranged Magical', weight: 'Light',
+      weaponType: 'Wand', dmgTypes: ['Arcane', 'Relic'],
+      desc: 'A wand-wielding support class with strong healing and relic magic. Balanced between magic and technique.',
+      noviceBox: {
+        id: 54, name: 'Novice Harvest Cleric', lpCost: 5, spEarned: 25,
+        certificate: 'Wand_License',
+        statBonuses: { HP: 18, SP: 5, TP: 4, MP: 11, PATK: 2, PDEF: 2, PHIT: 3, PEVA: 2, MATK: 4, MDEF: 4, MHIT: 3, MEVA: 3, WTR: 3, AIR: 1, LGT: 3, DRK: 1 },
+      },
+      starterWeapon: {
+        id: 'rusty-wand', name: 'Rusty Wand', type: 'weapon', weaponType: 'Wand',
+        desc: 'A tarnished wand. The crystal at its tip is still intact.',
+        quantity: 1,
+        statBonuses: { HP: 18, SP: 6, TP: 4, PATK: 4, PDEF: 1, PHIT: 2, PEVA: 3, MDEF: 1, MHIT: 1, MEVA: 1, AIR: 1, DRK: 1 },
+      },
+    },
   },
 
-  // ---- BASE STATS (before race bonuses) ----
-  baseStats: {
-    str: 10, dex: 10, int: 10, vit: 10,
+  // ---- STAT DEFINITIONS ----
+  stats: {
+    resources:  ['HP', 'SP', 'TP', 'MP'],
+    combat:     ['PATK', 'PDEF', 'PHIT', 'PEVA', 'MATK', 'MDEF', 'MHIT', 'MEVA'],
+    elemental:  ['FIR', 'WTR', 'AIR', 'ERT', 'LGT', 'DRK'],
+    allKeys: ['HP', 'SP', 'TP', 'MP', 'PATK', 'PDEF', 'PHIT', 'PEVA', 'MATK', 'MDEF', 'MHIT', 'MEVA', 'FIR', 'WTR', 'AIR', 'ERT', 'LGT', 'DRK'],
+    labels: {
+      HP: 'Health', SP: 'Skill Pts', TP: 'Technique', MP: 'Magic',
+      PATK: 'P.ATK', PDEF: 'P.DEF', PHIT: 'P.HIT', PEVA: 'P.EVA',
+      MATK: 'M.ATK', MDEF: 'M.DEF', MHIT: 'M.HIT', MEVA: 'M.EVA',
+      FIR: 'Fire', WTR: 'Water', AIR: 'Air', ERT: 'Earth', LGT: 'Light', DRK: 'Dark',
+    },
   },
+
+  // ---- COMBAT LEVEL FORMULA ----
+  // max(1, floor(spEarned / 25)), capped at 150
+  combatLevelFormula: { spPerLevel: 25, cap: 150 },
 
   // ---- LOCATIONS ----
   locations: {
-
     'city-square': {
-      id: 'city-square',
-      area: 'The Last City',
-      name: 'City Square',
+      id: 'city-square', area: 'The Last City', name: 'City Square',
       description: 'The heart of civilization\'s last refuge. Stone towers rise behind protective wards humming with the Goddess\'s fading light. Adventurers move through the square between expeditions, trading stories and supplies beneath the pale dome.',
       exits: [
         { id: 'market-row',   label: 'Market Row',               icon: '⚖', desc: 'Merchants and trade' },
@@ -63,127 +157,70 @@ const DATA = {
         { id: 'goddess-gate', label: 'Goddess Gate',             icon: '◎', desc: 'Portal to beyond the dome' },
       ],
       actions: [],
-      onEnter: null,
     },
-
     'market-row': {
-      id: 'market-row',
-      area: 'The Last City',
-      name: 'Market Row',
+      id: 'market-row', area: 'The Last City', name: 'Market Row',
       description: 'A crooked lane of repurposed buildings and canvas stalls. The smell of steam-cooked food mingles with oil and rust. Merchants of all three peoples hawk goods salvaged from beyond the dome — some genuine, some certainly not.',
-      exits: [
-        { id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' },
-      ],
-      actions: [
-        { id: 'browse-market', label: 'Browse Wares', icon: '⚖', type: 'shop' },
-      ],
+      exits: [{ id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' }],
+      actions: [{ id: 'browse-market', label: 'Browse Wares', icon: '⚖', type: 'shop' }],
     },
-
     'cathedral': {
-      id: 'cathedral',
-      area: 'The Last City',
-      name: 'Cathedral of the Goddess',
+      id: 'cathedral', area: 'The Last City', name: 'Cathedral of the Goddess',
       description: 'The oldest building still standing. Its walls are etched with the Seven Blessings in three tongues: Elvish root-script, human iron-letters, and Beast claw-marks. Candles burn along every ledge. No one refills them.',
-      exits: [
-        { id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' },
-      ],
+      exits: [{ id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' }],
       actions: [
         { id: 'read-blessings', label: 'Read the Seven Blessings', icon: '✦', type: 'lore' },
         { id: 'pray',           label: 'Offer a Prayer',           icon: '◇', type: 'pray' },
       ],
     },
-
     'guild-hall': {
-      id: 'guild-hall',
-      area: 'The Last City',
-      name: "Adventurer's Guild",
+      id: 'guild-hall', area: 'The Last City', name: "Adventurer's Guild",
       description: 'A squat, loud building smelling of sweat and ambition. Expedition boards line every wall — some fresh, most old and curling at the corners. A gruff Beast in a leather apron mans the counter. Your record is kept here.',
-      exits: [
-        { id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' },
-      ],
+      exits: [{ id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' }],
       actions: [
         { id: 'view-record', label: 'View Your Record', icon: '📋', type: 'status' },
         { id: 'view-board',  label: 'Expedition Board', icon: '📌', type: 'board' },
       ],
     },
-
     'goddess-gate': {
-      id: 'goddess-gate',
-      area: 'The Last City',
-      name: 'Goddess Gate',
+      id: 'goddess-gate', area: 'The Last City', name: 'Goddess Gate',
       description: 'A circular stone archway at the city\'s center, pulsing with slow aetheric light. Three carved recesses surround the frame — each shaped to receive a Keystone. The air here carries a faint smell of distant places: pine resin, saltwater, something burning.',
-      exits: [
-        { id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' },
-      ],
-      actions: [
-        { id: 'attune-gate', label: 'Attune the Gate', icon: '◎', type: 'gate' },
-      ],
+      exits: [{ id: 'city-square', label: 'City Square', icon: '↩', desc: 'Return to the square' }],
+      actions: [{ id: 'attune-gate', label: 'Attune the Gate', icon: '◎', type: 'gate' }],
     },
-
   },
 
-  // ---- THE SEVEN BLESSINGS (Cathedral lore) ----
+  // ---- THE SEVEN BLESSINGS ----
   blessings: [
     {
-      number: 'First Blessing',
-      title: 'The Sprouting Song',
-      subtitle: 'The Birth of the Elves',
+      number: 'First Blessing', title: 'The Sprouting Song', subtitle: 'The Birth of the Elves',
       text: 'From root to leaf, from seed to sun,\nThe Breath of the World did bloom as One.\nGreen minds awoke in dew-soaked groves,\nRotund and kind, they spoke in prose.\n\nThese Elves, born from sap and spirit, held no hunger, wrought no steel.\nThey danced with time and whispered to roots.',
     },
     {
-      number: 'Second Blessing',
-      title: 'The Shaping Flame',
-      subtitle: 'The Creation of Humans',
+      number: 'Second Blessing', title: 'The Shaping Flame', subtitle: 'The Creation of Humans',
       text: 'In quiet grove and mossy glade, we sang where sun and shadow played.\nYet hands so soft and hearts so pure could not all burdens long endure.\n\nThe Goddess watched, Her gaze made warm,\nAnd shaped new life with earthen form.\nFrom stone and sky, from ash and flame, She forged the folk who bore no name.\n\nNot made of root nor bloom nor bough, but worthy to call our world their home.',
     },
     {
-      number: 'Third Blessing',
-      title: 'The Idea to Inspire Invention',
-      subtitle: 'The Gift of Steam',
+      number: 'Third Blessing', title: 'The Idea to Inspire Invention', subtitle: 'The Gift of Steam',
       text: 'From the mountain\'s breath, we drew power.\nSteam: the fire without flame.\n\nWheels turned, towers rose, and skyships sailed.\nThe Goddess, in Her joy, saw us as One Hand.\n\nSteam reshaped the world; its roar silenced the old songs.\nThe Beasts were wild and wise in their own way.\nThey raged at the scarring of the land.\n\nSo came the first war.',
     },
     {
-      number: 'Fourth Blessing',
-      title: 'The Feelings of Fur and Fang',
-      subtitle: 'The Lifting of Beasts',
+      number: 'Fourth Blessing', title: 'The Feelings of Fur and Fang', subtitle: 'The Lifting of Beasts',
       text: 'The Goddess raised the Beasts, gave them voice, gave them thought.\nThe Bear-Kings and Serpent-Speakers sued for peace.\nBorders were drawn — not lines of division, but invitations to cohabitation.\n\nFor a time, all three Peoples shared the world.\nBut wounds festered, and the world\'s soul had already begun to rot.\nThe Titans had already marched.',
     },
     {
-      number: 'Fifth Blessing',
-      title: 'The Chains of the Colossi',
-      subtitle: 'The Sealing of the Titans',
-      text: 'The Titans — not born of nature or divine breath, but of hatred, cast from Elf, Human, and Beast alike.\nThese twisted giants tore the world. Cities fell like autumn leaves.\n\nAt the edge of extinction, champions arose.\nThe Goddess marked them — tattoos like constellations of power.\n\nTogether, they fought. Together, they sealed the Titans deep below.\nBut not before the rift was opened.\n\nDemons come.',
+      number: 'Fifth Blessing', title: 'The Chains of the Colossi', subtitle: 'The Sealing of the Titans',
+      text: 'The Titans — not born of nature or divine breath, but of hatred.\nThese twisted giants tore the world. Cities fell like autumn leaves.\n\nAt the edge of extinction, champions arose.\nThe Goddess marked them — tattoos like constellations of power.\n\nTogether, they fought. Together, they sealed the Titans deep below.\nBut not before the rift was opened.\n\nDemons come.',
     },
     {
-      number: 'Sixth Blessing',
-      title: 'The Prayer of Protection',
-      subtitle: 'The Vanishing of the Goddess',
+      number: 'Sixth Blessing', title: 'The Prayer of Protection', subtitle: 'The Vanishing of the Goddess',
       text: 'For two hundred years, there was only retreat.\nHighways of ash and bone.\n\nCities burned. Kingdoms undone. The Last City stood.\n\nThe Goddess, pale and flickering like a dying candle,\nraised Her final shield — a dome of light, soft as a whisper, strong as old roots.\n\nShe spoke no words. She wept once. Then vanished.\n\nThe people rebuilt. Slowly. Carefully.\nAlways listening to the howls beyond the Goddess\' light.',
     },
     {
-      number: 'Seventh Blessing',
-      title: 'The Eye of the Goddess',
-      subtitle: 'The Return of Hope',
+      number: 'Seventh Blessing', title: 'The Eye of the Goddess', subtitle: 'The Return of Hope',
       text: 'Ten years ago, a shimmer appeared in the city\'s heart. A new blessing.\n\nThe Eye of the Goddess — a stone gate, circular and humming, pulsing with aetheric light.\nIt reaches distant lands. Places still wild, still demonic — but not yet lost.\n\nCrafted Keystones form strings. Strings open paths. Travellers walk them, scavenging hope.\n\nShe appeared once more. Thin as fog, brighter than fire.\n"Go forth," she said. Then silence.\n\nNow, we go through the Eye. Not to find paradise — but to make it.',
     },
   ],
-
-  // ---- STARTING ITEMS ----
-  startingItems: [
-    { id: 'worn-blade',       name: 'Worn Blade',          type: 'weapon',     desc: 'A chipped short sword. Standard issue for new arrivals at the Guild.',  quantity: 1, atkBonus: 3 },
-    { id: 'traveler-cloak',   name: "Traveler's Cloak",    type: 'armor',      desc: "Thin but better than nothing. Smells like someone else's journey.",      quantity: 1, defBonus: 1 },
-    { id: 'healing-draft',    name: 'Healing Draft',       type: 'consumable', desc: 'A small vial of restorative liquid. Restores 30 HP.',                    quantity: 3, effect: { hp: 30 } },
-    { id: 'ks-earth',         name: 'Keystone of Earth',   type: 'keystone',   desc: 'Carved from old stone. Smells of roots and soil.',                       quantity: 2, keystoneElement: 'earth' },
-    { id: 'ks-wind',          name: 'Keystone of Wind',    type: 'keystone',   desc: 'Lighter than it looks. Tugs faintly upward.',                            quantity: 2, keystoneElement: 'wind' },
-    { id: 'ks-shadow',        name: 'Keystone of Shadow',  type: 'keystone',   desc: 'Absorbs light. Cold to the touch.',                                      quantity: 1, keystoneElement: 'shadow' },
-  ],
-
-  // ---- ARRIVAL TEXT (per race) ----
-  arrivalText: {
-    elf: 'The dome\'s light feels familiar — like sunlight through a canopy you half remember. Your roots haven\'t spoken since the crossing, but you feel them listening.',
-    human: 'You\'ve heard the stories all your life. Standing here now, inside the dome, the weight of it finally settles in your chest. This is real.',
-    beast: 'The city smells of too many people pressed into too little space. But the dome holds, and the demons stay out. That\'s what matters. You\'ve made it.',
-  },
 
   // ---- KEYSTONES ----
   keystones: {
@@ -196,11 +233,9 @@ const DATA = {
   },
 
   // ---- FIELD TEMPLATES ----
-  // Dominant element (2+ of same) determines the zone. All-different → crossroads.
   fieldTemplates: {
     'withered-grove': {
-      id: 'withered-grove', name: 'The Withered Grove',
-      dominantKey: 'earth', type: 'field',
+      id: 'withered-grove', name: 'The Withered Grove', dominantKey: 'earth', type: 'field',
       description: 'A forest that died the moment the demons came through — but its roots still remember something like hunger. The trees move when you are not watching them.',
       roomDescriptions: [
         'Gnarled roots split the soil around you. The undergrowth is still, but you get the sense it is deciding something.',
@@ -208,13 +243,10 @@ const DATA = {
         'A ring of dead saplings circles a clearing. The ground here is darker than it should be.',
       ],
       bossDescription: 'At the grove\'s heart, something ancient and enormous rises from the soil. It has been here longer than the demons. It was waiting.',
-      enemies: ['vine-stalker', 'bark-horror'],
-      boss: 'elder-root',
-      totalRooms: 3,
+      enemies: ['vine-stalker', 'bark-horror'], boss: 'elder-root', totalRooms: 3,
     },
     'howling-flats': {
-      id: 'howling-flats', name: 'The Howling Flats',
-      dominantKey: 'wind', type: 'field',
+      id: 'howling-flats', name: 'The Howling Flats', dominantKey: 'wind', type: 'field',
       description: 'A vast, stripped plain where the wind never stops. No structures remain standing. The sound it makes through the debris sounds almost like words.',
       roomDescriptions: [
         'The wind tears at your cloak. Shapes dart at the edge of visibility.',
@@ -222,13 +254,10 @@ const DATA = {
         'The gusts here are stronger, carrying grit that stings exposed skin. Something is circling.',
       ],
       bossDescription: 'The wind drops completely. An enormous shape condenses from the debris — a column of howling energy, taking form.',
-      enemies: ['shard-wraith', 'dust-devil'],
-      boss: 'gale-titan',
-      totalRooms: 3,
+      enemies: ['shard-wraith', 'dust-devil'], boss: 'gale-titan', totalRooms: 3,
     },
     'smoldering-hollow': {
-      id: 'smoldering-hollow', name: 'The Smoldering Hollow',
-      dominantKey: 'fire', type: 'field',
+      id: 'smoldering-hollow', name: 'The Smoldering Hollow', dominantKey: 'fire', type: 'field',
       description: 'A system of volcanic caves beneath a collapsed city, kept active by whatever tore the rifts open. The air burns to breathe. Everything here wants to see you melt.',
       roomDescriptions: [
         'Lava cracks line the stone floor. The heat is tremendous.',
@@ -236,13 +265,10 @@ const DATA = {
         'The cave opens into a chamber where something was clearly worshipped, once. The altar is still warm.',
       ],
       bossDescription: 'The deepest chamber pulses with heat. Something vast unfolds its wings from the far wall.',
-      enemies: ['ash-crawler', 'steam-imp'],
-      boss: 'furnace-drake',
-      totalRooms: 3,
+      enemies: ['ash-crawler', 'steam-imp'], boss: 'furnace-drake', totalRooms: 3,
     },
     'drowned-district': {
-      id: 'drowned-district', name: 'The Drowned District',
-      dominantKey: 'water', type: 'field',
+      id: 'drowned-district', name: 'The Drowned District', dominantKey: 'water', type: 'field',
       description: 'A city quarter lost beneath floodwater. The demons here do not drown. Neither, it seems, do their dead.',
       roomDescriptions: [
         'Floodwater reaches your knees. Something beneath the surface nudges your foot.',
@@ -250,13 +276,10 @@ const DATA = {
         'The water here is still and black. Your own reflection does not quite match your movements.',
       ],
       bossDescription: 'The flood opens into a vast sunken square. A shape the size of a house rises from the water.',
-      enemies: ['bloated-shambler', 'rift-eel'],
-      boss: 'drowned-warden',
-      totalRooms: 3,
+      enemies: ['bloated-shambler', 'rift-eel'], boss: 'drowned-warden', totalRooms: 3,
     },
     'sunken-citadel': {
-      id: 'sunken-citadel', name: 'The Sunken Citadel',
-      dominantKey: 'shadow', type: 'dungeon',
+      id: 'sunken-citadel', name: 'The Sunken Citadel', dominantKey: 'shadow', type: 'dungeon',
       description: 'A fortress pulled into corrupted earth during the Titan wars. It is darker here than it should be. Lights go out when you enter a room.',
       roomDescriptions: [
         'The corridor ahead is total darkness. Your eyes adjust slowly — and you wish they had not.',
@@ -265,13 +288,10 @@ const DATA = {
         'The citadel\'s lowest level. The air is wrong here. Pressure you can feel in your teeth.',
       ],
       bossDescription: 'At the citadel\'s lowest point — a chamber that should not exist. Something breathes in it.',
-      enemies: ['hollow-shade', 'bone-sentinel'],
-      boss: 'the-nameless',
-      totalRooms: 4,
+      enemies: ['hollow-shade', 'bone-sentinel'], boss: 'the-nameless', totalRooms: 4,
     },
     'steam-vaults': {
-      id: 'steam-vaults', name: 'The Steam Vaults',
-      dominantKey: 'steam', type: 'field',
+      id: 'steam-vaults', name: 'The Steam Vaults', dominantKey: 'steam', type: 'field',
       description: 'Industrial tunnels built during the Third Blessing, now overrun. The machinery still runs. No one is operating it.',
       roomDescriptions: [
         'Pipes the width of a man line the walls, hissing and dripping. The gauges still spin.',
@@ -279,13 +299,10 @@ const DATA = {
         'The pipes here are warped and burst. Steam fills the room constantly, obscuring everything.',
       ],
       bossDescription: 'The central control room. A towering construct of fused machinery and demonic flesh sits at the main console.',
-      enemies: ['valve-golem', 'exhaust-specter'],
-      boss: 'the-overseer',
-      totalRooms: 3,
+      enemies: ['valve-golem', 'exhaust-specter'], boss: 'the-overseer', totalRooms: 3,
     },
     'crossroads': {
-      id: 'crossroads', name: 'The Crossroads',
-      dominantKey: null, type: 'field',
+      id: 'crossroads', name: 'The Crossroads', dominantKey: null, type: 'field',
       description: 'A point where multiple rifts converged. The terrain here is inconsistent — forest gives way to stone, stone to water, water to ash. The demons here are stranger than most.',
       roomDescriptions: [
         'The ground shifts between terrain types mid-step. Nothing about this place follows rules.',
@@ -293,54 +310,63 @@ const DATA = {
         'An open junction where four torn-up roads meet. You are being watched from all four directions.',
       ],
       bossDescription: 'At the convergence point, something assembled from parts that do not match steps into the light.',
-      enemies: ['rift-wanderer', 'chaos-shard'],
-      boss: 'the-convergent',
-      totalRooms: 3,
+      enemies: ['rift-wanderer', 'chaos-shard'], boss: 'the-convergent', totalRooms: 3,
     },
   },
 
   // ---- ENEMIES ----
   enemies: {
-    // Withered Grove
-    'vine-stalker':   { id: 'vine-stalker',   name: 'Vine Stalker',          hp: 32,  maxHp: 32,  atk: 8,  def: 2, exp: 15, gold: 5,  loot: [{ id: 'withered-seed', chance: 0.4 }, { id: 'demon-fragment', chance: 0.2 }] },
-    'bark-horror':    { id: 'bark-horror',     name: 'Bark Horror',           hp: 48,  maxHp: 48,  atk: 12, def: 4, exp: 25, gold: 8,  loot: [{ id: 'withered-seed', chance: 0.3 }, { id: 'keystone-shard', chance: 0.15 }] },
-    'elder-root':     { id: 'elder-root',      name: 'Elder Root',   isBoss: true, hp: 110, maxHp: 110, atk: 18, def: 6, exp: 80, gold: 30, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.6 }, { id: 'healing-draft', chance: 0.5 }] },
-    // Howling Flats
-    'shard-wraith':   { id: 'shard-wraith',    name: 'Shard Wraith',          hp: 28,  maxHp: 28,  atk: 11, def: 1, exp: 18, gold: 6,  loot: [{ id: 'demon-fragment', chance: 0.3 }, { id: 'iron-splinter', chance: 0.35 }] },
-    'dust-devil':     { id: 'dust-devil',      name: 'Dust Devil',            hp: 38,  maxHp: 38,  atk: 14, def: 2, exp: 22, gold: 7,  loot: [{ id: 'keystone-shard', chance: 0.2 }, { id: 'demon-fragment', chance: 0.25 }] },
-    'gale-titan':     { id: 'gale-titan',      name: 'Gale Titan',   isBoss: true, hp: 95,  maxHp: 95,  atk: 20, def: 4, exp: 75, gold: 28, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.7 }, { id: 'healing-draft', chance: 0.4 }] },
-    // Smoldering Hollow
-    'ash-crawler':    { id: 'ash-crawler',     name: 'Ash Crawler',           hp: 38,  maxHp: 38,  atk: 10, def: 3, exp: 20, gold: 7,  loot: [{ id: 'demon-fragment', chance: 0.35 }, { id: 'iron-splinter', chance: 0.3 }] },
-    'steam-imp':      { id: 'steam-imp',       name: 'Steam Imp',             hp: 42,  maxHp: 42,  atk: 13, def: 3, exp: 24, gold: 9,  loot: [{ id: 'keystone-shard', chance: 0.25 }, { id: 'demon-fragment', chance: 0.3 }] },
-    'furnace-drake':  { id: 'furnace-drake',   name: 'Furnace Drake', isBoss: true, hp: 115, maxHp: 115, atk: 22, def: 8, exp: 90, gold: 35, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.65 }, { id: 'healing-draft', chance: 0.5 }] },
-    // Drowned District
-    'bloated-shambler': { id: 'bloated-shambler', name: 'Bloated Shambler',   hp: 42,  maxHp: 42,  atk: 9,  def: 3, exp: 18, gold: 6,  loot: [{ id: 'demon-fragment', chance: 0.3 }, { id: 'iron-splinter', chance: 0.4 }] },
-    'rift-eel':       { id: 'rift-eel',        name: 'Rift Eel',              hp: 33,  maxHp: 33,  atk: 15, def: 1, exp: 22, gold: 8,  loot: [{ id: 'keystone-shard', chance: 0.2 }, { id: 'demon-fragment', chance: 0.25 }] },
-    'drowned-warden': { id: 'drowned-warden',  name: 'The Drowned Warden', isBoss: true, hp: 100, maxHp: 100, atk: 19, def: 5, exp: 78, gold: 32, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.6 }, { id: 'healing-draft', chance: 0.45 }] },
-    // Sunken Citadel
-    'hollow-shade':   { id: 'hollow-shade',    name: 'Hollow Shade',          hp: 42,  maxHp: 42,  atk: 14, def: 3, exp: 28, gold: 10, loot: [{ id: 'demon-fragment', chance: 0.4 }, { id: 'keystone-shard', chance: 0.2 }] },
-    'bone-sentinel':  { id: 'bone-sentinel',   name: 'Bone Sentinel',         hp: 58,  maxHp: 58,  atk: 16, def: 6, exp: 35, gold: 12, loot: [{ id: 'iron-splinter', chance: 0.45 }, { id: 'keystone-shard', chance: 0.2 }] },
-    'the-nameless':   { id: 'the-nameless',    name: 'The Nameless',  isBoss: true, hp: 135, maxHp: 135, atk: 25, def: 8, exp: 110, gold: 45, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.8 }, { id: 'healing-draft', chance: 0.55 }] },
-    // Steam Vaults
-    'valve-golem':    { id: 'valve-golem',     name: 'Valve Golem',           hp: 45,  maxHp: 45,  atk: 11, def: 5, exp: 22, gold: 8,  loot: [{ id: 'iron-splinter', chance: 0.5 }, { id: 'demon-fragment', chance: 0.2 }] },
+    'vine-stalker':    { id: 'vine-stalker',    name: 'Vine Stalker',         hp: 32,  maxHp: 32,  atk: 8,  def: 2, exp: 15, gold: 5,  loot: [{ id: 'withered-seed', chance: 0.4 }, { id: 'demon-fragment', chance: 0.2 }] },
+    'bark-horror':     { id: 'bark-horror',     name: 'Bark Horror',          hp: 48,  maxHp: 48,  atk: 12, def: 4, exp: 25, gold: 8,  loot: [{ id: 'withered-seed', chance: 0.3 }, { id: 'keystone-shard', chance: 0.15 }] },
+    'elder-root':      { id: 'elder-root',      name: 'Elder Root',  isBoss: true, hp: 110, maxHp: 110, atk: 18, def: 6, exp: 80, gold: 30, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.6 }, { id: 'healing-draft', chance: 0.5 }] },
+    'shard-wraith':    { id: 'shard-wraith',    name: 'Shard Wraith',         hp: 28,  maxHp: 28,  atk: 11, def: 1, exp: 18, gold: 6,  loot: [{ id: 'demon-fragment', chance: 0.3 }, { id: 'iron-splinter', chance: 0.35 }] },
+    'dust-devil':      { id: 'dust-devil',      name: 'Dust Devil',           hp: 38,  maxHp: 38,  atk: 14, def: 2, exp: 22, gold: 7,  loot: [{ id: 'keystone-shard', chance: 0.2 }, { id: 'demon-fragment', chance: 0.25 }] },
+    'gale-titan':      { id: 'gale-titan',      name: 'Gale Titan',  isBoss: true, hp: 95,  maxHp: 95,  atk: 20, def: 4, exp: 75, gold: 28, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.7 }, { id: 'healing-draft', chance: 0.4 }] },
+    'ash-crawler':     { id: 'ash-crawler',     name: 'Ash Crawler',          hp: 38,  maxHp: 38,  atk: 10, def: 3, exp: 20, gold: 7,  loot: [{ id: 'demon-fragment', chance: 0.35 }, { id: 'iron-splinter', chance: 0.3 }] },
+    'steam-imp':       { id: 'steam-imp',       name: 'Steam Imp',            hp: 42,  maxHp: 42,  atk: 13, def: 3, exp: 24, gold: 9,  loot: [{ id: 'keystone-shard', chance: 0.25 }, { id: 'demon-fragment', chance: 0.3 }] },
+    'furnace-drake':   { id: 'furnace-drake',   name: 'Furnace Drake', isBoss: true, hp: 115, maxHp: 115, atk: 22, def: 8, exp: 90, gold: 35, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.65 }, { id: 'healing-draft', chance: 0.5 }] },
+    'bloated-shambler':{ id: 'bloated-shambler',name: 'Bloated Shambler',     hp: 42,  maxHp: 42,  atk: 9,  def: 3, exp: 18, gold: 6,  loot: [{ id: 'demon-fragment', chance: 0.3 }, { id: 'iron-splinter', chance: 0.4 }] },
+    'rift-eel':        { id: 'rift-eel',        name: 'Rift Eel',             hp: 33,  maxHp: 33,  atk: 15, def: 1, exp: 22, gold: 8,  loot: [{ id: 'keystone-shard', chance: 0.2 }, { id: 'demon-fragment', chance: 0.25 }] },
+    'drowned-warden':  { id: 'drowned-warden',  name: 'The Drowned Warden', isBoss: true, hp: 100, maxHp: 100, atk: 19, def: 5, exp: 78, gold: 32, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.6 }, { id: 'healing-draft', chance: 0.45 }] },
+    'hollow-shade':    { id: 'hollow-shade',    name: 'Hollow Shade',         hp: 42,  maxHp: 42,  atk: 14, def: 3, exp: 28, gold: 10, loot: [{ id: 'demon-fragment', chance: 0.4 }, { id: 'keystone-shard', chance: 0.2 }] },
+    'bone-sentinel':   { id: 'bone-sentinel',   name: 'Bone Sentinel',        hp: 58,  maxHp: 58,  atk: 16, def: 6, exp: 35, gold: 12, loot: [{ id: 'iron-splinter', chance: 0.45 }, { id: 'keystone-shard', chance: 0.2 }] },
+    'the-nameless':    { id: 'the-nameless',    name: 'The Nameless', isBoss: true, hp: 135, maxHp: 135, atk: 25, def: 8, exp: 110, gold: 45, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.8 }, { id: 'healing-draft', chance: 0.55 }] },
+    'valve-golem':     { id: 'valve-golem',     name: 'Valve Golem',          hp: 45,  maxHp: 45,  atk: 11, def: 5, exp: 22, gold: 8,  loot: [{ id: 'iron-splinter', chance: 0.5 }, { id: 'demon-fragment', chance: 0.2 }] },
     'exhaust-specter': { id: 'exhaust-specter', name: 'Exhaust Specter',      hp: 32,  maxHp: 32,  atk: 13, def: 2, exp: 20, gold: 7,  loot: [{ id: 'demon-fragment', chance: 0.3 }, { id: 'keystone-shard', chance: 0.2 }] },
-    'the-overseer':   { id: 'the-overseer',    name: 'The Overseer',  isBoss: true, hp: 105, maxHp: 105, atk: 21, def: 7, exp: 85, gold: 38, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.7 }, { id: 'healing-draft', chance: 0.45 }] },
-    // Crossroads
-    'rift-wanderer':  { id: 'rift-wanderer',   name: 'Rift Wanderer',         hp: 38,  maxHp: 38,  atk: 12, def: 2, exp: 25, gold: 10, loot: [{ id: 'demon-fragment', chance: 0.4 }, { id: 'keystone-shard', chance: 0.25 }] },
-    'chaos-shard':    { id: 'chaos-shard',     name: 'Chaos Shard',           hp: 44,  maxHp: 44,  atk: 15, def: 3, exp: 30, gold: 12, loot: [{ id: 'demon-fragment', chance: 0.35 }, { id: 'keystone-shard', chance: 0.3 }] },
-    'the-convergent': { id: 'the-convergent',  name: 'The Convergent', isBoss: true, hp: 120, maxHp: 120, atk: 23, def: 6, exp: 100, gold: 40, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.75 }, { id: 'healing-draft', chance: 0.5 }] },
+    'the-overseer':    { id: 'the-overseer',    name: 'The Overseer',  isBoss: true, hp: 105, maxHp: 105, atk: 21, def: 7, exp: 85, gold: 38, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.7 }, { id: 'healing-draft', chance: 0.45 }] },
+    'rift-wanderer':   { id: 'rift-wanderer',   name: 'Rift Wanderer',        hp: 38,  maxHp: 38,  atk: 12, def: 2, exp: 25, gold: 10, loot: [{ id: 'demon-fragment', chance: 0.4 }, { id: 'keystone-shard', chance: 0.25 }] },
+    'chaos-shard':     { id: 'chaos-shard',     name: 'Chaos Shard',          hp: 44,  maxHp: 44,  atk: 15, def: 3, exp: 30, gold: 12, loot: [{ id: 'demon-fragment', chance: 0.35 }, { id: 'keystone-shard', chance: 0.3 }] },
+    'the-convergent':  { id: 'the-convergent',  name: 'The Convergent', isBoss: true, hp: 120, maxHp: 120, atk: 23, def: 6, exp: 100, gold: 40, loot: [{ id: 'demon-fragment', chance: 1.0 }, { id: 'keystone-shard', chance: 0.75 }, { id: 'healing-draft', chance: 0.5 }] },
   },
 
   // ---- DROP ITEMS ----
   dropItems: {
-    'demon-fragment':  { id: 'demon-fragment',  name: 'Demon Fragment',   type: 'material',    desc: 'A shard of crystallized demonic essence. Merchants pay well for these.',       sellValue: 15, quantity: 1 },
-    'keystone-shard':  { id: 'keystone-shard',  name: 'Keystone Shard',   type: 'material',    desc: 'A rough aetheric shard. Used in Keystone crafting.',                          sellValue: 10, quantity: 1 },
-    'iron-splinter':   { id: 'iron-splinter',   name: 'Iron Splinter',    type: 'material',    desc: 'Corroded iron from ruins beyond the dome. Worth a few coins.',                sellValue: 8,  quantity: 1 },
-    'withered-seed':   { id: 'withered-seed',   name: 'Withered Seed',    type: 'material',    desc: 'A seed that will never grow. Alchemists find uses for it.',                   sellValue: 12, quantity: 1 },
-    'healing-draft':   { id: 'healing-draft',   name: 'Healing Draft',    type: 'consumable',  desc: 'Restores 30 HP.', effect: { hp: 30 },                                        sellValue: 5,  quantity: 1 },
+    'demon-fragment': { id: 'demon-fragment', name: 'Demon Fragment',  type: 'material',   desc: 'A shard of crystallized demonic essence. Merchants pay well for these.',  sellValue: 15, quantity: 1 },
+    'keystone-shard': { id: 'keystone-shard', name: 'Keystone Shard',  type: 'material',   desc: 'A rough aetheric shard. Used in Keystone crafting.',                     sellValue: 10, quantity: 1 },
+    'iron-splinter':  { id: 'iron-splinter',  name: 'Iron Splinter',   type: 'material',   desc: 'Corroded iron from ruins beyond the dome. Worth a few coins.',            sellValue: 8,  quantity: 1 },
+    'withered-seed':  { id: 'withered-seed',  name: 'Withered Seed',   type: 'material',   desc: 'A seed that will never grow. Alchemists find uses for it.',               sellValue: 12, quantity: 1 },
+    'healing-draft':  { id: 'healing-draft',  name: 'Healing Draft',   type: 'consumable', desc: 'Restores 30 HP.', effect: { HP: 30 },                                    sellValue: 5,  quantity: 1 },
   },
 
-  // ---- PRAYER RESPONSES (randomized) ----
+  // ---- STARTING CONSUMABLES (added to all new characters) ----
+  startingConsumables: [
+    { id: 'healing-draft', name: 'Healing Draft', type: 'consumable', desc: 'Restores 30 HP.', quantity: 3, effect: { HP: 30 } },
+    { id: 'ks-earth',      name: 'Keystone of Earth',  type: 'keystone', desc: 'Carved from old stone. Smells of roots and soil.',    quantity: 2, keystoneElement: 'earth' },
+    { id: 'ks-wind',       name: 'Keystone of Wind',   type: 'keystone', desc: 'Lighter than it looks. Tugs faintly upward.',         quantity: 2, keystoneElement: 'wind' },
+    { id: 'ks-shadow',     name: 'Keystone of Shadow', type: 'keystone', desc: 'Absorbs light. Cold to the touch.',                   quantity: 1, keystoneElement: 'shadow' },
+  ],
+
+  // ---- ARRIVAL TEXT (per species) ----
+  arrivalText: {
+    fole: 'The dome\'s light feels like sunlight through bark. Your roots went quiet when you crossed inside. You hope that is not permanent.',
+    nume: 'The aether here is different — confined, shaped by something old and deliberate. You can hear it, faintly. The Goddess left her voice in the walls.',
+    kkyn: 'You\'ve built things in harder places than this. The dome holds, the walls are solid, and there\'s work to be done. That\'s enough.',
+    oeld: 'You\'ve read accounts of this city. Standing in it now, you notice what the accounts missed. Mostly the smell.',
+    tamo: 'The city smells of too many people in too small a space. But the dome holds and the demons stay out. You\'ve survived worse.',
+    wyld: 'You don\'t like walls. You never have. But the thing beyond the dome likes you even less, so here you are.',
+  },
+
+  // ---- PRAYER RESPONSES ----
   prayers: [
     'The candles flicker once. Whether in answer or indifference, you cannot say.',
     'A warmth passes through you — brief, faint, like breath from a room you\'ve just left.',

@@ -352,31 +352,45 @@ button:disabled {
   margin-top: 0.25rem;
 }
 
-/* Race Cards */
-.race-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+/* Species Cards */
+.species-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
-.race-card {
+.being-header {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--purple);
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 0.1rem;
+}
+
+.species-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.species-card {
   border: 1px solid var(--border-dim);
-  padding: 1.1rem;
+  padding: 1rem;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
   background: var(--bg-base);
   position: relative;
 }
-.race-card:hover {
-  border-color: var(--border-mid);
-}
-.race-card.selected {
+.species-card:hover { border-color: var(--border-mid); }
+.species-card.selected {
   border-color: var(--cyan);
   background: #00c8ff08;
   box-shadow: var(--glow-cyan);
 }
 
-.race-check {
+.card-check {
   position: absolute;
   top: 0.5rem;
   right: 0.6rem;
@@ -385,26 +399,99 @@ button:disabled {
   opacity: 0;
   transition: opacity 0.15s;
 }
-.race-card.selected .race-check { opacity: 1; }
+.species-card.selected .card-check,
+.class-card.selected .card-check { opacity: 1; }
 
-.race-name {
+.species-name {
   font-family: var(--font-fantasy);
   font-size: 0.95rem;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
 }
 
-.race-lore {
-  font-size: 0.74rem;
+.species-faction {
+  font-size: 0.62rem;
+  color: var(--purple);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.species-lore {
+  font-size: 0.73rem;
   color: var(--text-muted);
   line-height: 1.55;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
 }
 
-.race-stats {
+.species-mods {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
+}
+
+/* Class Cards */
+.class-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.class-card {
+  border: 1px solid var(--border-dim);
+  padding: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  background: var(--bg-base);
+  position: relative;
+}
+.class-card:hover { border-color: var(--border-mid); }
+.class-card.selected {
+  border-color: var(--cyan);
+  background: #00c8ff08;
+  box-shadow: var(--glow-cyan);
+}
+.class-card.banned {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.class-name {
+  font-family: var(--font-fantasy);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.class-type {
+  font-size: 0.62rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+.class-desc {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 0.5rem;
+}
+
+.class-weapon {
+  font-size: 0.68rem;
+  color: var(--cyan);
+  opacity: 0.7;
+}
+
+.class-banned {
+  font-size: 0.65rem;
+  color: var(--red);
+  margin-top: 0.4rem;
+  letter-spacing: 0.05em;
 }
 
 .stat-badge {
@@ -500,9 +587,9 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.15rem;
   flex: 1;
-  max-width: 480px;
+  max-width: 540px;
 }
 
 .hud-player {
@@ -965,6 +1052,23 @@ button:disabled {
 .clog-line.defeat     { color: var(--red); font-style: italic; }
 .clog-line.heal       { color: var(--green); }
 
+/* HUD SP/TP Chips */
+.hud-chips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hud-chip {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--border-dim);
+  white-space: nowrap;
+}
+
+.sp-chip { color: var(--gold);   border-color: #fbbf2440; }
+.tp-chip { color: var(--purple); border-color: #8b5cf640; }
+
 /* ================================================
    RESPONSIVE
    ================================================ */
@@ -977,9 +1081,11 @@ button:disabled {
     border-right: none;
     border-top: 1px solid var(--border-dim);
   }
-  .race-cards {
+  .species-row,
+  .class-cards {
     grid-template-columns: 1fr;
   }
   .hud-left { display: none; }
   .hud-bars { max-width: 220px; }
+  .hud-chips { display: none; }
 }

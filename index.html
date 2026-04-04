@@ -41,9 +41,11 @@
           <div class="creation-progress">
             <span class="step-dot active" data-step="1" title="Name"></span>
             <span class="step-line"></span>
-            <span class="step-dot" data-step="2" title="Race"></span>
+            <span class="step-dot" data-step="2" title="Species"></span>
             <span class="step-line"></span>
-            <span class="step-dot" data-step="3" title="Confirm"></span>
+            <span class="step-dot" data-step="3" title="Class"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" data-step="4" title="Confirm"></span>
           </div>
         </div>
 
@@ -60,20 +62,33 @@
           </div>
         </div>
 
-        <!-- Step 2: Race -->
-        <div class="creation-step" id="step-race">
+        <!-- Step 2: Species -->
+        <div class="creation-step" id="step-species">
           <h3>What are you?</h3>
-          <p class="step-desc">Three peoples share the last refuge. Choose your lineage.</p>
-          <div class="race-cards" id="race-cards">
+          <p class="step-desc">Three peoples share the last refuge. Two sub-races within each. Choose your lineage.</p>
+          <div class="species-cards" id="species-cards">
             <!-- Populated by JS -->
           </div>
           <div class="step-nav">
-            <button class="btn-ghost" id="btn-race-back">← Back</button>
-            <button class="btn-primary" id="btn-race-next" disabled>Next →</button>
+            <button class="btn-ghost" id="btn-species-back">← Back</button>
+            <button class="btn-primary" id="btn-species-next" disabled>Next →</button>
           </div>
         </div>
 
-        <!-- Step 3: Confirm -->
+        <!-- Step 3: Class -->
+        <div class="creation-step" id="step-class">
+          <h3>Choose your path.</h3>
+          <p class="step-desc">Your base class determines your starting weapon, combat style, and the skill trees available to you.</p>
+          <div class="class-cards" id="class-cards">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-nav">
+            <button class="btn-ghost" id="btn-class-back">← Back</button>
+            <button class="btn-primary" id="btn-class-next" disabled>Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Confirm -->
         <div class="creation-step" id="step-confirm">
           <h3>Your Record</h3>
           <p class="step-desc">Review your details before entering the world.</p>
@@ -119,6 +134,10 @@
               </div>
               <span class="bar-value" id="mp-value">—</span>
             </div>
+          </div>
+          <div class="hud-chips">
+            <span class="hud-chip sp-chip" id="hud-sp">SP 0/0</span>
+            <span class="hud-chip tp-chip" id="hud-tp">TP 0/0</span>
           </div>
         </div>
         <div class="hud-right">

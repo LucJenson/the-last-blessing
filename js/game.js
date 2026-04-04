@@ -1,5 +1,5 @@
 // ================================================
-// THE LAST BLESSING — Game Engine v0.1.1
+// THE LAST BLESSING — Game Engine v0.2.0
 // ================================================
 
 const Game = (() => {
@@ -12,25 +12,31 @@ const Game = (() => {
   function defaultState() {
     return {
       player: {
-        name: '', race: '', raceName: '',
-        classId: 'adept-rogue', className: 'Adept Rogue',
-        level: 1, exp: 0, expToNext: 100,
+        name: '', species: '', speciesName: '',
+        classKey: '', className: '',
+        combatLevel: 1, combatSP: 0,
+        lp: 20,
+        learnedBoxes: [], certificates: [],
         hp: { current: 100, max: 100 },
-        mp: { current: 50, max: 50 },
-        stats: { ...DATA.baseStats },
+        sp: { current: 0,   max: 0   },
+        tp: { current: 0,   max: 0   },
+        mp: { current: 50,  max: 50  },
+        PATK: 0, PDEF: 0, PHIT: 0, PEVA: 0,
+        MATK: 0, MDEF: 0, MHIT: 0, MEVA: 0,
+        FIR:  0, WTR:  0, AIR:  0, ERT:  0, LGT: 0, DRK: 0,
         inventory: [],
-        equipment: { weapon: null, armor: null },
+        equipment: { weapon: null },
         gold: 150,
       },
       world: { location: 'city-square', visitedLocations: [] },
       field: null,   // active field state (see _enterField)
       combat: null,  // active combat state (see _startCombat)
       mode: 'town',  // 'town' | 'field' | 'combat'
-      version: '0.1.1',
+      version: '0.2.0',
     };
   }
 
-  let creation = { name: '', race: '' };
+  let creation = { name: '', species: '', classKey: '' };
 
   // ================================================
   // INIT
@@ -109,12 +115,14 @@ const Game = (() => {
   // CHARACTER CREATION
   // ================================================
   function _resetCreation() {
-    creation = { name: '', race: '' };
+    creation = { name: '', species: '', classKey: '' };
     document.getElementById('input-name').value = '';
-    document.querySelectorAll('.race-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('btn-race-next').disabled = true;
+    document.querySelectorAll('.species-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('btn-species-next').disabled = true;
+    document.getElementById('btn-class-next').disabled = true;
     _updateProgressDots('name');
-    _buildRaceCards();
+    _buildSpeciesCards();
   }
 
   function _showCreationStep(stepId) {
@@ -124,45 +132,98 @@ const Game = (() => {
   }
 
   function _updateProgressDots(stepId) {
-    const order = ['name', 'race', 'confirm'];
+    const order = ['name', 'species', 'class', 'confirm'];
     const idx = order.indexOf(stepId);
     document.querySelectorAll('.step-dot').forEach((dot, i) => {
       dot.classList.toggle('active', i <= idx);
     });
   }
 
-  function _buildRaceCards() {
-    const container = document.getElementById('race-cards');
+  function _buildSpeciesCards() {
+    const container = document.getElementById('species-cards');
     container.innerHTML = '';
-    Object.values(DATA.races).forEach(race => {
-      const card = document.createElement('div');
-      card.className = 'race-card';
-      card.dataset.raceId = race.id;
-      card.innerHTML = `
-        <span class="race-check">✓</span>
-        <div class="race-name">${race.name}</div>
-        <div class="race-lore">${race.lore}</div>
-        <div class="race-stats">
-          ${race.statDisplay.map(s => `<span class="stat-badge">${s}</span>`).join('')}
-        </div>`;
-      card.addEventListener('click', () => {
-        creation.race = race.id;
-        document.querySelectorAll('.race-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        document.getElementById('btn-race-next').disabled = false;
+    // Group by Being
+    const beings = {};
+    Object.values(DATA.species).forEach(sp => {
+      if (!beings[sp.being]) beings[sp.being] = [];
+      beings[sp.being].push(sp);
+    });
+    Object.entries(beings).forEach(([being, list]) => {
+      const header = document.createElement('div');
+      header.className = 'being-header';
+      header.textContent = being;
+      container.appendChild(header);
+      const row = document.createElement('div');
+      row.className = 'species-row';
+      list.forEach(sp => {
+        const card = document.createElement('div');
+        card.className = 'species-card';
+        card.dataset.speciesId = sp.id;
+        card.innerHTML = `
+          <span class="card-check">✓</span>
+          <div class="species-name">${sp.name}</div>
+          <div class="species-faction">${sp.faction}</div>
+          <div class="species-lore">${sp.lore}</div>
+          <div class="species-mods">
+            ${sp.modDisplay.map(m => `<span class="stat-badge">${m}</span>`).join('')}
+          </div>`;
+        card.addEventListener('click', () => {
+          creation.species = sp.id;
+          document.querySelectorAll('.species-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          document.getElementById('btn-species-next').disabled = false;
+        });
+        row.appendChild(card);
       });
+      container.appendChild(row);
+    });
+  }
+
+  function _buildClassCards() {
+    const container = document.getElementById('class-cards');
+    container.innerHTML = '';
+    const bannedClass = creation.species ? DATA.species[creation.species].bannedClass : null;
+    Object.values(DATA.baseClasses).forEach(cls => {
+      const isBanned = bannedClass === cls.name;
+      const card = document.createElement('div');
+      card.className = `class-card${isBanned ? ' banned' : ''}`;
+      card.dataset.classKey = cls.key;
+      card.innerHTML = `
+        <span class="card-check">✓</span>
+        <div class="class-name">${cls.name}</div>
+        <div class="class-type">${cls.classType} · ${cls.weight}</div>
+        <div class="class-desc">${cls.desc}</div>
+        <div class="class-weapon">Weapon: ${cls.weaponType}</div>
+        ${isBanned ? '<div class="class-banned">Unavailable to your species</div>' : ''}`;
+      if (!isBanned) {
+        card.addEventListener('click', () => {
+          creation.classKey = cls.key;
+          document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          document.getElementById('btn-class-next').disabled = false;
+        });
+      }
       container.appendChild(card);
     });
   }
 
   function _buildConfirmCard() {
-    const race = DATA.races[creation.race];
+    const sp  = DATA.species[creation.species];
+    const cls = DATA.baseClasses[creation.classKey];
+    const nb  = cls.noviceBox;
+    const totalHP = 100 + (sp.mods.HP || 0) + (nb.statBonuses.HP || 0);
+    const totalSP = (sp.mods.SP || 0) + (nb.statBonuses.SP || 0);
+    const totalTP = (sp.mods.TP || 0) + (nb.statBonuses.TP || 0);
+    const totalMP = 50  + (sp.mods.MP || 0) + (nb.statBonuses.MP || 0);
     document.getElementById('confirm-details').innerHTML = `
       <div class="confirm-row"><span class="confirm-label">Name</span><span class="confirm-value">${creation.name}</span></div>
-      <div class="confirm-row"><span class="confirm-label">Race</span><span class="confirm-value">${race.name}</span></div>
-      <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${DATA.startingClass.name}</span></div>
-      <div class="confirm-row"><span class="confirm-label">Starting HP</span><span class="confirm-value">${race.startingHp}</span></div>
-      <div class="confirm-row"><span class="confirm-label">Starting MP</span><span class="confirm-value">${race.startingMp + (race.statBonuses.mp || 0)}</span></div>`;
+      <div class="confirm-row"><span class="confirm-label">Species</span><span class="confirm-value">${sp.name} (${sp.being})</span></div>
+      <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${cls.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">HP</span><span class="confirm-value">${totalHP}</span></div>
+      <div class="confirm-row"><span class="confirm-label">SP / TP / MP</span><span class="confirm-value">${totalSP} / ${totalTP} / ${totalMP}</span></div>
+      <div class="confirm-row"><span class="confirm-label">PATK / PDEF</span><span class="confirm-value">${nb.statBonuses.PATK || 0} / ${nb.statBonuses.PDEF || 0}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Starting Weapon</span><span class="confirm-value">${cls.starterWeapon.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Learning Points</span><span class="confirm-value">15 (20 − 5 for Novice Box)</span></div>`;
   }
 
   function _bindCreationButtons() {
@@ -173,46 +234,89 @@ const Game = (() => {
       const name = nameInput.value.trim();
       if (name.length < 2) { nameInput.focus(); return; }
       creation.name = name;
-      _showCreationStep('race');
+      _buildSpeciesCards();
+      _showCreationStep('species');
     });
     nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnNameNext.click(); });
 
-    document.getElementById('btn-race-back').addEventListener('click', () => _showCreationStep('name'));
-    document.getElementById('btn-race-next').addEventListener('click', () => {
-      if (!creation.race) return;
+    document.getElementById('btn-species-back').addEventListener('click', () => _showCreationStep('name'));
+    document.getElementById('btn-species-next').addEventListener('click', () => {
+      if (!creation.species) return;
+      _buildClassCards();
+      _showCreationStep('class');
+    });
+
+    document.getElementById('btn-class-back').addEventListener('click', () => {
+      creation.classKey = '';
+      document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('btn-class-next').disabled = true;
+      _showCreationStep('species');
+    });
+    document.getElementById('btn-class-next').addEventListener('click', () => {
+      if (!creation.classKey) return;
       _buildConfirmCard();
       _showCreationStep('confirm');
     });
-    document.getElementById('btn-confirm-back').addEventListener('click', () => _showCreationStep('race'));
+
+    document.getElementById('btn-confirm-back').addEventListener('click', () => _showCreationStep('class'));
     document.getElementById('btn-confirm-start').addEventListener('click', _confirmCreation);
   }
 
   function _confirmCreation() {
-    const race = DATA.races[creation.race];
-    const p = state.player;
-    p.name = creation.name;
-    p.race = creation.race;
-    p.raceName = race.name;
+    const sp  = DATA.species[creation.species];
+    const cls = DATA.baseClasses[creation.classKey];
+    const nb  = cls.noviceBox;
+    const p   = state.player;
 
-    const b = race.statBonuses;
-    if (b.str) p.stats.str += b.str;
-    if (b.dex) p.stats.dex += b.dex;
-    if (b.int) p.stats.int += b.int;
-    if (b.vit) p.stats.vit += b.vit;
+    p.name        = creation.name;
+    p.species     = creation.species;
+    p.speciesName = sp.name;
+    p.classKey    = creation.classKey;
+    p.className   = cls.name;
 
-    p.hp.max = race.startingHp; p.hp.current = p.hp.max;
-    p.mp.max = race.startingMp + (b.mp || 0); p.mp.current = p.mp.max;
-    p.inventory = DATA.startingItems.map(item => ({ ...item }));
+    // Apply species mods to resource pool maximums
+    p.hp.max = 100 + (sp.mods.HP || 0);
+    p.sp.max = 0   + (sp.mods.SP || 0);
+    p.tp.max = 0   + (sp.mods.TP || 0);
+    p.mp.max = 50  + (sp.mods.MP || 0);
 
-    // Auto-equip starting weapon and armor
-    const weapon = p.inventory.find(i => i.type === 'weapon');
-    const armor  = p.inventory.find(i => i.type === 'armor');
-    if (weapon) p.equipment.weapon = weapon.id;
-    if (armor)  p.equipment.armor  = armor.id;
+    // Learn novice box: spend LP, earn combat SP, apply stat bonuses
+    p.lp -= nb.lpCost;
+    p.combatSP   += nb.spEarned;
+    p.combatLevel = _calcCombatLevel(p.combatSP);
+    p.learnedBoxes.push(nb.id);
+    p.certificates.push(nb.certificate);
+
+    const b = nb.statBonuses;
+    if (b.HP)   p.hp.max += b.HP;
+    if (b.SP)   p.sp.max += b.SP;
+    if (b.TP)   p.tp.max += b.TP;
+    if (b.MP)   p.mp.max += b.MP;
+    if (b.PATK) p.PATK   += b.PATK;
+    if (b.PDEF) p.PDEF   += b.PDEF;
+    if (b.PHIT) p.PHIT   += b.PHIT;
+    if (b.PEVA) p.PEVA   += b.PEVA;
+    if (b.MATK) p.MATK   += b.MATK;
+    if (b.MDEF) p.MDEF   += b.MDEF;
+    if (b.MHIT) p.MHIT   += b.MHIT;
+    if (b.MEVA) p.MEVA   += b.MEVA;
+
+    // Set all pools to max
+    p.hp.current = p.hp.max;
+    p.sp.current = p.sp.max;
+    p.tp.current = p.tp.max;
+    p.mp.current = p.mp.max;
+
+    // Give starter weapon and equip it
+    p.inventory.push({ ...cls.starterWeapon });
+    p.equipment.weapon = cls.starterWeapon.id;
+
+    // Give starting consumables
+    p.inventory.push(...DATA.startingConsumables.map(i => ({ ...i })));
 
     saveGame();
     _startGameLoop();
-    log(DATA.arrivalText[creation.race] || 'You have arrived at the Last City.', 'lore');
+    log(DATA.arrivalText[creation.species] || 'You have arrived at the Last City.', 'lore');
     log(`Your journey begins, ${p.name}.`, 'info');
   }
 
@@ -232,15 +336,20 @@ const Game = (() => {
     const p = state.player;
     document.getElementById('hud-name').textContent  = p.name;
     document.getElementById('hud-class').textContent = p.className;
-    document.getElementById('hud-level').textContent = `Lv.${p.level}`;
+    document.getElementById('hud-level').textContent = `Lv.${p.combatLevel}`;
     document.getElementById('hud-gold').textContent  = p.gold;
 
-    const hpPct = Math.max(0, Math.round((p.hp.current / p.hp.max) * 100));
-    const mpPct = Math.max(0, Math.round((p.mp.current / p.mp.max) * 100));
+    const hpPct = p.hp.max > 0 ? Math.max(0, Math.round((p.hp.current / p.hp.max) * 100)) : 0;
+    const mpPct = p.mp.max > 0 ? Math.max(0, Math.round((p.mp.current / p.mp.max) * 100)) : 0;
     document.getElementById('hp-fill').style.width  = `${hpPct}%`;
     document.getElementById('mp-fill').style.width  = `${mpPct}%`;
     document.getElementById('hp-value').textContent = `${p.hp.current}/${p.hp.max}`;
     document.getElementById('mp-value').textContent = `${p.mp.current}/${p.mp.max}`;
+
+    const spEl = document.getElementById('hud-sp');
+    const tpEl = document.getElementById('hud-tp');
+    if (spEl) spEl.textContent = `SP ${p.sp.current}/${p.sp.max}`;
+    if (tpEl) tpEl.textContent = `TP ${p.tp.current}/${p.tp.max}`;
   }
 
   function _bindHudButtons() {
@@ -347,18 +456,19 @@ const Game = (() => {
     showModal('Character Record', `
       <div>
         <div class="confirm-row"><span class="confirm-label">Name</span><span class="confirm-value">${p.name}</span></div>
-        <div class="confirm-row"><span class="confirm-label">Race</span><span class="confirm-value">${p.raceName}</span></div>
+        <div class="confirm-row"><span class="confirm-label">Species</span><span class="confirm-value">${p.speciesName}</span></div>
         <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${p.className}</span></div>
-        <div class="confirm-row"><span class="confirm-label">Level</span><span class="confirm-value">${p.level}</span></div>
-        <div class="confirm-row"><span class="confirm-label">EXP</span><span class="confirm-value">${p.exp} / ${p.expToNext}</span></div>
+        <div class="confirm-row"><span class="confirm-label">Combat Level</span><span class="confirm-value">${p.combatLevel}</span></div>
+        <div class="confirm-row"><span class="confirm-label">SP Earned</span><span class="confirm-value">${p.combatSP}</span></div>
+        <div class="confirm-row"><span class="confirm-label">LP</span><span class="confirm-value">${p.lp}</span></div>
         <div class="confirm-row"><span class="confirm-label">HP</span><span class="confirm-value">${p.hp.current} / ${p.hp.max}</span></div>
+        <div class="confirm-row"><span class="confirm-label">SP Pool</span><span class="confirm-value">${p.sp.current} / ${p.sp.max}</span></div>
+        <div class="confirm-row"><span class="confirm-label">TP Pool</span><span class="confirm-value">${p.tp.current} / ${p.tp.max}</span></div>
         <div class="confirm-row"><span class="confirm-label">MP</span><span class="confirm-value">${p.mp.current} / ${p.mp.max}</span></div>
-        <div class="confirm-row"><span class="confirm-label">ATK</span><span class="confirm-value">${_calcPlayerAtk()}</span></div>
-        <div class="confirm-row"><span class="confirm-label">DEF</span><span class="confirm-value">${_calcPlayerDef()}</span></div>
-        <div class="confirm-row"><span class="confirm-label">STR</span><span class="confirm-value">${p.stats.str}</span></div>
-        <div class="confirm-row"><span class="confirm-label">DEX</span><span class="confirm-value">${p.stats.dex}</span></div>
-        <div class="confirm-row"><span class="confirm-label">INT</span><span class="confirm-value">${p.stats.int}</span></div>
-        <div class="confirm-row"><span class="confirm-label">VIT</span><span class="confirm-value">${p.stats.vit}</span></div>
+        <div class="confirm-row"><span class="confirm-label">PATK / PDEF</span><span class="confirm-value">${p.PATK} / ${p.PDEF}</span></div>
+        <div class="confirm-row"><span class="confirm-label">PHIT / PEVA</span><span class="confirm-value">${p.PHIT} / ${p.PEVA}</span></div>
+        <div class="confirm-row"><span class="confirm-label">MATK / MDEF</span><span class="confirm-value">${p.MATK} / ${p.MDEF}</span></div>
+        <div class="confirm-row"><span class="confirm-label">MHIT / MEVA</span><span class="confirm-value">${p.MHIT} / ${p.MEVA}</span></div>
         <div class="confirm-row"><span class="confirm-label">Gold</span><span class="confirm-value">◈ ${p.gold}</span></div>
       </div>`,
       [{ label: 'Close', action: closeModal }]);
@@ -609,7 +719,7 @@ const Game = (() => {
       log(`Banked ◈ ${f.pendingGold} gold.`, 'reward');
     }
     if (f.pendingExp > 0) {
-      _gainExp(f.pendingExp);
+      _gainCombatSP(f.pendingExp);
     }
     f.pendingLoot.forEach(loot => {
       _addItemToInventory(loot);
@@ -671,11 +781,11 @@ const Game = (() => {
     _addSectionLabel(container, 'Combat');
     container.appendChild(_makeActionBtn('⚔', 'Attack', '', _playerAttack));
 
-    const healItems = state.player.inventory.filter(i => i.type === 'consumable' && i.effect && i.effect.hp);
+    const healItems = state.player.inventory.filter(i => i.type === 'consumable' && i.effect && i.effect.HP);
     if (healItems.length > 0) {
       healItems.forEach(item => {
         const disabled = state.player.hp.current >= state.player.hp.max;
-        container.appendChild(_makeActionBtn('◇', `Use ${item.name}`, `×${item.quantity} · +${item.effect.hp} HP`, () => _useItem(item), disabled));
+        container.appendChild(_makeActionBtn('◇', `Use ${item.name}`, `×${item.quantity} · +${item.effect.HP} HP`, () => _useItem(item), disabled));
       });
     }
     container.appendChild(_makeActionBtn('↩', 'Flee', 'Return to town (lose loot)', _fleeCombat));
@@ -726,8 +836,8 @@ const Game = (() => {
 
   function _useItem(item) {
     const p = state.player;
-    if (item.effect.hp) {
-      const healed = Math.min(item.effect.hp, p.hp.max - p.hp.current);
+    if (item.effect.HP) {
+      const healed = Math.min(item.effect.HP, p.hp.max - p.hp.current);
       p.hp.current += healed;
       state.combat.log.push({ msg: `You drink a ${item.name}. Recovered ${healed} HP.`, type: 'heal' });
       item.quantity -= 1;
@@ -816,22 +926,20 @@ const Game = (() => {
   }
 
   // ================================================
-  // EXP / LEVELING
+  // COMBAT LEVEL / SP SYSTEM
   // ================================================
-  function _gainExp(amount) {
+  function _calcCombatLevel(totalSP) {
+    return Math.min(150, Math.max(1, Math.floor(totalSP / 25)));
+  }
+
+  function _gainCombatSP(amount) {
     const p = state.player;
-    p.exp += amount;
-    log(`+${amount} EXP (${p.exp} / ${p.expToNext})`, 'reward');
-    while (p.exp >= p.expToNext) {
-      p.exp -= p.expToNext;
-      p.level += 1;
-      p.expToNext = p.level * 100;
-      // Stat gains on level up
-      p.hp.max += 5;  p.hp.current = p.hp.max;
-      p.mp.max += 3;  p.mp.current = p.mp.max;
-      p.stats.str += 1; p.stats.dex += 1;
-      p.stats.int += 1; p.stats.vit += 1;
-      log(`Level up! You are now Level ${p.level}. HP and MP fully restored.`, 'success');
+    const prevLevel = p.combatLevel;
+    p.combatSP   += amount;
+    p.combatLevel = _calcCombatLevel(p.combatSP);
+    log(`+${amount} SP earned (${p.combatSP} total · Level ${p.combatLevel})`, 'reward');
+    if (p.combatLevel > prevLevel) {
+      log(`Combat Level up! You are now Level ${p.combatLevel}.`, 'success');
     }
     updateHud();
   }
@@ -864,24 +972,17 @@ const Game = (() => {
   // ================================================
   function _calcPlayerAtk() {
     const p = state.player;
-    let atk = Math.floor(p.stats.str * 1.5);
+    let atk = p.PATK;
     const weaponId = p.equipment.weapon;
     if (weaponId) {
       const w = p.inventory.find(i => i.id === weaponId);
-      if (w && w.atkBonus) atk += w.atkBonus;
+      if (w && w.statBonuses && w.statBonuses.PATK) atk += w.statBonuses.PATK;
     }
     return atk;
   }
 
   function _calcPlayerDef() {
-    const p = state.player;
-    let def = Math.floor(p.stats.vit * 0.5);
-    const armorId = p.equipment.armor;
-    if (armorId) {
-      const a = p.inventory.find(i => i.id === armorId);
-      if (a && a.defBonus) def += a.defBonus;
-    }
-    return def;
+    return state.player.PDEF;
   }
 
   function _variance(range) {
