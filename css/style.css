@@ -861,6 +861,111 @@ button:disabled {
 ::-webkit-scrollbar-thumb:hover { background: var(--border-mid); }
 
 /* ================================================
+   GODDESS GATE UI
+   ================================================ */
+.gate-slots {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 0.5rem 0 1rem;
+}
+
+.gate-slot {
+  width: 90px;
+  min-height: 80px;
+  border: 1px solid var(--border-mid);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--bg-base);
+  padding: 0.5rem;
+  position: relative;
+}
+.gate-slot:hover { border-color: var(--text-muted); }
+.gate-slot.filled { border-color: var(--kcolor, var(--cyan)); box-shadow: 0 0 8px color-mix(in srgb, var(--kcolor, var(--cyan)) 30%, transparent); }
+.gate-slot.filled:hover { border-color: var(--red); }
+
+.gslot-num { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.2em; }
+.gslot-key { font-size: 0.82rem; color: var(--kcolor, var(--text-muted)); font-family: var(--font-fantasy); }
+.gslot-remove { position: absolute; top: 3px; right: 5px; font-size: 0.55rem; color: var(--text-dim); }
+.gate-slot.filled:hover .gslot-remove { color: var(--red); }
+
+.gate-status { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.9rem; text-align: center; }
+.gate-status.ready { color: var(--green); }
+.gate-inv-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.5rem; }
+
+.gate-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+.gate-chip {
+  border: 1px solid var(--kcolor, var(--border-mid));
+  color: var(--kcolor, var(--text-muted));
+  padding: 0.3rem 0.65rem;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: color-mix(in srgb, var(--kcolor, transparent) 8%, transparent);
+}
+.gate-chip:hover {
+  background: color-mix(in srgb, var(--kcolor, var(--cyan)) 20%, transparent);
+}
+.gate-chip.depleted { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
+.chip-qty { opacity: 0.6; font-size: 0.68rem; }
+
+/* ================================================
+   COMBAT UI
+   ================================================ */
+.enemy-hud {
+  padding: 0.75rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-panel-2);
+  margin-bottom: 1rem;
+}
+
+.ehud-label {
+  font-family: var(--font-fantasy);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.45rem;
+}
+
+.ehud-bar-wrap {
+  height: 6px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-dim);
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+}
+
+.ehud-bar {
+  height: 100%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+  transition: width 0.35s ease;
+}
+.ehud-bar.low { background: #7f1d1d; box-shadow: none; }
+
+.ehud-hp { font-size: 0.68rem; color: var(--text-muted); }
+
+.combat-log { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.clog-line {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  padding: 0.1rem 0;
+  border-bottom: 1px solid var(--border-dim);
+}
+.clog-line:last-child { border-bottom: none; }
+.clog-line.player-hit { color: var(--cyan); }
+.clog-line.enemy-hit  { color: var(--red); }
+.clog-line.victory    { color: var(--green); font-style: italic; }
+.clog-line.defeat     { color: var(--red); font-style: italic; }
+.clog-line.heal       { color: var(--green); }
+
+/* ================================================
    RESPONSIVE
    ================================================ */
 @media (max-width: 620px) {

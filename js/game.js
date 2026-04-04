@@ -1,40 +1,35 @@
 // ================================================
-// THE LAST BLESSING — Game Engine v0.1.0
+// THE LAST BLESSING — Game Engine v0.1.1
 // ================================================
 
 const Game = (() => {
 
-  // ---- STATE ----
+  // ================================================
+  // STATE
+  // ================================================
   let state = null;
 
   function defaultState() {
     return {
       player: {
-        name: '',
-        race: '',
-        raceName: '',
-        classId: 'adept-rogue',
-        className: 'Adept Rogue',
-        level: 1,
-        exp: 0,
-        expToNext: 100,
+        name: '', race: '', raceName: '',
+        classId: 'adept-rogue', className: 'Adept Rogue',
+        level: 1, exp: 0, expToNext: 100,
         hp: { current: 100, max: 100 },
         mp: { current: 50, max: 50 },
         stats: { ...DATA.baseStats },
         inventory: [],
-        equipment: { weapon: null, armor: null, accessory: null },
+        equipment: { weapon: null, armor: null },
         gold: 150,
       },
-      world: {
-        location: 'city-square',
-        flags: {},
-        visitedLocations: [],
-      },
-      version: '0.1.0',
+      world: { location: 'city-square', visitedLocations: [] },
+      field: null,   // active field state (see _enterField)
+      combat: null,  // active combat state (see _startCombat)
+      mode: 'town',  // 'town' | 'field' | 'combat'
+      version: '0.1.1',
     };
   }
 
-  // ---- CREATION STATE ----
   let creation = { name: '', race: '' };
 
   // ================================================
@@ -50,7 +45,7 @@ const Game = (() => {
   }
 
   // ================================================
-  // SCREEN MANAGEMENT
+  // SCREENS
   // ================================================
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -59,7 +54,7 @@ const Game = (() => {
   }
 
   // ================================================
-  // TITLE SCREEN
+  // TITLE
   // ================================================
   function _bindTitleButtons() {
     document.getElementById('btn-new-game').addEventListener('click', startNewGame);
@@ -80,24 +75,19 @@ const Game = (() => {
 
   function saveGame() {
     if (!state) return;
-    try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-    } catch (e) {
-      log('Warning: could not save game.', 'system');
-    }
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+    catch (e) { log('Warning: could not save game.', 'system'); }
   }
 
   function loadGame() {
     const saved = localStorage.getItem(SAVE_KEY);
     if (!saved) {
-      showModal(
-        'No Save Found',
-        'No journey record was found on this device. Begin a new journey instead.',
+      showModal('No Save Found',
+        'No journey record was found on this device.',
         [
           { label: 'New Journey', primary: true, action: () => { closeModal(); startNewGame(); } },
           { label: 'Cancel', action: closeModal },
-        ]
-      );
+        ]);
       return;
     }
     try {
@@ -106,14 +96,12 @@ const Game = (() => {
       log(`Welcome back, ${state.player.name}.`, 'info');
       log('Journey record loaded.', 'system');
     } catch (e) {
-      showModal(
-        'Save Corrupted',
-        'Your journey record could not be read. You may need to begin again.',
+      showModal('Save Corrupted',
+        'Your journey record could not be read.',
         [
           { label: 'New Journey', primary: true, action: () => { closeModal(); startNewGame(); } },
           { label: 'Cancel', action: closeModal },
-        ]
-      );
+        ]);
     }
   }
 
@@ -156,8 +144,7 @@ const Game = (() => {
         <div class="race-lore">${race.lore}</div>
         <div class="race-stats">
           ${race.statDisplay.map(s => `<span class="stat-badge">${s}</span>`).join('')}
-        </div>
-      `;
+        </div>`;
       card.addEventListener('click', () => {
         creation.race = race.id;
         document.querySelectorAll('.race-card').forEach(c => c.classList.remove('selected'));
@@ -171,27 +158,11 @@ const Game = (() => {
   function _buildConfirmCard() {
     const race = DATA.races[creation.race];
     document.getElementById('confirm-details').innerHTML = `
-      <div class="confirm-row">
-        <span class="confirm-label">Name</span>
-        <span class="confirm-value">${creation.name}</span>
-      </div>
-      <div class="confirm-row">
-        <span class="confirm-label">Race</span>
-        <span class="confirm-value">${race.name}</span>
-      </div>
-      <div class="confirm-row">
-        <span class="confirm-label">Class</span>
-        <span class="confirm-value">${DATA.startingClass.name}</span>
-      </div>
-      <div class="confirm-row">
-        <span class="confirm-label">Starting HP</span>
-        <span class="confirm-value">${race.startingHp}</span>
-      </div>
-      <div class="confirm-row">
-        <span class="confirm-label">Starting MP</span>
-        <span class="confirm-value">${race.startingMp + (race.statBonuses.mp || 0)}</span>
-      </div>
-    `;
+      <div class="confirm-row"><span class="confirm-label">Name</span><span class="confirm-value">${creation.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Race</span><span class="confirm-value">${race.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${DATA.startingClass.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Starting HP</span><span class="confirm-value">${race.startingHp}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Starting MP</span><span class="confirm-value">${race.startingMp + (race.statBonuses.mp || 0)}</span></div>`;
   }
 
   function _bindCreationButtons() {
@@ -204,58 +175,45 @@ const Game = (() => {
       creation.name = name;
       _showCreationStep('race');
     });
+    nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnNameNext.click(); });
 
-    nameInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') btnNameNext.click();
-    });
-
-    document.getElementById('btn-race-back').addEventListener('click', () => {
-      _showCreationStep('name');
-    });
-
+    document.getElementById('btn-race-back').addEventListener('click', () => _showCreationStep('name'));
     document.getElementById('btn-race-next').addEventListener('click', () => {
       if (!creation.race) return;
       _buildConfirmCard();
       _showCreationStep('confirm');
     });
-
-    document.getElementById('btn-confirm-back').addEventListener('click', () => {
-      _showCreationStep('race');
-    });
-
+    document.getElementById('btn-confirm-back').addEventListener('click', () => _showCreationStep('race'));
     document.getElementById('btn-confirm-start').addEventListener('click', _confirmCreation);
   }
 
   function _confirmCreation() {
     const race = DATA.races[creation.race];
+    const p = state.player;
+    p.name = creation.name;
+    p.race = creation.race;
+    p.raceName = race.name;
 
-    state.player.name = creation.name;
-    state.player.race = creation.race;
-    state.player.raceName = race.name;
+    const b = race.statBonuses;
+    if (b.str) p.stats.str += b.str;
+    if (b.dex) p.stats.dex += b.dex;
+    if (b.int) p.stats.int += b.int;
+    if (b.vit) p.stats.vit += b.vit;
 
-    // Apply race stat bonuses
-    const bonuses = race.statBonuses;
-    if (bonuses.str) state.player.stats.str += bonuses.str;
-    if (bonuses.dex) state.player.stats.dex += bonuses.dex;
-    if (bonuses.int) state.player.stats.int += bonuses.int;
-    if (bonuses.vit) state.player.stats.vit += bonuses.vit;
+    p.hp.max = race.startingHp; p.hp.current = p.hp.max;
+    p.mp.max = race.startingMp + (b.mp || 0); p.mp.current = p.mp.max;
+    p.inventory = DATA.startingItems.map(item => ({ ...item }));
 
-    // Set HP / MP
-    state.player.hp.max     = race.startingHp;
-    state.player.hp.current = race.startingHp;
-    state.player.mp.max     = race.startingMp + (bonuses.mp || 0);
-    state.player.mp.current = state.player.mp.max;
-
-    // Give starting items
-    state.player.inventory = DATA.startingItems.map(item => ({ ...item }));
+    // Auto-equip starting weapon and armor
+    const weapon = p.inventory.find(i => i.type === 'weapon');
+    const armor  = p.inventory.find(i => i.type === 'armor');
+    if (weapon) p.equipment.weapon = weapon.id;
+    if (armor)  p.equipment.armor  = armor.id;
 
     saveGame();
     _startGameLoop();
-
-    // Arrival log
-    const arrival = DATA.arrivalText[creation.race] || 'You have arrived at the Last City.';
-    log(arrival, 'lore');
-    log(`Your journey begins, ${state.player.name}.`, 'info');
+    log(DATA.arrivalText[creation.race] || 'You have arrived at the Last City.', 'lore');
+    log(`Your journey begins, ${p.name}.`, 'info');
   }
 
   // ================================================
@@ -279,7 +237,6 @@ const Game = (() => {
 
     const hpPct = Math.max(0, Math.round((p.hp.current / p.hp.max) * 100));
     const mpPct = Math.max(0, Math.round((p.mp.current / p.mp.max) * 100));
-
     document.getElementById('hp-fill').style.width  = `${hpPct}%`;
     document.getElementById('mp-fill').style.width  = `${mpPct}%`;
     document.getElementById('hp-value').textContent = `${p.hp.current}/${p.hp.max}`;
@@ -292,20 +249,18 @@ const Game = (() => {
   }
 
   // ================================================
-  // NAVIGATION
+  // TOWN NAVIGATION
   // ================================================
   function navigate(locationId, doLog = true) {
+    if (state.mode !== 'town') return;
     const loc = DATA.locations[locationId];
     if (!loc) return;
 
     state.world.location = locationId;
-
-    // Track visited
     if (!state.world.visitedLocations.includes(locationId)) {
       state.world.visitedLocations.push(locationId);
     }
 
-    // Update scene
     document.getElementById('location-area').textContent = loc.area;
     document.getElementById('location-name').textContent = loc.name;
     document.getElementById('location-desc').textContent = loc.description;
@@ -313,33 +268,23 @@ const Game = (() => {
 
     _buildActionButtons(loc);
 
-    if (doLog) {
-      log(`→ ${loc.name}`, 'system');
-      saveGame();
-    }
+    if (doLog) { log(`→ ${loc.name}`, 'system'); saveGame(); }
   }
 
   function _buildActionButtons(loc) {
     const container = document.getElementById('action-buttons');
     container.innerHTML = '';
 
-    // Travel exits
     if (loc.exits && loc.exits.length > 0) {
       _addSectionLabel(container, 'Travel');
       loc.exits.forEach(exit => {
-        container.appendChild(
-          _makeActionBtn(exit.icon, exit.label, exit.desc, () => navigate(exit.id))
-        );
+        container.appendChild(_makeActionBtn(exit.icon, exit.label, exit.desc, () => navigate(exit.id)));
       });
     }
-
-    // Location actions
     if (loc.actions && loc.actions.length > 0) {
       _addSectionLabel(container, 'Actions');
       loc.actions.forEach(action => {
-        container.appendChild(
-          _makeActionBtn(action.icon, action.label, '', () => _dispatch(action))
-        );
+        container.appendChild(_makeActionBtn(action.icon, action.label, '', () => _dispatch(action)));
       });
     }
   }
@@ -351,19 +296,19 @@ const Game = (() => {
     container.appendChild(div);
   }
 
-  function _makeActionBtn(icon, label, sub, onClick) {
+  function _makeActionBtn(icon, label, sub, onClick, disabled = false) {
     const btn = document.createElement('button');
     btn.className = 'action-btn';
+    btn.disabled = disabled;
     btn.innerHTML = `
       <span class="btn-icon">${icon}</span>
-      <span>${label}${sub ? `<br><small style="color:var(--text-muted);font-size:0.68em">${sub}</small>` : ''}</span>
-    `;
+      <span>${label}${sub ? `<br><small style="color:var(--text-muted);font-size:0.68em">${sub}</small>` : ''}</span>`;
     btn.addEventListener('click', onClick);
     return btn;
   }
 
   // ================================================
-  // ACTION DISPATCH
+  // TOWN ACTION DISPATCH
   // ================================================
   function _dispatch(action) {
     switch (action.type) {
@@ -376,123 +321,581 @@ const Game = (() => {
     }
   }
 
-  // ================================================
-  // SEVEN BLESSINGS
-  // ================================================
   function _showBlessings() {
     const html = DATA.blessings.map(b => `
-      <div style="margin-bottom:1.4rem; padding-bottom:1.4rem; border-bottom:1px solid var(--border-dim);">
-        <div style="font-size:0.65rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.25rem;">${b.number}</div>
-        <div style="font-family:var(--font-fantasy); color:var(--text-primary); font-size:0.95rem; margin-bottom:0.2rem;">${b.title}</div>
-        <div style="font-size:0.73rem; color:var(--purple); margin-bottom:0.55rem;">${b.subtitle}</div>
-        <div style="font-size:0.79rem; color:var(--text-muted); white-space:pre-line; line-height:1.7;">${b.text}</div>
-      </div>
-    `).join('');
-
-    showModal('The Seven Blessings', html, [
-      { label: 'Close', action: closeModal },
-    ]);
+      <div style="margin-bottom:1.4rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border-dim);">
+        <div style="font-size:0.65rem;color:var(--cyan);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.25rem;">${b.number}</div>
+        <div style="font-family:var(--font-fantasy);color:var(--text-primary);font-size:0.95rem;margin-bottom:0.2rem;">${b.title}</div>
+        <div style="font-size:0.73rem;color:var(--purple);margin-bottom:0.55rem;">${b.subtitle}</div>
+        <div style="font-size:0.79rem;color:var(--text-muted);white-space:pre-line;line-height:1.7;">${b.text}</div>
+      </div>`).join('');
+    showModal('The Seven Blessings', html, [{ label: 'Close', action: closeModal }]);
     log('You read the Seven Blessings etched into the cathedral walls.', 'lore');
   }
 
-  // ================================================
-  // PRAYER
-  // ================================================
   function _showPrayer() {
     const responses = DATA.prayers;
-    const response = responses[Math.floor(Math.random() * responses.length)];
-    showModal(
-      'Offer a Prayer',
-      `<p style="color:var(--text-muted); font-style:italic;">${response}</p>`,
-      [{ label: 'Rise', action: closeModal }]
-    );
+    const r = responses[Math.floor(Math.random() * responses.length)];
+    showModal('Offer a Prayer',
+      `<p style="color:var(--text-muted);font-style:italic;">${r}</p>`,
+      [{ label: 'Rise', action: closeModal }]);
     log('You kneel before the altar.', 'lore');
   }
 
-  // ================================================
-  // STATUS
-  // ================================================
   function showStatus() {
     const p = state.player;
-    const expBar = Math.round((p.exp / p.expToNext) * 100);
     showModal('Character Record', `
-      <div style="display:flex; flex-direction:column; gap:0;">
+      <div>
         <div class="confirm-row"><span class="confirm-label">Name</span><span class="confirm-value">${p.name}</span></div>
         <div class="confirm-row"><span class="confirm-label">Race</span><span class="confirm-value">${p.raceName}</span></div>
         <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${p.className}</span></div>
         <div class="confirm-row"><span class="confirm-label">Level</span><span class="confirm-value">${p.level}</span></div>
-        <div class="confirm-row"><span class="confirm-label">EXP</span><span class="confirm-value">${p.exp} / ${p.expToNext} (${expBar}%)</span></div>
+        <div class="confirm-row"><span class="confirm-label">EXP</span><span class="confirm-value">${p.exp} / ${p.expToNext}</span></div>
         <div class="confirm-row"><span class="confirm-label">HP</span><span class="confirm-value">${p.hp.current} / ${p.hp.max}</span></div>
         <div class="confirm-row"><span class="confirm-label">MP</span><span class="confirm-value">${p.mp.current} / ${p.mp.max}</span></div>
+        <div class="confirm-row"><span class="confirm-label">ATK</span><span class="confirm-value">${_calcPlayerAtk()}</span></div>
+        <div class="confirm-row"><span class="confirm-label">DEF</span><span class="confirm-value">${_calcPlayerDef()}</span></div>
         <div class="confirm-row"><span class="confirm-label">STR</span><span class="confirm-value">${p.stats.str}</span></div>
         <div class="confirm-row"><span class="confirm-label">DEX</span><span class="confirm-value">${p.stats.dex}</span></div>
         <div class="confirm-row"><span class="confirm-label">INT</span><span class="confirm-value">${p.stats.int}</span></div>
         <div class="confirm-row"><span class="confirm-label">VIT</span><span class="confirm-value">${p.stats.vit}</span></div>
         <div class="confirm-row"><span class="confirm-label">Gold</span><span class="confirm-value">◈ ${p.gold}</span></div>
-      </div>
-    `, [{ label: 'Close', action: closeModal }]);
+      </div>`,
+      [{ label: 'Close', action: closeModal }]);
   }
 
-  // ================================================
-  // INVENTORY
-  // ================================================
   function showInventory() {
     const inv = state.player.inventory;
     let html;
-
     if (inv.length === 0) {
-      html = '<div style="color:var(--text-muted); padding:0.5rem 0;">Your pack is empty.</div>';
+      html = '<div style="color:var(--text-muted);padding:0.5rem 0;">Your pack is empty.</div>';
     } else {
       html = inv.map(item => `
         <div class="confirm-row">
           <span class="confirm-label">${item.name}${item.quantity > 1 ? ` ×${item.quantity}` : ''}</span>
-          <span style="font-size:0.75rem; color:var(--text-muted); text-align:right;">${item.desc}</span>
-        </div>
-      `).join('');
+          <span style="font-size:0.75rem;color:var(--text-muted);text-align:right;">${item.desc}</span>
+        </div>`).join('');
     }
-
     showModal('Pack', html, [{ label: 'Close', action: closeModal }]);
   }
 
-  // ================================================
-  // EXPEDITION BOARD
-  // ================================================
   function _showBoard() {
-    showModal(
-      'Expedition Board',
-      '<div style="color:var(--text-muted);">The board is quiet for now. No active expedition postings.<br><br><span style="color:var(--text-dim); font-size:0.78rem;">Guild quests will be available here once the Board system is built.</span></div>',
-      [{ label: 'Close', action: closeModal }]
-    );
+    showModal('Expedition Board',
+      '<div style="color:var(--text-muted);">The board is quiet. No active postings.<br><br><span style="color:var(--text-dim);font-size:0.78rem;">Guild quests will be available here in a future build.</span></div>',
+      [{ label: 'Close', action: closeModal }]);
     log('You scan the expedition board.', 'system');
   }
 
-  // ================================================
-  // SHOP (Market Row — placeholder)
-  // ================================================
   function _showShop() {
-    showModal(
-      'Market Row',
-      '<div style="color:var(--text-muted);">The merchants eye you with varying degrees of suspicion.<br><br><span style="color:var(--text-dim); font-size:0.78rem;">The shop system is coming. For now, the merchants wait.</span></div>',
-      [{ label: 'Leave', action: closeModal }]
-    );
+    showModal('Market Row',
+      '<div style="color:var(--text-muted);">The merchants eye you with varying degrees of suspicion.<br><br><span style="color:var(--text-dim);font-size:0.78rem;">The shop system is coming. For now, the merchants wait.</span></div>',
+      [{ label: 'Leave', action: closeModal }]);
     log('You browse the market stalls.', 'system');
   }
 
   // ================================================
-  // GODDESS GATE
+  // GODDESS GATE — KEYSTONE SELECTION
   // ================================================
   function _showGoddessGate() {
-    showModal(
-      'Goddess Gate',
-      `
-        <p style="margin-bottom:1rem;">Three stone recesses surround the gate, each shaped to receive a Keystone. The frame pulses once, twice — then holds steady, waiting.</p>
-        <p style="color:var(--text-dim); font-size:0.78rem; border-top:1px solid var(--border-dim); padding-top:0.85rem; margin-top:0.25rem;">
-          The Keystone system is coming next. You will select three Keystones from your pack to attune a path through the Gate — field or dungeon, shaped by the combination you choose.
+    const gSlots = [null, null, null]; // element strings per slot
+
+    const content = document.createElement('div');
+
+    function getAvailableCount(element) {
+      const item = state.player.inventory.find(i => i.type === 'keystone' && i.keystoneElement === element);
+      const usedCount = gSlots.filter(s => s === element).length;
+      return (item ? item.quantity : 0) - usedCount;
+    }
+
+    function render() {
+      const allFilled = gSlots.every(s => s !== null);
+      const keystoneItems = state.player.inventory.filter(i => i.type === 'keystone' && i.quantity > 0);
+
+      content.innerHTML = `
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">
+          Three recesses surround the frame, each shaped to receive a Keystone. The combination determines what lies beyond.
         </p>
-      `,
-      [{ label: 'Step Back', action: closeModal }]
-    );
+        <div class="gate-slots">
+          ${gSlots.map((s, i) => {
+            const def = s ? DATA.keystones[s] : null;
+            return `<div class="gate-slot ${s ? 'filled' : ''}" data-slot="${i}" style="${def ? `--kcolor:${def.color}` : ''}">
+              <div class="gslot-num">${['I','II','III'][i]}</div>
+              <div class="gslot-key">${s ? s.charAt(0).toUpperCase() + s.slice(1) : '—'}</div>
+              ${s ? '<div class="gslot-remove">✕</div>' : ''}
+            </div>`;
+          }).join('')}
+        </div>
+        ${allFilled
+          ? `<div class="gate-status ready">Gate attuned. Ready to open.</div>`
+          : `<div class="gate-status">Select three Keystones — click a filled slot to remove it.</div>`
+        }
+        <div class="gate-inv-label">Your Keystones</div>
+        <div class="gate-chips">
+          ${keystoneItems.length === 0
+            ? '<div style="color:var(--text-dim);font-size:0.78rem;">No Keystones in your pack.</div>'
+            : keystoneItems.map(item => {
+                const def = DATA.keystones[item.keystoneElement];
+                const avail = getAvailableCount(item.keystoneElement);
+                return `<div class="gate-chip ${avail <= 0 ? 'depleted' : ''}" data-element="${item.keystoneElement}" style="--kcolor:${def.color}">
+                  ${def.name.replace('Keystone of ', '')} <span class="chip-qty">×${avail}</span>
+                </div>`;
+              }).join('')
+          }
+        </div>`;
+
+      // Bind slot clicks (remove)
+      content.querySelectorAll('.gate-slot.filled').forEach(slotEl => {
+        slotEl.addEventListener('click', () => {
+          gSlots[parseInt(slotEl.dataset.slot)] = null;
+          render();
+          _syncGateBtn(gSlots);
+        });
+      });
+
+      // Bind chip clicks (add to slot)
+      content.querySelectorAll('.gate-chip:not(.depleted)').forEach(chipEl => {
+        chipEl.addEventListener('click', () => {
+          const emptyIdx = gSlots.findIndex(s => s === null);
+          if (emptyIdx === -1) return;
+          gSlots[emptyIdx] = chipEl.dataset.element;
+          render();
+          _syncGateBtn(gSlots);
+        });
+      });
+    }
+
+    render();
+    showModal('Goddess Gate — Attunement', content, [
+      { id: 'gate-open-btn', label: 'Open the Gate', primary: true, disabled: true, action: () => { closeModal(); _openGate([...gSlots]); } },
+      { label: 'Step Back', action: closeModal },
+    ]);
     log('You approach the Goddess Gate. The aetheric light hums at your presence.', 'lore');
+  }
+
+  function _syncGateBtn(slots) {
+    const btn = document.getElementById('gate-open-btn');
+    if (btn) btn.disabled = !slots.every(s => s !== null);
+  }
+
+  function _openGate(slots) {
+    const template = _determineTemplate(slots);
+
+    // Consume keystones
+    slots.forEach(element => {
+      const item = state.player.inventory.find(i => i.keystoneElement === element);
+      if (item) {
+        item.quantity -= 1;
+        if (item.quantity <= 0) {
+          state.player.inventory = state.player.inventory.filter(i => i !== item);
+        }
+      }
+    });
+
+    log(`Gate attuned: [${slots.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' · ')}] → ${template.name}`, 'lore');
+    _enterField(template, slots);
+  }
+
+  function _determineTemplate(slots) {
+    const counts = {};
+    slots.forEach(s => { counts[s] = (counts[s] || 0) + 1; });
+    const dominant = Object.entries(counts).find(([, v]) => v >= 2)?.[0] || null;
+
+    if (!dominant) return DATA.fieldTemplates['crossroads'];
+    const match = Object.values(DATA.fieldTemplates).find(t => t.dominantKey === dominant);
+    return match || DATA.fieldTemplates['crossroads'];
+  }
+
+  // ================================================
+  // FIELD SYSTEM
+  // ================================================
+  function _enterField(template, keystonesUsed) {
+    state.mode = 'field';
+    state.field = {
+      templateId: template.id,
+      room: 0,
+      totalRooms: template.totalRooms,
+      pendingLoot: [],
+      pendingGold: 0,
+      pendingExp: 0,
+      keystonesUsed,
+      searched: false,
+    };
+    saveGame();
+    _renderField();
+    log(`You step through the Gate into ${template.name}.`, 'lore');
+  }
+
+  function _renderField() {
+    const f = state.field;
+    const template = DATA.fieldTemplates[f.templateId];
+    const isBossRoom = f.room >= f.totalRooms - 1;
+
+    const roomNum  = f.room + 1;
+    const areaText = `${template.name} — ${template.type === 'dungeon' ? 'Floor' : 'Area'} ${roomNum} of ${f.totalRooms}`;
+    const roomDesc = isBossRoom ? template.bossDescription : template.roomDescriptions[f.room] || template.roomDescriptions[0];
+
+    document.getElementById('location-area').textContent = areaText.toUpperCase();
+    document.getElementById('location-name').textContent = isBossRoom ? '— Boss Encounter —' : `${template.name}`;
+    document.getElementById('location-desc').textContent = isBossRoom ? template.bossDescription : template.roomDescriptions[f.room] || '';
+    document.getElementById('scene-text').innerHTML = '';
+
+    // Action panel
+    const container = document.getElementById('action-buttons');
+    container.innerHTML = '';
+
+    _addSectionLabel(container, 'Field');
+    if (!isBossRoom) {
+      container.appendChild(_makeActionBtn('⚔', 'Advance', 'Engage the next encounter', _advanceRoom));
+      if (!f.searched) {
+        container.appendChild(_makeActionBtn('◎', 'Search Area', 'Look for items', _searchRoom));
+      }
+    } else {
+      container.appendChild(_makeActionBtn('⚔', 'Face the Keeper', 'Boss encounter', _advanceRoom));
+    }
+    container.appendChild(_makeActionBtn('↩', 'Return to Town', 'Bank loot and leave', _returnToTown));
+
+    // Pending loot preview
+    if (f.pendingLoot.length > 0 || f.pendingGold > 0 || f.pendingExp > 0) {
+      _addSectionLabel(container, 'Acquired');
+      const summary = [];
+      if (f.pendingGold > 0) summary.push(`◈ ${f.pendingGold} gold`);
+      if (f.pendingExp  > 0) summary.push(`${f.pendingExp} EXP`);
+      f.pendingLoot.forEach(l => summary.push(l.name + (l.quantity > 1 ? ` ×${l.quantity}` : '')));
+      const div = document.createElement('div');
+      div.style.cssText = 'font-size:0.72rem;color:var(--gold);padding:0.25rem 0.15rem;line-height:1.7;';
+      div.textContent = summary.join(' · ');
+      container.appendChild(div);
+    }
+  }
+
+  function _advanceRoom() {
+    const f = state.field;
+    const template = DATA.fieldTemplates[f.templateId];
+    const isBossRoom = f.room >= f.totalRooms - 1;
+    const enemyPool = isBossRoom ? [template.boss] : template.enemies;
+    const enemyId = enemyPool[Math.floor(Math.random() * enemyPool.length)];
+    _startCombat(enemyId);
+  }
+
+  function _searchRoom() {
+    const f = state.field;
+    f.searched = true;
+    const roll = Math.random();
+    if (roll < 0.55) {
+      // Found something
+      const drops = [
+        { id: 'healing-draft', weight: 50 },
+        { id: 'demon-fragment', weight: 30 },
+        { id: 'iron-splinter', weight: 20 },
+      ];
+      const drop = _weightedPick(drops);
+      const dropDef = DATA.dropItems[drop.id];
+      if (dropDef) {
+        f.pendingLoot.push({ ...dropDef });
+        log(`You search the area and find a ${dropDef.name}.`, 'reward');
+      }
+    } else {
+      log('You search the area. Nothing of use here.', 'system');
+    }
+    _renderField();
+  }
+
+  function _returnToTown() {
+    const f = state.field;
+
+    // Bank everything
+    if (f.pendingGold > 0) {
+      state.player.gold += f.pendingGold;
+      log(`Banked ◈ ${f.pendingGold} gold.`, 'reward');
+    }
+    if (f.pendingExp > 0) {
+      _gainExp(f.pendingExp);
+    }
+    f.pendingLoot.forEach(loot => {
+      _addItemToInventory(loot);
+      log(`Added to pack: ${loot.name}.`, 'reward');
+    });
+
+    state.field  = null;
+    state.combat = null;
+    state.mode   = 'town';
+
+    saveGame();
+    updateHud();
+    navigate('city-square');
+    log('You step back through the Gate into the Last City.', 'lore');
+  }
+
+  // ================================================
+  // COMBAT SYSTEM
+  // ================================================
+  function _startCombat(enemyId) {
+    const def = DATA.enemies[enemyId];
+    if (!def) return;
+
+    state.mode = 'combat';
+    state.combat = {
+      enemy: { ...def, hp: def.maxHp }, // fresh copy with full HP
+      log: [],
+    };
+
+    _renderCombat();
+    log(`Combat begins — ${def.name} appears!`, 'combat');
+  }
+
+  function _renderCombat() {
+    const c = state.combat;
+    const e = c.enemy;
+    const hpPct = Math.max(0, Math.round((e.hp / e.maxHp) * 100));
+
+    document.getElementById('location-area').textContent = e.isBoss ? 'BOSS ENCOUNTER' : 'COMBAT';
+    document.getElementById('location-name').textContent = e.name;
+    document.getElementById('location-desc').textContent = e.desc || '';
+
+    const sceneText = document.getElementById('scene-text');
+    sceneText.innerHTML = `
+      <div class="enemy-hud">
+        <div class="ehud-label">${e.name}</div>
+        <div class="ehud-bar-wrap">
+          <div class="ehud-bar ${hpPct < 30 ? 'low' : ''}" style="width:${hpPct}%"></div>
+        </div>
+        <div class="ehud-hp">${e.hp} / ${e.maxHp} HP</div>
+      </div>
+      <div class="combat-log">
+        ${c.log.slice(-5).map(l => `<div class="clog-line ${l.type}">${l.msg}</div>`).join('')}
+      </div>`;
+
+    // Action panel
+    const container = document.getElementById('action-buttons');
+    container.innerHTML = '';
+    _addSectionLabel(container, 'Combat');
+    container.appendChild(_makeActionBtn('⚔', 'Attack', '', _playerAttack));
+
+    const healItems = state.player.inventory.filter(i => i.type === 'consumable' && i.effect && i.effect.hp);
+    if (healItems.length > 0) {
+      healItems.forEach(item => {
+        const disabled = state.player.hp.current >= state.player.hp.max;
+        container.appendChild(_makeActionBtn('◇', `Use ${item.name}`, `×${item.quantity} · +${item.effect.hp} HP`, () => _useItem(item), disabled));
+      });
+    }
+    container.appendChild(_makeActionBtn('↩', 'Flee', 'Return to town (lose loot)', _fleeCombat));
+  }
+
+  function _playerAttack() {
+    const c = state.combat;
+    const e = c.enemy;
+    const playerAtk = _calcPlayerAtk();
+    const enemyDef  = e.def;
+    const dmg = Math.max(1, playerAtk - enemyDef + _variance(4));
+
+    e.hp -= dmg;
+    c.log.push({ msg: `You strike ${e.name} for ${dmg} damage.`, type: 'player-hit' });
+
+    if (e.hp <= 0) {
+      e.hp = 0;
+      c.log.push({ msg: `${e.name} has been defeated!`, type: 'victory' });
+      _renderCombat();
+      setTimeout(_resolveCombatVictory, 800);
+      return;
+    }
+
+    // Enemy retaliates
+    _enemyAttack();
+  }
+
+  function _enemyAttack() {
+    const c = state.combat;
+    const e = c.enemy;
+    const p = state.player;
+    const playerDef = _calcPlayerDef();
+    const dmg = Math.max(1, e.atk - playerDef + _variance(4));
+
+    p.hp.current = Math.max(0, p.hp.current - dmg);
+    c.log.push({ msg: `${e.name} strikes you for ${dmg} damage.`, type: 'enemy-hit' });
+    updateHud();
+
+    if (p.hp.current <= 0) {
+      c.log.push({ msg: 'You have fallen.', type: 'defeat' });
+      _renderCombat();
+      setTimeout(_resolveCombatDefeat, 1000);
+      return;
+    }
+
+    _renderCombat();
+  }
+
+  function _useItem(item) {
+    const p = state.player;
+    if (item.effect.hp) {
+      const healed = Math.min(item.effect.hp, p.hp.max - p.hp.current);
+      p.hp.current += healed;
+      state.combat.log.push({ msg: `You drink a ${item.name}. Recovered ${healed} HP.`, type: 'heal' });
+      item.quantity -= 1;
+      if (item.quantity <= 0) {
+        p.inventory = p.inventory.filter(i => i !== item);
+      }
+      updateHud();
+    }
+    // Enemy still gets an attack
+    _enemyAttack();
+  }
+
+  function _fleeCombat() {
+    const c = state.combat;
+    const fleeName = c.enemy.name;
+    state.combat = null;
+    state.mode = 'field';
+    _returnToTown();
+    log(`You flee from ${fleeName}. All acquired loot is lost.`, 'system');
+    // Wipe pending loot on flee
+    if (state.field) { state.field.pendingLoot = []; state.field.pendingGold = 0; state.field.pendingExp = 0; }
+  }
+
+  function _resolveCombatVictory() {
+    const f  = state.field;
+    const c  = state.combat;
+    const e  = c.enemy;
+
+    // Accumulate rewards in field state
+    f.pendingGold += e.gold;
+    f.pendingExp  += e.exp;
+
+    // Roll loot
+    const dropped = [];
+    e.loot.forEach(entry => {
+      if (Math.random() < entry.chance) {
+        const dropDef = DATA.dropItems[entry.id];
+        if (dropDef) dropped.push(dropDef.name);
+        _addPendingLoot(f, entry.id);
+      }
+    });
+
+    log(`Victory! +${e.exp} EXP · ◈ ${e.gold} gold${dropped.length > 0 ? ` · ${dropped.join(', ')}` : ''}`, 'reward');
+
+    state.combat = null;
+
+    // Advance to next room
+    f.room += 1;
+    f.searched = false;
+
+    if (f.room >= f.totalRooms) {
+      // All rooms cleared — field complete
+      state.mode = 'field';
+      _renderFieldComplete();
+    } else {
+      state.mode = 'field';
+      _renderField();
+    }
+  }
+
+  function _resolveCombatDefeat() {
+    log('You were defeated. Your loot is lost.', 'combat');
+    state.combat = null;
+    state.field.pendingLoot = [];
+    state.field.pendingGold = 0;
+    state.field.pendingExp  = 0;
+    // Restore to 1 HP and return to town
+    state.player.hp.current = Math.max(1, Math.floor(state.player.hp.max * 0.1));
+    state.mode = 'field';
+    _returnToTown();
+    updateHud();
+  }
+
+  function _renderFieldComplete() {
+    const template = DATA.fieldTemplates[state.field.templateId];
+    document.getElementById('location-area').textContent = `${template.name} — CLEARED`;
+    document.getElementById('location-name').textContent = 'Field Cleared';
+    document.getElementById('location-desc').textContent = `The path beyond grows quieter. You have cleared ${template.name}.`;
+    document.getElementById('scene-text').innerHTML = '';
+
+    const container = document.getElementById('action-buttons');
+    container.innerHTML = '';
+    _addSectionLabel(container, 'Complete');
+    container.appendChild(_makeActionBtn('↩', 'Return to Town', 'Bank all loot', _returnToTown));
+    log(`${template.name} cleared!`, 'success');
+  }
+
+  // ================================================
+  // EXP / LEVELING
+  // ================================================
+  function _gainExp(amount) {
+    const p = state.player;
+    p.exp += amount;
+    log(`+${amount} EXP (${p.exp} / ${p.expToNext})`, 'reward');
+    while (p.exp >= p.expToNext) {
+      p.exp -= p.expToNext;
+      p.level += 1;
+      p.expToNext = p.level * 100;
+      // Stat gains on level up
+      p.hp.max += 5;  p.hp.current = p.hp.max;
+      p.mp.max += 3;  p.mp.current = p.mp.max;
+      p.stats.str += 1; p.stats.dex += 1;
+      p.stats.int += 1; p.stats.vit += 1;
+      log(`Level up! You are now Level ${p.level}. HP and MP fully restored.`, 'success');
+    }
+    updateHud();
+  }
+
+  // ================================================
+  // INVENTORY HELPERS
+  // ================================================
+  function _addItemToInventory(itemDef) {
+    const existing = state.player.inventory.find(i => i.id === itemDef.id);
+    if (existing) {
+      existing.quantity += itemDef.quantity || 1;
+    } else {
+      state.player.inventory.push({ ...itemDef, quantity: itemDef.quantity || 1 });
+    }
+  }
+
+  function _addPendingLoot(fieldState, itemId) {
+    const def = DATA.dropItems[itemId];
+    if (!def) return;
+    const existing = fieldState.pendingLoot.find(i => i.id === itemId);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      fieldState.pendingLoot.push({ ...def, quantity: 1 });
+    }
+  }
+
+  // ================================================
+  // COMBAT HELPERS
+  // ================================================
+  function _calcPlayerAtk() {
+    const p = state.player;
+    let atk = Math.floor(p.stats.str * 1.5);
+    const weaponId = p.equipment.weapon;
+    if (weaponId) {
+      const w = p.inventory.find(i => i.id === weaponId);
+      if (w && w.atkBonus) atk += w.atkBonus;
+    }
+    return atk;
+  }
+
+  function _calcPlayerDef() {
+    const p = state.player;
+    let def = Math.floor(p.stats.vit * 0.5);
+    const armorId = p.equipment.armor;
+    if (armorId) {
+      const a = p.inventory.find(i => i.id === armorId);
+      if (a && a.defBonus) def += a.defBonus;
+    }
+    return def;
+  }
+
+  function _variance(range) {
+    return Math.floor(Math.random() * range * 2) - range;
+  }
+
+  function _weightedPick(entries) {
+    const total = entries.reduce((sum, e) => sum + e.weight, 0);
+    let roll = Math.random() * total;
+    for (const e of entries) {
+      roll -= e.weight;
+      if (roll <= 0) return e;
+    }
+    return entries[entries.length - 1];
   }
 
   // ================================================
@@ -500,7 +903,14 @@ const Game = (() => {
   // ================================================
   function showModal(title, content, actions) {
     document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-content').innerHTML = content;
+
+    const contentEl = document.getElementById('modal-content');
+    if (typeof content === 'string') {
+      contentEl.innerHTML = content;
+    } else {
+      contentEl.innerHTML = '';
+      contentEl.appendChild(content);
+    }
 
     const actEl = document.getElementById('modal-actions');
     actEl.innerHTML = '';
@@ -508,6 +918,8 @@ const Game = (() => {
       const btn = document.createElement('button');
       btn.className = a.primary ? 'btn-primary' : 'btn-ghost';
       btn.textContent = a.label;
+      if (a.disabled) btn.disabled = true;
+      if (a.id) btn.id = a.id;
       btn.addEventListener('click', a.action);
       actEl.appendChild(btn);
     });
@@ -523,9 +935,7 @@ const Game = (() => {
     document.getElementById('modal-overlay').addEventListener('click', e => {
       if (e.target === document.getElementById('modal-overlay')) closeModal();
     });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   }
 
   // ================================================
@@ -535,22 +945,10 @@ const Game = (() => {
     const container = document.getElementById('log-entries');
     const entry = document.createElement('div');
     entry.className = `log-entry log-${type}`;
-    const prefixMap = {
-      system:  '>',
-      info:    '·',
-      lore:    '✦',
-      combat:  '⚔',
-      reward:  '◈',
-      success: '✓',
-    };
-    const prefix = prefixMap[type] || '·';
+    const prefix = { system: '>', info: '·', lore: '✦', combat: '⚔', reward: '◈', success: '✓' }[type] || '·';
     entry.innerHTML = `<span class="log-prefix">${prefix}</span>${message}`;
     container.prepend(entry);
-
-    // Cap log at 60 entries
-    while (container.children.length > 60) {
-      container.removeChild(container.lastChild);
-    }
+    while (container.children.length > 80) container.removeChild(container.lastChild);
   }
 
   function clearLog() {
@@ -561,20 +959,11 @@ const Game = (() => {
   // PUBLIC API
   // ================================================
   return {
-    init,
-    log,
-    navigate,
-    showModal,
-    closeModal,
-    showStatus,
-    showInventory,
-    updateHud,
-    saveGame,
-    loadGame,
+    init, log, navigate, showModal, closeModal,
+    showStatus, showInventory, updateHud, saveGame, loadGame,
     get state() { return state; },
   };
 
 })();
 
-// Boot
 document.addEventListener('DOMContentLoaded', () => Game.init());
