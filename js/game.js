@@ -27,6 +27,7 @@ const Game = (() => {
         FIR:  0, WTR:  0, AIR:  0, ERT:  0, LGT: 0, DRK: 0,
         inventory: [],
         equipment: { weapon: null },
+        expPools: {},
         gold: 150,
       },
       world: { location: 'city-square', visitedLocations: [] },
@@ -299,6 +300,10 @@ const Game = (() => {
     // Give starter weapon and equip it
     p.inventory.push({ ...cls.starterWeapon });
     p.equipment.weapon = cls.starterWeapon.id;
+
+    // Initialize weapon EXP pools for this class
+    p.expPools = {};
+    if (cls.expPools) cls.expPools.forEach(pool => { p.expPools[pool] = 0; });
 
     // Give starting consumables
     p.inventory.push(...DATA.startingConsumables.map(i => ({ ...i })));
@@ -874,6 +879,17 @@ const Game = (() => {
 
     log(`Victory! +${e.exp} EXP · ◈ ${e.gold} gold${dropped.length > 0 ? ` · ${dropped.join(', ')}` : ''}`, 'reward');
 
+    // Award weapon EXP to active pools
+    const p = state.player;
+    const cls = DATA.baseClasses[p.classKey];
+    if (cls && cls.expPools) {
+      if (!p.expPools) p.expPools = {};
+      cls.expPools.forEach((pool, i) => {
+        p.expPools[pool] = (p.expPools[pool] || 0) + cls.expRates[i];
+      });
+      log(`+${cls.expRates[0]} ${cls.expPools[0]} · +${cls.expRates[1]} ${cls.expPools[1]}`, 'system');
+    }
+
     state.combat = null;
 
     // Advance to next room
@@ -969,15 +985,21 @@ const Game = (() => {
     }
     const p = state.player;
     const classBoxes = DATA.skillBoxes.filter(b => b.classId === p.classId);
+    const cls = DATA.baseClasses[p.classKey];
 
-    // Build branch groups & branch names
-    const byBranch = {};
+    // Build branch name index
     const branchNames = {};
-    classBoxes.forEach(b => {
-      if (!byBranch[b.branchPos]) byBranch[b.branchPos] = [];
-      byBranch[b.branchPos].push(b);
-      if (b.tier === 1 && b.group) branchNames[b.branchPos] = b.group;
-    });
+    classBoxes.forEach(b => { if (b.tier === 1 && b.group) branchNames[b.branchPos] = b.group; });
+
+    function getExpReq(box) {
+      if (box.type !== 'skill') return null;
+      return DATA.expRequirements[box.tier] || null;
+    }
+
+    function getPoolName(expReq) {
+      if (!expReq || !cls || !cls.expPools) return null;
+      return expReq.pool === 'primary' ? cls.expPools[0] : cls.expPools[1];
+    }
 
     function canLearn(box) {
       if (p.learnedBoxes.includes(box.id)) return false;
@@ -992,6 +1014,13 @@ const Game = (() => {
         const prev = classBoxes.find(b => b.branchPos === box.branchPos && b.tier === box.tier - 1);
         if (prev && !p.learnedBoxes.includes(prev.id)) return false;
       }
+      // Weapon EXP requirement
+      const expReq = getExpReq(box);
+      if (expReq) {
+        const poolName = getPoolName(expReq);
+        const pools = p.expPools || {};
+        if (poolName && (pools[poolName] || 0) < expReq.amount) return false;
+      }
       return true;
     }
 
@@ -1000,9 +1029,45 @@ const Game = (() => {
       if (box.type === 'novice') {
         return !classBoxes.some(b => b.branchPos >= 1 && p.learnedBoxes.includes(b.id));
       }
-      // Can't unlearn if a higher tier in same branch is learned
       const higher = classBoxes.find(b => b.branchPos === box.branchPos && b.tier === box.tier + 1 && p.learnedBoxes.includes(b.id));
       return !higher;
+    }
+
+    function renderBoxHtml(box, fullWidth = false) {
+      const learned    = p.learnedBoxes.includes(box.id);
+      const learnable  = canLearn(box);
+      const unlearnble = canUnlearn(box);
+      const statStr    = Object.entries(box.statBonuses).map(([k, v]) => `${k}+${v}`).join(' ');
+
+      let expHtml = '';
+      const expReq = getExpReq(box);
+      if (expReq) {
+        const poolName = getPoolName(expReq);
+        const have = poolName ? ((p.expPools || {})[poolName] || 0) : 0;
+        const met  = have >= expReq.amount;
+        expHtml = `<div class="box-exp-req ${met ? 'met' : 'unmet'}">${met ? '✓' : '✗'} ${expReq.amount.toLocaleString()} ${poolName || ''} EXP</div>`;
+      }
+
+      const actionHtml = learned && unlearnble
+        ? `<button class="btn-box-action btn-unlearn" data-id="${box.id}">Unlearn</button>`
+        : !learned && learnable
+        ? `<button class="btn-box-action btn-learn" data-id="${box.id}">Learn</button>`
+        : learned
+        ? `<span class="box-tag tag-learned">✓</span>`
+        : `<span class="box-tag tag-locked">—</span>`;
+
+      const stateClass = learned ? 'learned' : learnable ? 'available' : 'locked';
+      const fullClass  = fullWidth ? ' box-full' : '';
+
+      return `<div class="tree-box ${stateClass}${fullClass}">
+        <div class="box-info-col">
+          <div class="box-name">${box.name}</div>
+          <div class="box-cost">${box.lpCost} LP · +${box.cpEarned} CP</div>
+          ${expHtml}
+          <div class="box-stats">${statStr}</div>
+        </div>
+        <div class="box-action">${actionHtml}</div>
+      </div>`;
     }
 
     const content = document.createElement('div');
@@ -1010,79 +1075,80 @@ const Game = (() => {
 
     function render() {
       const promos = _getAvailablePromotions();
-      const learnedCP = p.combatCP;
+
+      // EXP pool display
+      let expPoolsHtml = '';
+      if (cls && cls.expPools) {
+        const thresholds = [250, 750, 1500, 3000];
+        const entries = cls.expPools.map((pool, i) => {
+          const have = (p.expPools || {})[pool] || 0;
+          const nextT = thresholds.find(t => t > have) || 3000;
+          const pct   = Math.min(100, Math.round((have / 3000) * 100));
+          return `<div class="exp-pool-entry">
+            <div class="exp-pool-label">${pool} <span class="exp-pool-rate">+${cls.expRates[i]}/kill</span></div>
+            <div class="exp-pool-value">${have.toLocaleString()} <span class="exp-pool-next">/ ${nextT.toLocaleString()} next</span></div>
+            <div class="exp-pool-bar-track"><div class="exp-pool-bar-fill" style="width:${pct}%"></div></div>
+          </div>`;
+        }).join('');
+        expPoolsHtml = `<div class="tree-exp-pools">${entries}</div>`;
+      }
+
+      // Build grid
+      let gridHtml = '';
+
+      // Novice (full width)
+      const novice = classBoxes.find(b => b.type === 'novice');
+      if (novice) {
+        gridHtml += `<div class="tree-cell tree-cell-full">${renderBoxHtml(novice, true)}</div>`;
+      }
+
+      // Column headers
+      for (let br = 1; br <= 4; br++) {
+        gridHtml += `<div class="tree-col-header">${branchNames[br] || 'Branch ' + br}</div>`;
+      }
+
+      // Tiers 1–4, row by row
+      for (let tier = 1; tier <= 4; tier++) {
+        for (let br = 1; br <= 4; br++) {
+          const box = classBoxes.find(b => b.branchPos === br && b.tier === tier);
+          gridHtml += box
+            ? `<div class="tree-cell">${renderBoxHtml(box)}</div>`
+            : `<div class="tree-cell tree-cell-empty"></div>`;
+        }
+      }
+
+      // Master (full width)
+      const master = classBoxes.find(b => b.type === 'master');
+      if (master) {
+        gridHtml += `<div class="tree-cell tree-cell-full">${renderBoxHtml(master, true)}</div>`;
+      }
+
+      // Promotions (full width)
+      if (promos.length) {
+        const promoRows = promos.map(rule => `
+          <div class="tree-promo-entry">
+            <div>
+              <div class="box-name">${rule.unlockClassName}</div>
+              <div class="box-stats">${rule.cpRequired} CP · all branch boxes learned</div>
+            </div>
+            <button class="btn-box-action btn-promote" data-rule-id="${rule.id}">Promote</button>
+          </div>`).join('');
+        gridHtml += `<div class="tree-cell tree-cell-full tree-promos-section">
+          <div class="tree-promo-header">▸ Class Promotion Available</div>
+          ${promoRows}
+        </div>`;
+      }
 
       content.innerHTML = `
         <div class="tree-header">
           <span class="tree-stat">LP: <strong>${p.lp}</strong></span>
-          <span class="tree-stat">CP: <strong>${learnedCP}</strong></span>
+          <span class="tree-stat">CP: <strong>${p.combatCP}</strong></span>
           <span class="tree-stat">Level: <strong>${p.combatLevel}</strong></span>
-        </div>`;
+        </div>
+        ${expPoolsHtml}
+        <div class="tree-grid">${gridHtml}</div>`;
 
-      [0, 1, 2, 3, 4, 5].forEach(pos => {
-        const posBoxes = (byBranch[pos] || []).slice().sort((a, b) => a.tier - b.tier);
-        if (!posBoxes.length) return;
-        const isNovice = pos === 0;
-        const isMaster = pos === 5;
-        const label = isNovice ? '▸ Novice' : isMaster ? '▸ Master' : `▸ ${branchNames[pos] || 'Branch ' + pos}`;
-        const section = document.createElement('div');
-        section.className = 'tree-branch';
-        const header = document.createElement('div');
-        header.className = 'tree-branch-name';
-        header.textContent = label;
-        section.appendChild(header);
-
-        posBoxes.forEach(box => {
-          const learned  = p.learnedBoxes.includes(box.id);
-          const learnable  = canLearn(box);
-          const unleanable = canUnlearn(box);
-          const statStr = Object.entries(box.statBonuses).map(([k, v]) => `${k}+${v}`).join(' ');
-
-          const row = document.createElement('div');
-          row.className = `tree-box ${learned ? 'learned' : learnable ? 'available' : 'locked'}`;
-          row.innerHTML = `
-            <div class="box-info">
-              <div class="box-name">${box.name}</div>
-              <div class="box-stats">${statStr}</div>
-            </div>
-            <div class="box-meta">
-              <span class="box-cost">${box.lpCost} LP · +${box.cpEarned} CP</span>
-              ${learned && unleanable
-                ? `<button class="btn-box-action btn-unlearn" data-id="${box.id}">Unlearn</button>`
-                : !learned && learnable
-                ? `<button class="btn-box-action btn-learn" data-id="${box.id}">Learn</button>`
-                : learned
-                ? `<span class="box-tag tag-learned">✓</span>`
-                : `<span class="box-tag tag-locked">—</span>`
-              }
-            </div>`;
-          section.appendChild(row);
-        });
-        content.appendChild(section);
-      });
-
-      // Promotion section
-      if (promos.length) {
-        const promoSection = document.createElement('div');
-        promoSection.className = 'tree-branch tree-promos';
-        promoSection.innerHTML = `<div class="tree-branch-name">▸ Class Promotion</div>`;
-        promos.forEach(rule => {
-          const div = document.createElement('div');
-          div.className = 'tree-box available';
-          div.innerHTML = `
-            <div class="box-info">
-              <div class="box-name">${rule.unlockClassName}</div>
-              <div class="box-stats">All requirements met — ${rule.cpRequired} CP · required boxes learned</div>
-            </div>
-            <div class="box-meta">
-              <button class="btn-box-action btn-promote" data-rule-id="${rule.id}">Promote</button>
-            </div>`;
-          promoSection.appendChild(div);
-        });
-        content.appendChild(promoSection);
-      }
-
-      // Bind learn / unlearn / promote
+      // Bind buttons
       content.querySelectorAll('.btn-learn').forEach(btn => {
         btn.addEventListener('click', () => { _learnBox(parseInt(btn.dataset.id)); render(); });
       });
@@ -1091,8 +1157,7 @@ const Game = (() => {
       });
       content.querySelectorAll('.btn-promote').forEach(btn => {
         btn.addEventListener('click', () => {
-          const ruleId = parseInt(btn.dataset.ruleId);
-          _promoteClass(ruleId);
+          _promoteClass(parseInt(btn.dataset.ruleId));
           closeModal();
           _showSkillTree();
         });

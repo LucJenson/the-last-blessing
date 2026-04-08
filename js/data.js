@@ -58,6 +58,7 @@ const DATA = {
       name: 'Blade Brandier',
       classType: 'Melee Physical', weight: 'Heavy',
       weaponType: 'Blade', dmgTypes: ['Slashing', 'Piercing'],
+      expPools: ['Slashing Weapons', 'Piercing Weapons'], expRates: [50, 25],
       desc: 'A heavy-armored swordfighter. Prioritizes raw physical power and durability over speed.',
       noviceBox: {
         id: 0, name: 'Novice Blade Brandier', lpCost: 5, cpEarned: 25,
@@ -76,6 +77,7 @@ const DATA = {
       name: 'Twin Blade',
       classType: 'Melee Physical', weight: 'Medium',
       weaponType: 'Twin Blades', dmgTypes: ['Slashing', 'Cursing'],
+      expPools: ['Slashing Weapons', 'Cursing Weapons'], expRates: [50, 25],
       desc: 'A dual-wielding specialist. Trades defense for speed, with minor access to cursing techniques.',
       noviceBox: {
         id: 18, name: 'Novice Twin Blade', lpCost: 5, cpEarned: 25,
@@ -94,6 +96,7 @@ const DATA = {
       name: 'Wave User',
       classType: 'Melee Magical', weight: 'Light',
       weaponType: 'Focus', dmgTypes: ['Arcane', 'Support'],
+      expPools: ['Arcane Weapons', 'Support Weapons'], expRates: [50, 25],
       desc: 'A magic practitioner who channels elemental forces through a Focus. Low physical presence, high magical output.',
       noviceBox: {
         id: 36, name: 'Novice Wave User', lpCost: 5, cpEarned: 25,
@@ -112,6 +115,7 @@ const DATA = {
       name: 'Harvest Cleric',
       classType: 'Ranged Magical', weight: 'Light',
       weaponType: 'Wand', dmgTypes: ['Arcane', 'Relic'],
+      expPools: ['Arcane Weapons', 'Relic Weapons'], expRates: [50, 25],
       desc: 'A wand-wielding support class with strong healing and relic magic. Balanced between magic and technique.',
       noviceBox: {
         id: 54, name: 'Novice Harvest Cleric', lpCost: 5, cpEarned: 25,
@@ -144,6 +148,15 @@ const DATA = {
   // ---- COMBAT LEVEL FORMULA ----
   // combat_level = floor(totalCP / 25) + 1, capped at 150
   combatLevelFormula: { cpPerLevel: 25, base: 1, cap: 150 },
+
+  // ---- WEAPON EXP REQUIREMENTS (by tier) ----
+  // Tier 1-4 skill boxes require this much primary weapon EXP to unlock
+  expRequirements: {
+    1: { pool: 'primary', amount: 250  },
+    2: { pool: 'primary', amount: 750  },
+    3: { pool: 'primary', amount: 1500 },
+    4: { pool: 'primary', amount: 3000 },
+  },
 
   // ---- LOCATIONS ----
   locations: {
