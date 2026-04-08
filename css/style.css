@@ -917,6 +917,7 @@ button:disabled {
   max-height: 80vh;
   overflow-y: auto;
 }
+#modal-box.modal-wide { max-width: 760px; }
 
 #modal-title {
   font-family: var(--font-fantasy);
@@ -1052,6 +1053,115 @@ button:disabled {
 .clog-line.defeat     { color: var(--red); font-style: italic; }
 .clog-line.heal       { color: var(--green); }
 
+/* ================================================
+   SKILL TREE
+   ================================================ */
+.skill-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tree-header {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-base);
+  border: 1px solid var(--border-dim);
+  flex-wrap: wrap;
+}
+
+.tree-stat {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+.tree-stat strong { color: var(--cyan); }
+
+.tree-branch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tree-branch-name {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--purple);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 0.1rem;
+}
+
+.tree-promos .tree-branch-name { color: var(--gold); }
+
+.tree-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-base);
+}
+.tree-box.learned  { border-color: #00c8ff30; background: #00c8ff05; }
+.tree-box.available { border-color: var(--border-mid); cursor: default; }
+.tree-box.locked   { opacity: 0.4; }
+
+.box-info { flex: 1; min-width: 0; }
+
+.box-name {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+.tree-box.learned .box-name { color: var(--cyan); }
+
+.box-stats {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  word-break: break-word;
+}
+.tree-box.learned .box-stats { color: var(--text-muted); }
+
+.box-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.box-cost {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.btn-box-action {
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  color: var(--text-muted);
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.12s, color 0.12s;
+}
+.btn-learn:hover   { border-color: var(--cyan);   color: var(--cyan);   }
+.btn-unlearn:hover { border-color: var(--red);    color: var(--red);    }
+.btn-promote:hover { border-color: var(--gold);   color: var(--gold);   }
+
+.box-tag {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+}
+.tag-learned { color: var(--cyan);       }
+.tag-locked  { color: var(--text-dim);   }
+
 /* HUD SP/TP Chips */
 .hud-chips {
   display: flex;
@@ -1068,6 +1178,7 @@ button:disabled {
 
 .sp-chip { color: var(--gold);   border-color: #fbbf2440; }
 .tp-chip { color: var(--purple); border-color: #8b5cf640; }
+.cp-chip { color: var(--cyan);   border-color: #00c8ff40; }
 
 /* ================================================
    RESPONSIVE

@@ -1,0 +1,32 @@
+{
+  "sp_per_combat_level": {
+    "value": 25,
+    "notes": "25 SP = +1 combat level. SP gained from Skill Boxes.",
+    "example": "180 SP earned → combat level 7"
+  },
+  "base_combat_level": {
+    "value": 1,
+    "notes": "Everyone starts at combat level 1",
+    "example": "Novice base skills net 25 SP → level 1"
+  },
+  "combat_level_cap": {
+    "value": 150,
+    "notes": "Max combat level (matches tier system)",
+    "example": "3750 SP total to hit cap"
+  },
+  "unlearn_sp_refund_rate": {
+    "value": 1,
+    "notes": "Fraction of LP refunded on unlearn (1.0 = full refund)",
+    "example": "Unlearn a 30 LP box → get 30 LP back"
+  },
+  "unlearn_removes_stat_bonuses": {
+    "value": true,
+    "notes": "Stat bonuses from the box are removed on unlearn",
+    "example": "Unlearn Iron Body → lose its HP and DEF"
+  },
+  "unlearn_removes_skills": {
+    "value": true,
+    "notes": "Skills from the unlearned box are removed from the player",
+    "example": "Unlearn Shadow Step → lose Shadow Step skill"
+  }
+}

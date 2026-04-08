@@ -60,7 +60,7 @@ const DATA = {
       weaponType: 'Blade', dmgTypes: ['Slashing', 'Piercing'],
       desc: 'A heavy-armored swordfighter. Prioritizes raw physical power and durability over speed.',
       noviceBox: {
-        id: 0, name: 'Novice Blade Brandier', lpCost: 5, spEarned: 25,
+        id: 0, name: 'Novice Blade Brandier', lpCost: 5, cpEarned: 25,
         certificate: 'Blade_License',
         statBonuses: { SP: 14, TP: 7, PATK: 4, PDEF: 1, PHIT: 3, PEVA: 1 },
       },
@@ -78,7 +78,7 @@ const DATA = {
       weaponType: 'Twin Blades', dmgTypes: ['Slashing', 'Cursing'],
       desc: 'A dual-wielding specialist. Trades defense for speed, with minor access to cursing techniques.',
       noviceBox: {
-        id: 18, name: 'Novice Twin Blade', lpCost: 5, spEarned: 25,
+        id: 18, name: 'Novice Twin Blade', lpCost: 5, cpEarned: 25,
         certificate: 'Twin_Blades_License',
         statBonuses: { HP: 12, SP: 9, TP: 9, MP: 2, PATK: 3, PDEF: 1, PHIT: 3, PEVA: 2, MATK: 1, MDEF: 1, MHIT: 1, MEVA: 1 },
       },
@@ -96,7 +96,7 @@ const DATA = {
       weaponType: 'Focus', dmgTypes: ['Arcane', 'Support'],
       desc: 'A magic practitioner who channels elemental forces through a Focus. Low physical presence, high magical output.',
       noviceBox: {
-        id: 36, name: 'Novice Wave User', lpCost: 5, spEarned: 25,
+        id: 36, name: 'Novice Wave User', lpCost: 5, cpEarned: 25,
         certificate: 'Focus_License',
         statBonuses: { HP: 14, SP: 6, TP: 4, MP: 16, PATK: 1, PDEF: 1, PHIT: 3, PEVA: 3, MATK: 6, MDEF: 5, MHIT: 5, MEVA: 4, FIR: 1, WTR: 3, AIR: 3, LGT: 3 },
       },
@@ -114,7 +114,7 @@ const DATA = {
       weaponType: 'Wand', dmgTypes: ['Arcane', 'Relic'],
       desc: 'A wand-wielding support class with strong healing and relic magic. Balanced between magic and technique.',
       noviceBox: {
-        id: 54, name: 'Novice Harvest Cleric', lpCost: 5, spEarned: 25,
+        id: 54, name: 'Novice Harvest Cleric', lpCost: 5, cpEarned: 25,
         certificate: 'Wand_License',
         statBonuses: { HP: 18, SP: 5, TP: 4, MP: 11, PATK: 2, PDEF: 2, PHIT: 3, PEVA: 2, MATK: 4, MDEF: 4, MHIT: 3, MEVA: 3, WTR: 3, AIR: 1, LGT: 3, DRK: 1 },
       },
@@ -142,8 +142,8 @@ const DATA = {
   },
 
   // ---- COMBAT LEVEL FORMULA ----
-  // max(1, floor(spEarned / 25)), capped at 150
-  combatLevelFormula: { spPerLevel: 25, cap: 150 },
+  // combat_level = floor(totalCP / 25) + 1, capped at 150
+  combatLevelFormula: { cpPerLevel: 25, base: 1, cap: 150 },
 
   // ---- LOCATIONS ----
   locations: {
@@ -354,6 +354,103 @@ const DATA = {
     { id: 'ks-earth',      name: 'Keystone of Earth',  type: 'keystone', desc: 'Carved from old stone. Smells of roots and soil.',    quantity: 2, keystoneElement: 'earth' },
     { id: 'ks-wind',       name: 'Keystone of Wind',   type: 'keystone', desc: 'Lighter than it looks. Tugs faintly upward.',         quantity: 2, keystoneElement: 'wind' },
     { id: 'ks-shadow',     name: 'Keystone of Shadow', type: 'keystone', desc: 'Absorbs light. Cold to the touch.',                   quantity: 1, keystoneElement: 'shadow' },
+  ],
+
+  // ---- SKILL BOXES (base classes, IDs 0–71) ----
+  // structure: { id, classId, className, name, branchPos, tier, type, group, lpCost, cpEarned, certificate, statBonuses }
+  // type: 'novice' | 'skill' | 'master'
+  // branchPos: 0=novice, 1-4=branches, 5=master
+  skillBoxes: [
+    // ── Blade Brandier ─────────────────────────────────────────────────────
+    {id:0,  classId:0, name:'Novice Blade Brandier', branchPos:0, tier:0, type:'novice', group:null, lpCost:5,  cpEarned:25, certificate:'Blade_License',       statBonuses:{SP:14,TP:7,PATK:4,PDEF:1,PHIT:3,PEVA:1}},
+    {id:1,  classId:0, name:'Sword Handling I',      branchPos:1, tier:1, type:'skill',  group:'Sword Handling', lpCost:2, cpEarned:10, certificate:null, statBonuses:{SP:4,TP:4,PATK:1,PDEF:1,PHIT:3,PEVA:1,MHIT:1}},
+    {id:2,  classId:0, name:'Sword Handling II',     branchPos:1, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{SP:4,TP:6,PATK:3,PDEF:1,PHIT:3,PEVA:1,MHIT:1,MEVA:1,AIR:1}},
+    {id:3,  classId:0, name:'Sword Handling III',    branchPos:1, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:6,TP:7,PATK:3,PDEF:3,PHIT:4,PEVA:3,MDEF:1,MHIT:1,MEVA:1,AIR:1,LGT:1}},
+    {id:4,  classId:0, name:'Sword Handling IV',     branchPos:1, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:7,TP:9,PATK:4,PDEF:3,PHIT:6,PEVA:3,MDEF:1,MHIT:3,MEVA:3,AIR:1,LGT:1}},
+    {id:5,  classId:0, name:'Sword Techniques I',    branchPos:2, tier:1, type:'skill',  group:'Sword Techniques', lpCost:2, cpEarned:10, certificate:null, statBonuses:{SP:6,TP:6,PATK:3,PDEF:1,PHIT:1,PEVA:1,MDEF:1}},
+    {id:6,  classId:0, name:'Sword Techniques II',   branchPos:2, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{SP:7,TP:7,PATK:4,PDEF:1,PHIT:1,PEVA:1,MDEF:1,MEVA:1}},
+    {id:7,  classId:0, name:'Sword Techniques III',  branchPos:2, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:9,TP:9,PATK:4,PDEF:3,PHIT:2,PEVA:2,MDEF:1,MEVA:1}},
+    {id:8,  classId:0, name:'Sword Techniques IV',   branchPos:2, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:10,TP:10,PATK:6,PDEF:3,PHIT:2,PEVA:2,MDEF:1,MEVA:1}},
+    {id:9,  classId:0, name:'Sword Arts I',          branchPos:3, tier:1, type:'skill',  group:'Sword Arts', lpCost:2, cpEarned:10, certificate:null, statBonuses:{SP:6,TP:4,PATK:4,PDEF:2,PHIT:2,PEVA:2,MDEF:1,MHIT:1}},
+    {id:10, classId:0, name:'Sword Arts II',         branchPos:3, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{SP:7,TP:5,PATK:4,PDEF:2,PHIT:2,PEVA:2,MDEF:1,MHIT:1}},
+    {id:11, classId:0, name:'Sword Arts III',        branchPos:3, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:9,TP:6,PATK:6,PDEF:2,PHIT:3,PEVA:2,MDEF:1,MHIT:1}},
+    {id:12, classId:0, name:'Sword Arts IV',         branchPos:3, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:10,TP:7,PATK:6,PDEF:2,PHIT:3,PEVA:2,MDEF:1,MHIT:1}},
+    {id:13, classId:0, name:'Slashing Blade I',      branchPos:4, tier:1, type:'skill',  group:'Slashing Blade', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:7,SP:6,TP:5,PATK:4,PDEF:2,PHIT:3,PEVA:3,AIR:1}},
+    {id:14, classId:0, name:'Slashing Blade II',     branchPos:4, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:6,TP:6,PATK:4,PDEF:2,PHIT:3,PEVA:3,AIR:1}},
+    {id:15, classId:0, name:'Slashing Blade III',    branchPos:4, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:7,TP:7,PATK:6,PDEF:2,PHIT:4,PEVA:3,MHIT:1,AIR:1,LGT:1}},
+    {id:16, classId:0, name:'Slashing Blade IV',     branchPos:4, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:7,TP:8,PATK:6,PDEF:2,PHIT:4,PEVA:3,MHIT:1,AIR:1,LGT:1}},
+    {id:17, classId:0, name:'Master Blade Brandier', branchPos:5, tier:5, type:'master', group:null, lpCost:1,  cpEarned:65, certificate:null, statBonuses:{HP:22,SP:11,TP:10,PATK:6,PDEF:4,PHIT:5,PEVA:4,MDEF:1,MHIT:1,MEVA:1,AIR:1,LGT:2}},
+    // ── Twin Blade ──────────────────────────────────────────────────────────
+    {id:18, classId:1, name:'Novice Twin Blade',    branchPos:0, tier:0, type:'novice', group:null, lpCost:5,  cpEarned:25, certificate:'Twin_Blades_License', statBonuses:{HP:12,SP:9,TP:9,MP:2,PATK:3,PDEF:1,PHIT:3,PEVA:2,MATK:1,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:19, classId:1, name:'Aim I',                branchPos:1, tier:1, type:'skill',  group:'Aim', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:6,SP:3,TP:5,PATK:2,PHIT:3,PEVA:1,MHIT:1,MEVA:1,WTR:1,AIR:1}},
+    {id:20, classId:1, name:'Aim II',               branchPos:1, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:6,SP:3,TP:5,PATK:2,PHIT:3,PEVA:1,MHIT:1,MEVA:1,WTR:1,AIR:1}},
+    {id:21, classId:1, name:'Aim III',              branchPos:1, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:6,PATK:3,PHIT:3,PEVA:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:22, classId:1, name:'Aim IV',               branchPos:1, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:6,PATK:3,PHIT:5,PEVA:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:23, classId:1, name:'Close Combat I',       branchPos:2, tier:1, type:'skill',  group:'Close Combat', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:3,PATK:3,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:1,MEVA:1,AIR:1,DRK:1}},
+    {id:24, classId:1, name:'Close Combat II',      branchPos:2, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:3,PATK:3,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:1,MEVA:1,AIR:1,DRK:1}},
+    {id:25, classId:1, name:'Close Combat III',     branchPos:2, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:18,SP:6,TP:4,PATK:4,PDEF:1,PHIT:2,PEVA:3,MDEF:1,MHIT:1,MEVA:1,AIR:1,DRK:1}},
+    {id:26, classId:1, name:'Close Combat IV',      branchPos:2, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:18,SP:6,TP:4,PATK:4,PDEF:1,PHIT:4,PEVA:3,MDEF:1,MHIT:1,MEVA:1,AIR:1,DRK:1}},
+    {id:27, classId:1, name:'Stealth I',            branchPos:3, tier:1, type:'skill',  group:'Stealth', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:6,SP:4,TP:4,PATK:2,PHIT:2,PEVA:3,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:28, classId:1, name:'Stealth II',           branchPos:3, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:6,SP:4,TP:4,PATK:2,PHIT:2,PEVA:3,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:29, classId:1, name:'Stealth III',          branchPos:3, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:5,PATK:3,PHIT:2,PEVA:4,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:30, classId:1, name:'Stealth IV',           branchPos:3, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:5,PATK:3,PHIT:4,PEVA:4,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:31, classId:1, name:'Tracking I',           branchPos:4, tier:1, type:'skill',  group:'Tracking', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:6,SP:3,TP:4,MP:1,PATK:2,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:32, classId:1, name:'Tracking II',          branchPos:4, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:6,SP:3,TP:4,MP:1,PATK:2,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:1,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:33, classId:1, name:'Tracking III',         branchPos:4, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:5,MP:1,PATK:3,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:34, classId:1, name:'Tracking IV',          branchPos:4, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:12,SP:5,TP:5,MP:1,PATK:3,PDEF:1,PHIT:2,PEVA:2,MDEF:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:1}},
+    {id:35, classId:1, name:'Master Twin Blade',    branchPos:5, tier:5, type:'master', group:null, lpCost:1,  cpEarned:65, certificate:null, statBonuses:{HP:24,SP:8,TP:8,MP:3,PATK:4,PDEF:2,PHIT:4,PEVA:4,MATK:1,MDEF:2,MHIT:2,MEVA:2,WTR:2,AIR:2,LGT:1,DRK:2}},
+    // ── Wave User ───────────────────────────────────────────────────────────
+    {id:36, classId:2, name:'Novice Wave User',       branchPos:0, tier:0, type:'novice', group:null, lpCost:5,  cpEarned:25, certificate:'Focus_License',  statBonuses:{HP:14,SP:6,TP:4,MP:16,PATK:1,PDEF:1,PHIT:3,PEVA:3,MATK:6,MDEF:5,MHIT:5,MEVA:4,FIR:1,WTR:3,AIR:3,LGT:3}},
+    {id:37, classId:2, name:'Wave Magic I',           branchPos:1, tier:1, type:'skill',  group:'Wave Magic', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:9,PHIT:1,MATK:4,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:1,LGT:1}},
+    {id:38, classId:2, name:'Wave Magic II',          branchPos:1, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:9,PHIT:1,MATK:5,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:1,LGT:1}},
+    {id:39, classId:2, name:'Wave Magic III',         branchPos:1, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:8,PHIT:1,MATK:6,MDEF:1,MHIT:3,MEVA:1,FIR:2,WTR:2,AIR:1,LGT:1,DRK:1}},
+    {id:40, classId:2, name:'Wave Magic IV',          branchPos:1, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:9,PHIT:1,MATK:7,MDEF:1,MHIT:3,MEVA:1,FIR:2,WTR:2,AIR:1,LGT:1,DRK:1}},
+    {id:41, classId:2, name:'Focus I',                branchPos:2, tier:1, type:'skill',  group:'Focus', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:1,TP:1,MP:6,PDEF:1,PHIT:1,PEVA:1,MATK:3,MDEF:3,MHIT:3,MEVA:3,WTR:1,AIR:2,LGT:2}},
+    {id:42, classId:2, name:'Focus II',               branchPos:2, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:1,TP:1,MP:6,PDEF:1,PHIT:1,PEVA:1,MATK:3,MDEF:3,MHIT:3,MEVA:3,WTR:1,AIR:2,LGT:2}},
+    {id:43, classId:2, name:'Focus III',              branchPos:2, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:8,SP:2,TP:1,MP:7,PDEF:1,PHIT:1,PEVA:1,MATK:4,MDEF:3,MHIT:3,MEVA:3,WTR:1,AIR:2,LGT:3}},
+    {id:44, classId:2, name:'Focus IV',               branchPos:2, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:8,SP:2,TP:1,MP:8,PDEF:1,PHIT:1,PEVA:1,MATK:4,MDEF:3,MHIT:3,MEVA:3,WTR:1,AIR:2,LGT:3}},
+    {id:45, classId:2, name:'Summoning I',            branchPos:3, tier:1, type:'skill',  group:'Summoning', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:7,SP:2,MP:7,PHIT:1,PEVA:1,MATK:3,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:3,AIR:2,LGT:1,DRK:1}},
+    {id:46, classId:2, name:'Summoning II',           branchPos:3, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:2,MP:8,PHIT:1,PEVA:1,MATK:3,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:3,AIR:2,LGT:1,DRK:1}},
+    {id:47, classId:2, name:'Summoning III',          branchPos:3, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:3,MP:9,PHIT:1,PEVA:1,MATK:4,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:3,AIR:2,LGT:2,DRK:1}},
+    {id:48, classId:2, name:'Summoning IV',           branchPos:3, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:3,MP:10,PHIT:1,PEVA:1,MATK:4,MDEF:1,MHIT:3,MEVA:1,FIR:1,WTR:3,AIR:2,LGT:2,DRK:1}},
+    {id:49, classId:2, name:'Elemental Studies I',    branchPos:4, tier:1, type:'skill',  group:'Elemental Studies', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:7,PHIT:1,PEVA:1,MATK:2,MDEF:2,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:2,ERT:1,LGT:1,DRK:1}},
+    {id:50, classId:2, name:'Elemental Studies II',   branchPos:4, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:8,PHIT:1,PEVA:1,MATK:2,MDEF:2,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:2,ERT:1,LGT:1,DRK:1}},
+    {id:51, classId:2, name:'Elemental Studies III',  branchPos:4, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:9,PHIT:1,PEVA:1,MATK:3,MDEF:2,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:2,ERT:1,LGT:2,DRK:1}},
+    {id:52, classId:2, name:'Elemental Studies IV',   branchPos:4, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:10,PHIT:1,PEVA:1,MATK:3,MDEF:2,MHIT:3,MEVA:1,FIR:1,WTR:2,AIR:2,ERT:1,LGT:2,DRK:1}},
+    {id:53, classId:2, name:'Master Wave User',       branchPos:5, tier:5, type:'master', group:null, lpCost:1,  cpEarned:65, certificate:null, statBonuses:{HP:22,SP:8,TP:5,MP:20,PATK:1,PDEF:2,PHIT:4,PEVA:4,MATK:8,MDEF:7,MHIT:6,MEVA:5,FIR:2,WTR:4,AIR:4,ERT:1,LGT:4,DRK:1}},
+    // ── Harvest Cleric ──────────────────────────────────────────────────────
+    {id:54, classId:3, name:'Novice Harvest Cleric',  branchPos:0, tier:0, type:'novice', group:null, lpCost:5,  cpEarned:25, certificate:'Wand_License',   statBonuses:{HP:18,SP:5,TP:4,MP:11,PATK:2,PDEF:2,PHIT:3,PEVA:2,MATK:4,MDEF:4,MHIT:3,MEVA:3,WTR:3,AIR:1,LGT:3,DRK:1}},
+    {id:55, classId:3, name:'Healing Magic I',        branchPos:1, tier:1, type:'skill',  group:'Healing Magic', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:5,PDEF:1,PHIT:1,MATK:3,MDEF:2,MHIT:2,MEVA:1,WTR:3,AIR:1,LGT:3}},
+    {id:56, classId:3, name:'Healing Magic II',       branchPos:1, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:6,PDEF:1,PHIT:1,MATK:3,MDEF:2,MHIT:2,MEVA:1,WTR:3,AIR:1,LGT:3}},
+    {id:57, classId:3, name:'Healing Magic III',      branchPos:1, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:7,PDEF:1,PHIT:1,MATK:4,MDEF:3,MHIT:3,MEVA:1,WTR:3,AIR:1,LGT:4}},
+    {id:58, classId:3, name:'Healing Magic IV',       branchPos:1, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:8,PDEF:1,PHIT:1,MATK:4,MDEF:3,MHIT:3,MEVA:1,WTR:3,AIR:1,LGT:4}},
+    {id:59, classId:3, name:'Light Magic I',          branchPos:2, tier:1, type:'skill',  group:'Light Magic', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:4,PATK:1,PDEF:1,PHIT:2,MATK:2,MDEF:2,MHIT:2,MEVA:1,WTR:2,AIR:1,LGT:3}},
+    {id:60, classId:3, name:'Light Magic II',         branchPos:2, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:5,PATK:1,PDEF:1,PHIT:2,MATK:3,MDEF:2,MHIT:2,MEVA:1,WTR:2,AIR:1,LGT:3}},
+    {id:61, classId:3, name:'Light Magic III',        branchPos:2, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:6,PATK:1,PDEF:1,PHIT:2,MATK:4,MDEF:2,MHIT:3,MEVA:1,WTR:2,AIR:1,LGT:4}},
+    {id:62, classId:3, name:'Light Magic IV',         branchPos:2, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:7,PATK:1,PDEF:1,PHIT:2,MATK:4,MDEF:2,MHIT:3,MEVA:1,WTR:2,AIR:1,LGT:4}},
+    {id:63, classId:3, name:'Dark Magic I',           branchPos:3, tier:1, type:'skill',  group:'Dark Magic', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:3,PATK:1,PHIT:2,PEVA:1,MATK:2,MDEF:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:2}},
+    {id:64, classId:3, name:'Dark Magic II',          branchPos:3, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:5,SP:2,MP:4,PATK:1,PHIT:2,PEVA:1,MATK:2,MDEF:1,MHIT:2,MEVA:1,WTR:1,AIR:1,DRK:2}},
+    {id:65, classId:3, name:'Dark Magic III',         branchPos:3, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:5,PATK:1,PHIT:2,PEVA:1,MATK:3,MDEF:1,MHIT:3,MEVA:1,WTR:1,AIR:1,DRK:3}},
+    {id:66, classId:3, name:'Dark Magic IV',          branchPos:3, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:9,SP:3,MP:6,PATK:1,PHIT:2,PEVA:1,MATK:3,MDEF:1,MHIT:3,MEVA:1,WTR:1,AIR:1,DRK:3}},
+    {id:67, classId:3, name:'Breathing I',            branchPos:4, tier:1, type:'skill',  group:'Breathing', lpCost:2, cpEarned:10, certificate:null, statBonuses:{HP:7,SP:3,TP:2,MP:3,PATK:2,PDEF:1,PHIT:2,PEVA:3,MATK:1,MDEF:2,MHIT:2,MEVA:2,WTR:2,AIR:2,LGT:1,DRK:1}},
+    {id:68, classId:3, name:'Breathing II',           branchPos:4, tier:2, type:'skill',  group:null, lpCost:3,  cpEarned:10, certificate:null, statBonuses:{HP:7,SP:3,TP:2,MP:4,PATK:2,PDEF:1,PHIT:2,PEVA:3,MATK:1,MDEF:2,MHIT:2,MEVA:2,WTR:2,AIR:2,LGT:1,DRK:1}},
+    {id:69, classId:3, name:'Breathing III',          branchPos:4, tier:3, type:'skill',  group:null, lpCost:4,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:4,TP:3,MP:5,PATK:2,PDEF:1,PHIT:3,PEVA:3,MATK:2,MDEF:2,MHIT:2,MEVA:2,WTR:2,AIR:2,LGT:2,DRK:1}},
+    {id:70, classId:3, name:'Breathing IV',           branchPos:4, tier:4, type:'skill',  group:null, lpCost:5,  cpEarned:10, certificate:null, statBonuses:{HP:11,SP:4,TP:3,MP:6,PATK:2,PDEF:1,PHIT:3,PEVA:3,MATK:2,MDEF:2,MHIT:2,MEVA:2,WTR:2,AIR:2,LGT:2,DRK:1}},
+    {id:71, classId:3, name:'Master Harvest Cleric',  branchPos:5, tier:5, type:'master', group:null, lpCost:1,  cpEarned:65, certificate:null, statBonuses:{HP:28,SP:8,TP:5,MP:17,PATK:3,PDEF:3,PHIT:4,PEVA:4,MATK:7,MDEF:5,MHIT:4,MEVA:4,WTR:4,AIR:2,LGT:6,DRK:2}},
+  ],
+
+  // ---- CLASS PROMOTION RULES (base → advanced) ----
+  classPromotionRules: [
+    { id:0,  prereqClassId:0, prereqClassName:'Blade Brandier',   unlockClassId:4,  unlockClassName:'Guard Knight',      cpRequired:750,  requiredBoxIds:[0,1,2,3,4] },
+    { id:1,  prereqClassId:0, prereqClassName:'Blade Brandier',   unlockClassId:5,  unlockClassName:'Branded Barbarian', cpRequired:750,  requiredBoxIds:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17] },
+    { id:2,  prereqClassId:0, prereqClassName:'Blade Brandier',   unlockClassId:6,  unlockClassName:'Curse Knight',      cpRequired:750,  requiredBoxIds:[0,9,10,11,12] },
+    { id:3,  prereqClassId:1, prereqClassName:'Twin Blade',       unlockClassId:7,  unlockClassName:'Acro Archer',       cpRequired:750,  requiredBoxIds:[18,19,20,21,22] },
+    { id:4,  prereqClassId:1, prereqClassName:'Twin Blade',       unlockClassId:8,  unlockClassName:'Pistol Ranger',     cpRequired:750,  requiredBoxIds:[18,23,24,25,26] },
+    { id:5,  prereqClassId:1, prereqClassName:'Twin Blade',       unlockClassId:9,  unlockClassName:'Umbral Assassin',   cpRequired:750,  requiredBoxIds:[18,27,28,29,30] },
+    { id:6,  prereqClassId:2, prereqClassName:'Wave User',        unlockClassId:10, unlockClassName:'Arcane Wavemaster', cpRequired:750,  requiredBoxIds:[36,37,38,39,40,49,50,51,52] },
+    { id:7,  prereqClassId:2, prereqClassName:'Wave User',        unlockClassId:11, unlockClassName:'Tome Summoner',     cpRequired:750,  requiredBoxIds:[36,41,42,43,44,45,46,47,48] },
+    { id:8,  prereqClassId:3, prereqClassName:'Harvest Cleric',   unlockClassId:12, unlockClassName:'Aura Priest',       cpRequired:750,  requiredBoxIds:[54,55,56,57,58,59,60,61,62] },
+    { id:9,  prereqClassId:3, prereqClassName:'Harvest Cleric',   unlockClassId:13, unlockClassName:'Martial Monk',      cpRequired:750,  requiredBoxIds:[54,63,64,65,66,67,68,69,70] },
   ],
 
   // ---- ARRIVAL TEXT (per species) ----

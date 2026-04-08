@@ -14,7 +14,8 @@ const Game = (() => {
       player: {
         name: '', species: '', speciesName: '',
         classKey: '', className: '',
-        combatLevel: 1, combatSP: 0,
+        classId: 0,
+        combatLevel: 1, combatCP: 0,
         lp: 20,
         learnedBoxes: [], certificates: [],
         hp: { current: 100, max: 100 },
@@ -272,36 +273,24 @@ const Game = (() => {
     p.species     = creation.species;
     p.speciesName = sp.name;
     p.classKey    = creation.classKey;
+    p.classId     = cls.id;
     p.className   = cls.name;
 
-    // Apply species mods to resource pool maximums
+    // Apply species mods to resource pool maximums (base pools first)
     p.hp.max = 100 + (sp.mods.HP || 0);
     p.sp.max = 0   + (sp.mods.SP || 0);
     p.tp.max = 0   + (sp.mods.TP || 0);
     p.mp.max = 50  + (sp.mods.MP || 0);
 
-    // Learn novice box: spend LP, earn combat SP, apply stat bonuses
+    // Learn novice box: spend LP, earn CP, apply stat bonuses
     p.lp -= nb.lpCost;
-    p.combatSP   += nb.spEarned;
-    p.combatLevel = _calcCombatLevel(p.combatSP);
+    p.combatCP   += nb.cpEarned;
+    p.combatLevel = _calcCombatLevel(p.combatCP);
     p.learnedBoxes.push(nb.id);
     p.certificates.push(nb.certificate);
+    _applyStatBonuses(nb.statBonuses, 1);
 
-    const b = nb.statBonuses;
-    if (b.HP)   p.hp.max += b.HP;
-    if (b.SP)   p.sp.max += b.SP;
-    if (b.TP)   p.tp.max += b.TP;
-    if (b.MP)   p.mp.max += b.MP;
-    if (b.PATK) p.PATK   += b.PATK;
-    if (b.PDEF) p.PDEF   += b.PDEF;
-    if (b.PHIT) p.PHIT   += b.PHIT;
-    if (b.PEVA) p.PEVA   += b.PEVA;
-    if (b.MATK) p.MATK   += b.MATK;
-    if (b.MDEF) p.MDEF   += b.MDEF;
-    if (b.MHIT) p.MHIT   += b.MHIT;
-    if (b.MEVA) p.MEVA   += b.MEVA;
-
-    // Set all pools to max
+    // Set all pools to max after bonuses are applied
     p.hp.current = p.hp.max;
     p.sp.current = p.sp.max;
     p.tp.current = p.tp.max;
@@ -350,11 +339,14 @@ const Game = (() => {
     const tpEl = document.getElementById('hud-tp');
     if (spEl) spEl.textContent = `SP ${p.sp.current}/${p.sp.max}`;
     if (tpEl) tpEl.textContent = `TP ${p.tp.current}/${p.tp.max}`;
+    const cpEl = document.getElementById('hud-cp');
+    if (cpEl) cpEl.textContent = `CP ${p.combatCP}`;
   }
 
   function _bindHudButtons() {
     document.getElementById('btn-inventory').addEventListener('click', showInventory);
     document.getElementById('btn-status').addEventListener('click', showStatus);
+    document.getElementById('btn-skills').addEventListener('click', _showSkillTree);
   }
 
   // ================================================
@@ -459,7 +451,7 @@ const Game = (() => {
         <div class="confirm-row"><span class="confirm-label">Species</span><span class="confirm-value">${p.speciesName}</span></div>
         <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-value">${p.className}</span></div>
         <div class="confirm-row"><span class="confirm-label">Combat Level</span><span class="confirm-value">${p.combatLevel}</span></div>
-        <div class="confirm-row"><span class="confirm-label">SP Earned</span><span class="confirm-value">${p.combatSP}</span></div>
+        <div class="confirm-row"><span class="confirm-label">CP Earned</span><span class="confirm-value">${p.combatCP}</span></div>
         <div class="confirm-row"><span class="confirm-label">LP</span><span class="confirm-value">${p.lp}</span></div>
         <div class="confirm-row"><span class="confirm-label">HP</span><span class="confirm-value">${p.hp.current} / ${p.hp.max}</span></div>
         <div class="confirm-row"><span class="confirm-label">SP Pool</span><span class="confirm-value">${p.sp.current} / ${p.sp.max}</span></div>
@@ -719,7 +711,7 @@ const Game = (() => {
       log(`Banked ◈ ${f.pendingGold} gold.`, 'reward');
     }
     if (f.pendingExp > 0) {
-      _gainCombatSP(f.pendingExp);
+      _gainCombatCP(f.pendingExp);
     }
     f.pendingLoot.forEach(loot => {
       _addItemToInventory(loot);
@@ -926,22 +918,247 @@ const Game = (() => {
   }
 
   // ================================================
-  // COMBAT LEVEL / SP SYSTEM
+  // COMBAT LEVEL / CP SYSTEM
   // ================================================
-  function _calcCombatLevel(totalSP) {
-    return Math.min(150, Math.max(1, Math.floor(totalSP / 25)));
+  function _calcCombatLevel(totalCP) {
+    return Math.min(150, Math.floor(totalCP / 25) + 1);
   }
 
-  function _gainCombatSP(amount) {
+  function _gainCombatCP(amount) {
     const p = state.player;
     const prevLevel = p.combatLevel;
-    p.combatSP   += amount;
-    p.combatLevel = _calcCombatLevel(p.combatSP);
-    log(`+${amount} SP earned (${p.combatSP} total · Level ${p.combatLevel})`, 'reward');
+    p.combatCP   += amount;
+    p.combatLevel = _calcCombatLevel(p.combatCP);
+    log(`+${amount} CP (${p.combatCP} total · Level ${p.combatLevel})`, 'reward');
     if (p.combatLevel > prevLevel) {
       log(`Combat Level up! You are now Level ${p.combatLevel}.`, 'success');
     }
     updateHud();
+  }
+
+  // ================================================
+  // STAT APPLICATION (learn/unlearn boxes)
+  // ================================================
+  function _applyStatBonuses(bonuses, sign) {
+    // sign: +1 to add, -1 to remove
+    const p = state.player;
+    const poolMap = { HP: 'hp', SP: 'sp', TP: 'tp', MP: 'mp' };
+    Object.entries(bonuses).forEach(([key, val]) => {
+      if (!val) return;
+      const amount = val * sign;
+      if (poolMap[key]) {
+        const pool = p[poolMap[key]];
+        pool.max += amount;
+        if (sign > 0) pool.current += val;
+        else pool.current = Math.min(pool.current, pool.max);
+        pool.max = Math.max(0, pool.max);
+        pool.current = Math.max(0, pool.current);
+      } else if (p[key] !== undefined) {
+        p[key] = Math.max(0, p[key] + amount);
+      }
+    });
+  }
+
+  // ================================================
+  // SKILL TREE
+  // ================================================
+  function _showSkillTree() {
+    if (state.mode !== 'town') {
+      log('You can only review your skill tree in town.', 'system');
+      return;
+    }
+    const p = state.player;
+    const classBoxes = DATA.skillBoxes.filter(b => b.classId === p.classId);
+
+    // Build branch groups & branch names
+    const byBranch = {};
+    const branchNames = {};
+    classBoxes.forEach(b => {
+      if (!byBranch[b.branchPos]) byBranch[b.branchPos] = [];
+      byBranch[b.branchPos].push(b);
+      if (b.tier === 1 && b.group) branchNames[b.branchPos] = b.group;
+    });
+
+    function canLearn(box) {
+      if (p.learnedBoxes.includes(box.id)) return false;
+      if (p.lp < box.lpCost) return false;
+      if (box.type === 'novice') return true;
+      const novice = classBoxes.find(b => b.type === 'novice');
+      if (!novice || !p.learnedBoxes.includes(novice.id)) return false;
+      if (box.type === 'master') {
+        return classBoxes.filter(b => b.branchPos >= 1 && b.branchPos <= 4).every(b => p.learnedBoxes.includes(b.id));
+      }
+      if (box.tier > 1) {
+        const prev = classBoxes.find(b => b.branchPos === box.branchPos && b.tier === box.tier - 1);
+        if (prev && !p.learnedBoxes.includes(prev.id)) return false;
+      }
+      return true;
+    }
+
+    function canUnlearn(box) {
+      if (!p.learnedBoxes.includes(box.id)) return false;
+      if (box.type === 'novice') {
+        return !classBoxes.some(b => b.branchPos >= 1 && p.learnedBoxes.includes(b.id));
+      }
+      // Can't unlearn if a higher tier in same branch is learned
+      const higher = classBoxes.find(b => b.branchPos === box.branchPos && b.tier === box.tier + 1 && p.learnedBoxes.includes(b.id));
+      return !higher;
+    }
+
+    const content = document.createElement('div');
+    content.className = 'skill-tree';
+
+    function render() {
+      const promos = _getAvailablePromotions();
+      const learnedCP = p.combatCP;
+
+      content.innerHTML = `
+        <div class="tree-header">
+          <span class="tree-stat">LP: <strong>${p.lp}</strong></span>
+          <span class="tree-stat">CP: <strong>${learnedCP}</strong></span>
+          <span class="tree-stat">Level: <strong>${p.combatLevel}</strong></span>
+        </div>`;
+
+      [0, 1, 2, 3, 4, 5].forEach(pos => {
+        const posBoxes = (byBranch[pos] || []).slice().sort((a, b) => a.tier - b.tier);
+        if (!posBoxes.length) return;
+        const isNovice = pos === 0;
+        const isMaster = pos === 5;
+        const label = isNovice ? '▸ Novice' : isMaster ? '▸ Master' : `▸ ${branchNames[pos] || 'Branch ' + pos}`;
+        const section = document.createElement('div');
+        section.className = 'tree-branch';
+        const header = document.createElement('div');
+        header.className = 'tree-branch-name';
+        header.textContent = label;
+        section.appendChild(header);
+
+        posBoxes.forEach(box => {
+          const learned  = p.learnedBoxes.includes(box.id);
+          const learnable  = canLearn(box);
+          const unleanable = canUnlearn(box);
+          const statStr = Object.entries(box.statBonuses).map(([k, v]) => `${k}+${v}`).join(' ');
+
+          const row = document.createElement('div');
+          row.className = `tree-box ${learned ? 'learned' : learnable ? 'available' : 'locked'}`;
+          row.innerHTML = `
+            <div class="box-info">
+              <div class="box-name">${box.name}</div>
+              <div class="box-stats">${statStr}</div>
+            </div>
+            <div class="box-meta">
+              <span class="box-cost">${box.lpCost} LP · +${box.cpEarned} CP</span>
+              ${learned && unleanable
+                ? `<button class="btn-box-action btn-unlearn" data-id="${box.id}">Unlearn</button>`
+                : !learned && learnable
+                ? `<button class="btn-box-action btn-learn" data-id="${box.id}">Learn</button>`
+                : learned
+                ? `<span class="box-tag tag-learned">✓</span>`
+                : `<span class="box-tag tag-locked">—</span>`
+              }
+            </div>`;
+          section.appendChild(row);
+        });
+        content.appendChild(section);
+      });
+
+      // Promotion section
+      if (promos.length) {
+        const promoSection = document.createElement('div');
+        promoSection.className = 'tree-branch tree-promos';
+        promoSection.innerHTML = `<div class="tree-branch-name">▸ Class Promotion</div>`;
+        promos.forEach(rule => {
+          const div = document.createElement('div');
+          div.className = 'tree-box available';
+          div.innerHTML = `
+            <div class="box-info">
+              <div class="box-name">${rule.unlockClassName}</div>
+              <div class="box-stats">All requirements met — ${rule.cpRequired} CP · required boxes learned</div>
+            </div>
+            <div class="box-meta">
+              <button class="btn-box-action btn-promote" data-rule-id="${rule.id}">Promote</button>
+            </div>`;
+          promoSection.appendChild(div);
+        });
+        content.appendChild(promoSection);
+      }
+
+      // Bind learn / unlearn / promote
+      content.querySelectorAll('.btn-learn').forEach(btn => {
+        btn.addEventListener('click', () => { _learnBox(parseInt(btn.dataset.id)); render(); });
+      });
+      content.querySelectorAll('.btn-unlearn').forEach(btn => {
+        btn.addEventListener('click', () => { _unlearnBox(parseInt(btn.dataset.id)); render(); });
+      });
+      content.querySelectorAll('.btn-promote').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const ruleId = parseInt(btn.dataset.ruleId);
+          _promoteClass(ruleId);
+          closeModal();
+          _showSkillTree();
+        });
+      });
+    }
+
+    render();
+    showModal(p.className + ' — Skill Tree', content, [{ label: 'Close', action: closeModal }], 'wide');
+    log('You consult your skill record.', 'system');
+  }
+
+  function _learnBox(boxId) {
+    const p = state.player;
+    const box = DATA.skillBoxes.find(b => b.id === boxId);
+    if (!box || p.lp < box.lpCost) return;
+
+    p.lp -= box.lpCost;
+    p.combatCP   += box.cpEarned;
+    p.combatLevel = _calcCombatLevel(p.combatCP);
+    p.learnedBoxes.push(box.id);
+    if (box.certificate) p.certificates.push(box.certificate);
+    _applyStatBonuses(box.statBonuses, 1);
+
+    const prev = p.combatLevel;
+    updateHud();
+    saveGame();
+    log(`Learned: ${box.name}. +${box.cpEarned} CP · Level ${p.combatLevel}`, 'success');
+  }
+
+  function _unlearnBox(boxId) {
+    const p = state.player;
+    const box = DATA.skillBoxes.find(b => b.id === boxId);
+    if (!box || !p.learnedBoxes.includes(box.id)) return;
+
+    p.lp += box.lpCost;
+    p.combatCP   = Math.max(0, p.combatCP - box.cpEarned);
+    p.combatLevel = _calcCombatLevel(p.combatCP);
+    p.learnedBoxes = p.learnedBoxes.filter(id => id !== box.id);
+    if (box.certificate) p.certificates = p.certificates.filter(c => c !== box.certificate);
+    _applyStatBonuses(box.statBonuses, -1);
+
+    updateHud();
+    saveGame();
+    log(`Unlearned: ${box.name}. +${box.lpCost} LP refunded.`, 'system');
+  }
+
+  function _getAvailablePromotions() {
+    const p = state.player;
+    return DATA.classPromotionRules.filter(rule =>
+      rule.prereqClassId === p.classId &&
+      p.combatCP >= rule.cpRequired &&
+      rule.requiredBoxIds.every(id => p.learnedBoxes.includes(id))
+    );
+  }
+
+  function _promoteClass(ruleId) {
+    const p = state.player;
+    const rule = DATA.classPromotionRules.find(r => r.id === ruleId);
+    if (!rule) return;
+    p.classId  = rule.unlockClassId;
+    p.classKey = rule.unlockClassName.toLowerCase().replace(/\s+/g, '-');
+    p.className = rule.unlockClassName;
+    saveGame();
+    updateHud();
+    log(`Class promoted to ${rule.unlockClassName}!`, 'success');
+    log('New skill trees will unlock as class box data is added.', 'system');
   }
 
   // ================================================
@@ -1002,8 +1219,11 @@ const Game = (() => {
   // ================================================
   // MODAL
   // ================================================
-  function showModal(title, content, actions) {
+  function showModal(title, content, actions, variant) {
     document.getElementById('modal-title').textContent = title;
+
+    const box = document.getElementById('modal-box');
+    box.classList.toggle('modal-wide', variant === 'wide');
 
     const contentEl = document.getElementById('modal-content');
     if (typeof content === 'string') {

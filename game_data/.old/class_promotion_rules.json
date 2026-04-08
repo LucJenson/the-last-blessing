@@ -1,0 +1,569 @@
+[
+  {
+    "id": 0,
+    "unlocks_class_id": 4,
+    "unlocks_class_name": "Guard Knight",
+    "prereq_class_name": "Blade Brandier",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "total_boxes_in_prereq": 5,
+    "notes": null
+  },
+  {
+    "id": 1,
+    "unlocks_class_id": 5,
+    "unlocks_class_name": "Branded Barbarian",
+    "prereq_class_name": "Blade Brandier",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_boxes_in_prereq": 18,
+    "notes": null
+  },
+  {
+    "id": 2,
+    "unlocks_class_id": 6,
+    "unlocks_class_name": "Curse Knight",
+    "prereq_class_name": "Blade Brandier",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      0,
+      9,
+      10,
+      11,
+      12
+    ],
+    "total_boxes_in_prereq": 5,
+    "notes": null
+  },
+  {
+    "id": 3,
+    "unlocks_class_id": 7,
+    "unlocks_class_name": "Acro Archer",
+    "prereq_class_name": "Twin Blade",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "total_boxes_in_prereq": 5,
+    "notes": null
+  },
+  {
+    "id": 4,
+    "unlocks_class_id": 8,
+    "unlocks_class_name": "Pistol Ranger",
+    "prereq_class_name": "Twin Blade",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      18,
+      23,
+      24,
+      25,
+      26
+    ],
+    "total_boxes_in_prereq": 5,
+    "notes": null
+  },
+  {
+    "id": 5,
+    "unlocks_class_id": 9,
+    "unlocks_class_name": "Umbral Assassin",
+    "prereq_class_name": "Twin Blade",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      18,
+      27,
+      28,
+      29,
+      30
+    ],
+    "total_boxes_in_prereq": 5,
+    "notes": null
+  },
+  {
+    "id": 6,
+    "unlocks_class_id": 10,
+    "unlocks_class_name": "Arcane Wavemaster",
+    "prereq_class_name": "Wave User",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      49,
+      50,
+      51,
+      52
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 7,
+    "unlocks_class_id": 11,
+    "unlocks_class_name": "Tome Summoner",
+    "prereq_class_name": "Wave User",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      36,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 8,
+    "unlocks_class_id": 12,
+    "unlocks_class_name": "Aura Priest",
+    "prereq_class_name": "Harvest Cleric",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 9,
+    "unlocks_class_id": 13,
+    "unlocks_class_name": "Martial Monk",
+    "prereq_class_name": "Harvest Cleric",
+    "sp_pool_required": 750,
+    "boxes_required": [
+      54,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 10,
+    "unlocks_class_id": 14,
+    "unlocks_class_name": "Runic Paladin",
+    "prereq_class_name": "Guard Knight",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 11,
+    "unlocks_class_id": 15,
+    "unlocks_class_name": "Long Arm",
+    "prereq_class_name": "Guard Knight",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      72,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 12,
+    "unlocks_class_id": 16,
+    "unlocks_class_name": "Wild Berserker",
+    "prereq_class_name": "Branded Barbarian",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107
+    ],
+    "total_boxes_in_prereq": 18,
+    "notes": null
+  },
+  {
+    "id": 13,
+    "unlocks_class_id": 17,
+    "unlocks_class_name": "Dark Knight",
+    "prereq_class_name": "Curse Knight",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 14,
+    "unlocks_class_id": 18,
+    "unlocks_class_name": "Wave Knight",
+    "prereq_class_name": "Curse Knight",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      108,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 15,
+    "unlocks_class_id": 19,
+    "unlocks_class_name": "Heavy Hunter",
+    "prereq_class_name": "Acro Archer",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      126,
+      127,
+      128,
+      129,
+      130,
+      135,
+      136,
+      137,
+      138
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 16,
+    "unlocks_class_id": 20,
+    "unlocks_class_name": "Servo Sniper",
+    "prereq_class_name": "Acro Archer",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      126,
+      131,
+      132,
+      133,
+      134,
+      139,
+      140,
+      141,
+      142
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 17,
+    "unlocks_class_id": 21,
+    "unlocks_class_name": "Steam Gunner",
+    "prereq_class_name": "Pistol Ranger",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161
+    ],
+    "total_boxes_in_prereq": 18,
+    "notes": null
+  },
+  {
+    "id": 18,
+    "unlocks_class_id": 22,
+    "unlocks_class_name": "Tribal Grappler",
+    "prereq_class_name": "Umbral Assassin",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      162,
+      163,
+      164,
+      165,
+      166,
+      175,
+      176,
+      177,
+      178
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 19,
+    "unlocks_class_id": 23,
+    "unlocks_class_name": "Flick Reaper",
+    "prereq_class_name": "Umbral Assassin",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      162,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 20,
+    "unlocks_class_id": 24,
+    "unlocks_class_name": "Wicked Warlock",
+    "prereq_class_name": "Arcane Wavemaster",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 21,
+    "unlocks_class_id": 25,
+    "unlocks_class_name": "Scepter Sage",
+    "prereq_class_name": "Arcane Wavemaster",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      180,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 22,
+    "unlocks_class_id": 26,
+    "unlocks_class_name": "Fan Elementalist",
+    "prereq_class_name": "Tome Summoner",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 23,
+    "unlocks_class_id": 27,
+    "unlocks_class_name": "Cursed Necromancer",
+    "prereq_class_name": "Tome Summoner",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      198,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 24,
+    "unlocks_class_id": 28,
+    "unlocks_class_name": "Grim Hierophant",
+    "prereq_class_name": "Aura Priest",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 25,
+    "unlocks_class_id": 29,
+    "unlocks_class_name": "Reliquary Archbishop",
+    "prereq_class_name": "Aura Priest",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      216,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 26,
+    "unlocks_class_id": 30,
+    "unlocks_class_name": "Arts Master",
+    "prereq_class_name": "Martial Monk",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      234,
+      235,
+      236,
+      237,
+      238,
+      247,
+      248,
+      249,
+      250
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  },
+  {
+    "id": 27,
+    "unlocks_class_id": 31,
+    "unlocks_class_name": "Macbre Dancer",
+    "prereq_class_name": "Martial Monk",
+    "sp_pool_required": 1000,
+    "boxes_required": [
+      234,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246
+    ],
+    "total_boxes_in_prereq": 9,
+    "notes": null
+  }
+]

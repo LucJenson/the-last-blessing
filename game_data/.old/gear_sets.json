@@ -1,0 +1,90 @@
+[
+  {
+    "id": 0,
+    "name": "Berserker",
+    "weight_class": "Heavy",
+    "bonus_stat": "PATK",
+    "bonus_stat_mod": null,
+    "curse_stat": "PDEF",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 1,
+    "name": "Phantom",
+    "weight_class": "Medium",
+    "bonus_stat": "PEVA",
+    "bonus_stat_mod": null,
+    "curse_stat": "MEVA",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 2,
+    "name": "Sentinel",
+    "weight_class": "Heavy",
+    "bonus_stat": "PHIT",
+    "bonus_stat_mod": null,
+    "curse_stat": "MHIT",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 3,
+    "name": "Warden",
+    "weight_class": "Heavy",
+    "bonus_stat": "PDEF",
+    "bonus_stat_mod": null,
+    "curse_stat": "PATK",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 4,
+    "name": "Glacier",
+    "weight_class": "Light",
+    "bonus_stat": "WTR",
+    "bonus_stat_mod": null,
+    "curse_stat": "FIR",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 5,
+    "name": "Storm",
+    "weight_class": "Light",
+    "bonus_stat": "MATK",
+    "bonus_stat_mod": null,
+    "curse_stat": "ATK",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 6,
+    "name": "Viper",
+    "weight_class": "Medium",
+    "bonus_stat": "PATK",
+    "bonus_stat_mod": null,
+    "curse_stat": "MATK",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  },
+  {
+    "id": 7,
+    "name": "Trickster",
+    "weight_class": "Medium",
+    "bonus_stat": "MEVA",
+    "bonus_stat_mod": null,
+    "curse_stat": "MHIT",
+    "curse_stat_mod": null,
+    "min_test_level": null,
+    "notes": null
+  }
+]

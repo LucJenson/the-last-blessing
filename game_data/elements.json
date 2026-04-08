@@ -1,0 +1,52 @@
+{
+  "elements": [
+    {
+      "id": 0,
+      "name": "Fire",
+      "counter_element": "Earth",
+      "strong_against": "Earth",
+      "weak_against": "Air",
+      "notes": null
+    },
+    {
+      "id": 1,
+      "name": "Water",
+      "counter_element": "Air",
+      "strong_against": "Air",
+      "weak_against": "Earth",
+      "notes": null
+    },
+    {
+      "id": 2,
+      "name": "Air",
+      "counter_element": "Fire",
+      "strong_against": "Fire",
+      "weak_against": "Water",
+      "notes": null
+    },
+    {
+      "id": 3,
+      "name": "Earth",
+      "counter_element": "Water",
+      "strong_against": "Water",
+      "weak_against": "Fire",
+      "notes": null
+    },
+    {
+      "id": 4,
+      "name": "Light",
+      "counter_element": "Dark",
+      "strong_against": "Dark",
+      "weak_against": "Dark",
+      "notes": null
+    },
+    {
+      "id": 5,
+      "name": "Dark",
+      "counter_element": "Light",
+      "strong_against": "Light",
+      "weak_against": "Light",
+      "notes": null
+    }
+  ]
+}

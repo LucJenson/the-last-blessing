@@ -1,0 +1,79 @@
+[
+  {
+    "id": 0,
+    "Type": "Cap",
+    "Gear_Slot": "Head",
+    "Rarity": "Common",
+    "notes": null
+  },
+  {
+    "id": 1,
+    "Type": "Cuirras",
+    "Gear_Slot": "Chest",
+    "Rarity": "Common",
+    "notes": null
+  },
+  {
+    "id": 2,
+    "Type": "Boots",
+    "Gear_Slot": "Boots",
+    "Rarity": "Common",
+    "notes": null
+  },
+  {
+    "id": 3,
+    "Type": "Ring",
+    "Gear_Slot": "Accessory 1",
+    "Rarity": "Common",
+    "notes": null
+  },
+  {
+    "id": 4,
+    "Type": "Amulet",
+    "Gear_Slot": "Accessory 2",
+    "Rarity": "Common",
+    "notes": null
+  },
+  {
+    "id": 5,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  },
+  {
+    "id": 6,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  },
+  {
+    "id": 7,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  },
+  {
+    "id": 8,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  },
+  {
+    "id": 9,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  },
+  {
+    "id": 10,
+    "Type": null,
+    "Gear_Slot": null,
+    "Rarity": null,
+    "notes": null
+  }
+]

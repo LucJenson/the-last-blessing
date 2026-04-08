@@ -1,0 +1,122 @@
+{
+  "species": [
+    {
+      "id": 0,
+      "being": "Elf",
+      "sub_race": "Fole",
+      "faction": "Briar Collective",
+      "primary_stat": "SP",
+      "secondary_stat": "MATK",
+      "banned_class_ids": [
+        4
+      ],
+      "banned_class_names": [
+        "Guard Knight"
+      ],
+      "stat_modifiers": {
+        "HP": 5,
+        "SP": 0,
+        "TP": 0,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 1,
+      "being": "Elf",
+      "sub_race": "Nume",
+      "faction": "Sylvan Collective",
+      "primary_stat": "SP",
+      "secondary_stat": "PATK",
+      "banned_class_ids": [
+        5
+      ],
+      "banned_class_names": [
+        "Branded Barbarian"
+      ],
+      "stat_modifiers": {
+        "HP": -5,
+        "SP": 0,
+        "TP": 0,
+        "MP": 5
+      },
+      "notes": null
+    },
+    {
+      "id": 2,
+      "being": "Human",
+      "sub_race": "Kkyn",
+      "faction": "Steel Clan",
+      "primary_stat": "PDEF",
+      "secondary_stat": "MEVA",
+      "banned_class_ids": [],
+      "banned_class_names": [],
+      "stat_modifiers": {
+        "HP": 10,
+        "SP": 0,
+        "TP": 5,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 3,
+      "being": "Human",
+      "sub_race": "Oeld",
+      "faction": "Oak Clan",
+      "primary_stat": "PDEF",
+      "secondary_stat": "PEVA",
+      "banned_class_ids": [],
+      "banned_class_names": [],
+      "stat_modifiers": {
+        "HP": 0,
+        "SP": 0,
+        "TP": 0,
+        "MP": 10
+      },
+      "notes": null
+    },
+    {
+      "id": 4,
+      "being": "Beast",
+      "sub_race": "Tamo",
+      "faction": "Paw Tribe",
+      "primary_stat": "HP",
+      "secondary_stat": "MHIT",
+      "banned_class_ids": [
+        11
+      ],
+      "banned_class_names": [
+        "Tome Summoner"
+      ],
+      "stat_modifiers": {
+        "HP": 15,
+        "SP": 0,
+        "TP": 0,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 5,
+      "being": "Beast",
+      "sub_race": "Wyld",
+      "faction": "Fang Tribe",
+      "primary_stat": "HP",
+      "secondary_stat": "PHIT",
+      "banned_class_ids": [
+        12
+      ],
+      "banned_class_names": [
+        "Aura Priest"
+      ],
+      "stat_modifiers": {
+        "HP": 5,
+        "SP": 5,
+        "TP": 0,
+        "MP": 0
+      },
+      "notes": null
+    }
+  ]
+}

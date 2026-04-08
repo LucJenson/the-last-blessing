@@ -1,0 +1,148 @@
+{
+  "skills_effects": [
+    {
+      "id": 0,
+      "effect": "heal",
+      "description": "Target recovers HP.",
+      "notes": null
+    },
+    {
+      "id": 1,
+      "effect": "barrier",
+      "description": "Target reflects incoming matching-damage-type for skill duration.",
+      "notes": null
+    },
+    {
+      "id": 2,
+      "effect": "curse",
+      "description": "Target's stats decrease for curse duration.",
+      "notes": null
+    },
+    {
+      "id": 3,
+      "effect": "bleed",
+      "description": "Target becomes wounded. Loses health per turn.",
+      "notes": null
+    },
+    {
+      "id": 4,
+      "effect": "buff",
+      "description": "Target's stats increase for buff duration.",
+      "notes": "Can target specific stat, depending on skill, including elemental statuses. (HP, SP, TP, MP, PATK, PDEF, PHIT, PEVA, MATK, MDEF, MHIT, MEVA, FIR, WTR, AIR, ERT ,LGT, DRK)"
+    },
+    {
+      "id": 5,
+      "effect": "stun",
+      "description": "Target becomes slowed. Target's initiative decreases during effect. Can recover by being hastened.",
+      "notes": null
+    },
+    {
+      "id": 6,
+      "effect": "burn",
+      "description": "Target becomes burned. Loses health per turn.",
+      "notes": null
+    },
+    {
+      "id": 7,
+      "effect": "freeze",
+      "description": "Target becomes frozen. Cannot act. Can negate freeze by attacking with fire-type attacks.",
+      "notes": null
+    },
+    {
+      "id": 8,
+      "effect": "paralyze",
+      "description": "Target becomes paralyzed. Cannot act.",
+      "notes": null
+    },
+    {
+      "id": 9,
+      "effect": "sleep",
+      "description": "Target becomes asleep. Cannot act. Can be woken on hit.",
+      "notes": null
+    },
+    {
+      "id": 10,
+      "effect": "poison",
+      "description": "Target becomes poisoned. Loses health per turn.",
+      "notes": null
+    },
+    {
+      "id": 11,
+      "effect": "petrify",
+      "description": "Target becomes stone. Cannot act. Can become freed on hit.",
+      "notes": null
+    },
+    {
+      "id": 12,
+      "effect": "silence",
+      "description": "Cannot use magic skills.",
+      "notes": null
+    },
+    {
+      "id": 13,
+      "effect": "frail",
+      "description": "Cannot use physical skills.",
+      "notes": null
+    },
+    {
+      "id": 14,
+      "effect": "haste",
+      "description": "Target becomes hastened. Target's initiative increases during effect. Can counter by being slowed.",
+      "notes": null
+    },
+    {
+      "id": 15,
+      "effect": "root",
+      "description": "Target becomes imobilized. Target's initiative decreases severely.",
+      "notes": null
+    },
+    {
+      "id": 16,
+      "effect": "charm",
+      "description": "Target is charmed. Target will attack allies for duration.",
+      "notes": null
+    },
+    {
+      "id": 17,
+      "effect": "prone",
+      "description": "Target is knocked down. Cannot act for one turn while it recovers stance.",
+      "notes": null
+    },
+    {
+      "id": 18,
+      "effect": "shield",
+      "description": "Target negates incoming matching-damage-type for skill duration.",
+      "notes": null
+    },
+    {
+      "id": 19,
+      "effect": "regen",
+      "description": "Target regenerates stat pool for skill duration.",
+      "notes": null
+    },
+    {
+      "id": 20,
+      "effect": "anti",
+      "description": "Target prevents status effects for skill duration.",
+      "notes": null
+    },
+    {
+      "id": 21,
+      "effect": "resist",
+      "description": "Target resists elemental weaknesses for skill duration.",
+      "notes": null
+    },
+    {
+      "id": 22,
+      "effect": "envigorate",
+      "description": "Target has increased Stamina for skill duration. ",
+      "notes": null
+    },
+    {
+      "id": 23,
+      "effect": "relaxed",
+      "description": "Target has increased Stamina recovery for skill duration.",
+      "notes": null
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "list": [
+    {
+      "abbreviation": "HP",
+      "full_name": "Health Points",
+      "description": "Character health. Reaches 0 = death.",
+      "notes": null
+    },
+    {
+      "abbreviation": "SP",
+      "full_name": "Skill Points",
+      "description": "Resource for physical skills.",
+      "notes": null
+    },
+    {
+      "abbreviation": "TP",
+      "full_name": "Technique Points",
+      "description": "Resource for technique-based skills.",
+      "notes": null
+    },
+    {
+      "abbreviation": "MP",
+      "full_name": "Magic Points",
+      "description": "Resource for magic/wave skills.",
+      "notes": null
+    },
+    {
+      "abbreviation": "PATK",
+      "full_name": "Physical Attack",
+      "description": "Base physical damage.",
+      "notes": null
+    },
+    {
+      "abbreviation": "PDEF",
+      "full_name": "Physical Defence",
+      "description": "Reduces incoming physical damage.",
+      "notes": null
+    },
+    {
+      "abbreviation": "PHIT",
+      "full_name": "Physical Hit",
+      "description": "Accuracy for physical attacks.",
+      "notes": null
+    },
+    {
+      "abbreviation": "PEVA",
+      "full_name": "Physical Evasion",
+      "description": "Chance to dodge physical attacks.",
+      "notes": null
+    },
+    {
+      "abbreviation": "MATK",
+      "full_name": "Magic Attack",
+      "description": "Base magic damage.",
+      "notes": null
+    },
+    {
+      "abbreviation": "MDEF",
+      "full_name": "Magic Defence",
+      "description": "Reduces incoming magic damage.",
+      "notes": null
+    },
+    {
+      "abbreviation": "MHIT",
+      "full_name": "Magic Hit",
+      "description": "Accuracy for magic attacks.",
+      "notes": null
+    },
+    {
+      "abbreviation": "MEVA",
+      "full_name": "Magic Evasion",
+      "description": "Chance to dodge magic attacks.",
+      "notes": null
+    },
+    {
+      "abbreviation": "FIR",
+      "full_name": "Fire Affinity",
+      "description": "Fire resistance and potency.",
+      "notes": null
+    },
+    {
+      "abbreviation": "WTR",
+      "full_name": "Water Affinity",
+      "description": "Water resistance and potency.",
+      "notes": null
+    },
+    {
+      "abbreviation": "AIR",
+      "full_name": "Air Affinity",
+      "description": "Air resistance and potency.",
+      "notes": null
+    },
+    {
+      "abbreviation": "ERT",
+      "full_name": "Earth Affinity",
+      "description": "Earth resistance and potency.",
+      "notes": null
+    },
+    {
+      "abbreviation": "LGT",
+      "full_name": "Light Affinity",
+      "description": "Light resistance and potency.",
+      "notes": null
+    },
+    {
+      "abbreviation": "DRK",
+      "full_name": "Dark Affinity",
+      "description": "Dark resistance and potency.",
+      "notes": null
+    }
+  ],
+  "by_abbreviation": {
+    "HP": {
+      "full_name": "Health Points",
+      "description": "Character health. Reaches 0 = death.",
+      "notes": null
+    },
+    "SP": {
+      "full_name": "Skill Points",
+      "description": "Resource for physical skills.",
+      "notes": null
+    },
+    "TP": {
+      "full_name": "Technique Points",
+      "description": "Resource for technique-based skills.",
+      "notes": null
+    },
+    "MP": {
+      "full_name": "Magic Points",
+      "description": "Resource for magic/wave skills.",
+      "notes": null
+    },
+    "PATK": {
+      "full_name": "Physical Attack",
+      "description": "Base physical damage.",
+      "notes": null
+    },
+    "PDEF": {
+      "full_name": "Physical Defence",
+      "description": "Reduces incoming physical damage.",
+      "notes": null
+    },
+    "PHIT": {
+      "full_name": "Physical Hit",
+      "description": "Accuracy for physical attacks.",
+      "notes": null
+    },
+    "PEVA": {
+      "full_name": "Physical Evasion",
+      "description": "Chance to dodge physical attacks.",
+      "notes": null
+    },
+    "MATK": {
+      "full_name": "Magic Attack",
+      "description": "Base magic damage.",
+      "notes": null
+    },
+    "MDEF": {
+      "full_name": "Magic Defence",
+      "description": "Reduces incoming magic damage.",
+      "notes": null
+    },
+    "MHIT": {
+      "full_name": "Magic Hit",
+      "description": "Accuracy for magic attacks.",
+      "notes": null
+    },
+    "MEVA": {
+      "full_name": "Magic Evasion",
+      "description": "Chance to dodge magic attacks.",
+      "notes": null
+    },
+    "FIR": {
+      "full_name": "Fire Affinity",
+      "description": "Fire resistance and potency.",
+      "notes": null
+    },
+    "WTR": {
+      "full_name": "Water Affinity",
+      "description": "Water resistance and potency.",
+      "notes": null
+    },
+    "AIR": {
+      "full_name": "Air Affinity",
+      "description": "Air resistance and potency.",
+      "notes": null
+    },
+    "ERT": {
+      "full_name": "Earth Affinity",
+      "description": "Earth resistance and potency.",
+      "notes": null
+    },
+    "LGT": {
+      "full_name": "Light Affinity",
+      "description": "Light resistance and potency.",
+      "notes": null
+    },
+    "DRK": {
+      "full_name": "Dark Affinity",
+      "description": "Dark resistance and potency.",
+      "notes": null
+    }
+  }
+}

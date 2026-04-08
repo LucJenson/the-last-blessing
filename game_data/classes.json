@@ -1,0 +1,708 @@
+{
+  "classes": [
+    {
+      "id": 0,
+      "name": "Blade Brandier",
+      "tier": "base",
+      "class_type": "Melee Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Slashing",
+        "Piercing"
+      ],
+      "weapon_type_id": 0,
+      "weapon_type_name": "Blade",
+      "prereq_class_id": null,
+      "prereq_class_name": null,
+      "total_stats": {
+        "HP": 100,
+        "SP": 136,
+        "TP": 123,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 1,
+      "name": "Twin Blade",
+      "tier": "base",
+      "class_type": "Melee Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Slashing",
+        "Cursing"
+      ],
+      "weapon_type_id": 9,
+      "weapon_type_name": "Twin Blades",
+      "prereq_class_id": null,
+      "prereq_class_name": null,
+      "total_stats": {
+        "HP": 204,
+        "SP": 89,
+        "TP": 89,
+        "MP": 9
+      },
+      "notes": null
+    },
+    {
+      "id": 2,
+      "name": "Wave User",
+      "tier": "base",
+      "class_type": "Melee Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Arcane",
+        "Support"
+      ],
+      "weapon_type_id": 18,
+      "weapon_type_name": "Focus",
+      "prereq_class_id": null,
+      "prereq_class_name": null,
+      "total_stats": {
+        "HP": 154,
+        "SP": 50,
+        "TP": 13,
+        "MP": 166
+      },
+      "notes": null
+    },
+    {
+      "id": 3,
+      "name": "Harvest Cleric",
+      "tier": "base",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Arcane",
+        "Relic"
+      ],
+      "weapon_type_id": 25,
+      "weapon_type_name": "Wand",
+      "prereq_class_id": null,
+      "prereq_class_name": null,
+      "total_stats": {
+        "HP": 166,
+        "SP": 57,
+        "TP": 19,
+        "MP": 112
+      },
+      "notes": null
+    },
+    {
+      "id": 4,
+      "name": "Guard Knight",
+      "tier": "advanced",
+      "class_type": "Melee Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Slashing",
+        "Piercing"
+      ],
+      "weapon_type_id": 1,
+      "weapon_type_name": "Long Blade",
+      "prereq_class_id": 0,
+      "prereq_class_name": "Blade Brandier",
+      "total_stats": {
+        "HP": 347,
+        "SP": 29,
+        "TP": 101,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 5,
+      "name": "Branded Barbarian",
+      "tier": "advanced",
+      "class_type": "Melee Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Slashing",
+        "Blunt"
+      ],
+      "weapon_type_id": null,
+      "weapon_type_name": "Heavy Ax",
+      "prereq_class_id": 0,
+      "prereq_class_name": "Blade Brandier",
+      "total_stats": {
+        "HP": 244,
+        "SP": 73,
+        "TP": 72,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 6,
+      "name": "Curse Knight",
+      "tier": "advanced",
+      "class_type": "Melee Magical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Piercing",
+        "Relic"
+      ],
+      "weapon_type_id": 6,
+      "weapon_type_name": "Cursed Blade",
+      "prereq_class_id": 0,
+      "prereq_class_name": "Blade Brandier",
+      "total_stats": {
+        "HP": 180,
+        "SP": 55,
+        "TP": 20,
+        "MP": 76
+      },
+      "notes": null
+    },
+    {
+      "id": 7,
+      "name": "Acro Archer",
+      "tier": "advanced",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medum",
+      "damage_types": [
+        "Piercing",
+        "Support"
+      ],
+      "weapon_type_id": 10,
+      "weapon_type_name": "Bow",
+      "prereq_class_id": 1,
+      "prereq_class_name": "Twin Blade",
+      "total_stats": {
+        "HP": 172,
+        "SP": 73,
+        "TP": 51,
+        "MP": 49
+      },
+      "notes": null
+    },
+    {
+      "id": 8,
+      "name": "Pistol Ranger",
+      "tier": "advanced",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Piercing",
+        "Cursing"
+      ],
+      "weapon_type_id": 13,
+      "weapon_type_name": "Dual Guns",
+      "prereq_class_id": 1,
+      "prereq_class_name": "Twin Blade",
+      "total_stats": {
+        "HP": 172,
+        "SP": 73,
+        "TP": 67,
+        "MP": 37
+      },
+      "notes": null
+    },
+    {
+      "id": 9,
+      "name": "Umbral Assassin",
+      "tier": "advanced",
+      "class_type": "Melee Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Slashing",
+        "Relic"
+      ],
+      "weapon_type_id": 15,
+      "weapon_type_name": "Claws",
+      "prereq_class_id": 1,
+      "prereq_class_name": "Twin Blade",
+      "total_stats": {
+        "HP": 172,
+        "SP": 69,
+        "TP": 63,
+        "MP": 34
+      },
+      "notes": null
+    },
+    {
+      "id": 10,
+      "name": "Arcane Wavemaster",
+      "tier": "advanced",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Support",
+        "Arcane"
+      ],
+      "weapon_type_id": 19,
+      "weapon_type_name": "Staff",
+      "prereq_class_id": 2,
+      "prereq_class_name": "Wave User",
+      "total_stats": {
+        "HP": 160,
+        "SP": 58,
+        "TP": 19,
+        "MP": 158
+      },
+      "notes": null
+    },
+    {
+      "id": 11,
+      "name": "Tome Summoner",
+      "tier": "advanced",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Arcane",
+        "Relic"
+      ],
+      "weapon_type_id": 22,
+      "weapon_type_name": "Runes",
+      "prereq_class_id": 2,
+      "prereq_class_name": "Wave User",
+      "total_stats": {
+        "HP": 164,
+        "SP": 58,
+        "TP": 8,
+        "MP": 148
+      },
+      "notes": null
+    },
+    {
+      "id": 12,
+      "name": "Aura Priest",
+      "tier": "advanced",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Arcane",
+        "Cursing"
+      ],
+      "weapon_type_id": 26,
+      "weapon_type_name": "Tome",
+      "prereq_class_id": 3,
+      "prereq_class_name": "Harvest Cleric",
+      "total_stats": {
+        "HP": 174,
+        "SP": 54,
+        "TP": 8,
+        "MP": 136
+      },
+      "notes": null
+    },
+    {
+      "id": 13,
+      "name": "Martial Monk",
+      "tier": "advanced",
+      "class_type": "Ranged Physical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Blunt",
+        "Cursing"
+      ],
+      "weapon_type_id": 29,
+      "weapon_type_name": "Bo Staff",
+      "prereq_class_id": 3,
+      "prereq_class_name": "Harvest Cleric",
+      "total_stats": {
+        "HP": 192,
+        "SP": 75,
+        "TP": 69,
+        "MP": 65
+      },
+      "notes": null
+    },
+    {
+      "id": 14,
+      "name": "Runic Paladin",
+      "tier": "master",
+      "class_type": "Melee Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Blunt",
+        "Support"
+      ],
+      "weapon_type_id": 2,
+      "weapon_type_name": "Shield",
+      "prereq_class_id": 4,
+      "prereq_class_name": "Guard Knight",
+      "total_stats": {
+        "HP": 284,
+        "SP": 70,
+        "TP": 48,
+        "MP": 22
+      },
+      "notes": null
+    },
+    {
+      "id": 15,
+      "name": "Long Arm",
+      "tier": "master",
+      "class_type": "Ranged Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Piercing",
+        "Slashing"
+      ],
+      "weapon_type_id": 3,
+      "weapon_type_name": "Spear",
+      "prereq_class_id": 4,
+      "prereq_class_name": "Guard Knight",
+      "total_stats": {
+        "HP": 228,
+        "SP": 62,
+        "TP": 88,
+        "MP": 18
+      },
+      "notes": null
+    },
+    {
+      "id": 16,
+      "name": "Wild Berserker",
+      "tier": "master",
+      "class_type": "Melee Physical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Slashing",
+        "Blunt"
+      ],
+      "weapon_type_id": 5,
+      "weapon_type_name": "Heavy Blade",
+      "prereq_class_id": 5,
+      "prereq_class_name": "Branded Barbarian",
+      "total_stats": {
+        "HP": 256,
+        "SP": 78,
+        "TP": 74,
+        "MP": 0
+      },
+      "notes": null
+    },
+    {
+      "id": 17,
+      "name": "Dark Knight",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Arcane",
+        "Relic"
+      ],
+      "weapon_type_id": 7,
+      "weapon_type_name": "Spell Blade",
+      "prereq_class_id": 6,
+      "prereq_class_name": "Curse Knight",
+      "total_stats": {
+        "HP": 224,
+        "SP": 66,
+        "TP": 60,
+        "MP": 84
+      },
+      "notes": null
+    },
+    {
+      "id": 18,
+      "name": "Wave Knight",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Heavy",
+      "damage_types": [
+        "Cursing",
+        "Relic"
+      ],
+      "weapon_type_id": 8,
+      "weapon_type_name": "Jian Blade",
+      "prereq_class_id": 6,
+      "prereq_class_name": "Curse Knight",
+      "total_stats": {
+        "HP": 220,
+        "SP": 66,
+        "TP": 52,
+        "MP": 106
+      },
+      "notes": null
+    },
+    {
+      "id": 19,
+      "name": "Heavy Hunter",
+      "tier": "master",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Piercing",
+        "Blunt"
+      ],
+      "weapon_type_id": 11,
+      "weapon_type_name": "Heavy Bow",
+      "prereq_class_id": 7,
+      "prereq_class_name": "Acro Archer",
+      "total_stats": {
+        "HP": 204,
+        "SP": 73,
+        "TP": 70,
+        "MP": 31
+      },
+      "notes": null
+    },
+    {
+      "id": 20,
+      "name": "Servo Sniper",
+      "tier": "master",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Piercing",
+        "Support"
+      ],
+      "weapon_type_id": 12,
+      "weapon_type_name": "Rifle",
+      "prereq_class_id": 7,
+      "prereq_class_name": "Acro Archer",
+      "total_stats": {
+        "HP": 130,
+        "SP": 54,
+        "TP": 50,
+        "MP": 29
+      },
+      "notes": null
+    },
+    {
+      "id": 21,
+      "name": "Steam Gunner",
+      "tier": "master",
+      "class_type": "Ranged Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Piercing",
+        "Slashing"
+      ],
+      "weapon_type_id": 14,
+      "weapon_type_name": "Bayonet",
+      "prereq_class_id": 8,
+      "prereq_class_name": "Pistol Ranger",
+      "total_stats": {
+        "HP": 204,
+        "SP": 74,
+        "TP": 78,
+        "MP": 42
+      },
+      "notes": null
+    },
+    {
+      "id": 22,
+      "name": "Tribal Grappler",
+      "tier": "master",
+      "class_type": "Melee Physical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Blunt",
+        "Relic"
+      ],
+      "weapon_type_id": 16,
+      "weapon_type_name": "Gauntlets",
+      "prereq_class_id": 9,
+      "prereq_class_name": "Umbral Assassin",
+      "total_stats": {
+        "HP": 218,
+        "SP": 78,
+        "TP": 100,
+        "MP": 24
+      },
+      "notes": null
+    },
+    {
+      "id": 23,
+      "name": "Flick Reaper",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Medium",
+      "damage_types": [
+        "Cursing",
+        "Slashing"
+      ],
+      "weapon_type_id": 17,
+      "weapon_type_name": "Scythe",
+      "prereq_class_id": 9,
+      "prereq_class_name": "Umbral Assassin",
+      "total_stats": {
+        "HP": 244,
+        "SP": 70,
+        "TP": 74,
+        "MP": 22
+      },
+      "notes": null
+    },
+    {
+      "id": 24,
+      "name": "Wicked Warlock",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Blunt",
+        "Support"
+      ],
+      "weapon_type_id": 20,
+      "weapon_type_name": "Heavy Staff",
+      "prereq_class_id": 10,
+      "prereq_class_name": "Arcane Wavemaster",
+      "total_stats": {
+        "HP": 244,
+        "SP": 70,
+        "TP": 74,
+        "MP": 22
+      },
+      "notes": null
+    },
+    {
+      "id": 25,
+      "name": "Scepter Sage",
+      "tier": "master",
+      "class_type": "Ranged Magical",
+      "weight_class": "LIght",
+      "damage_types": [
+        "Support",
+        "Arcane"
+      ],
+      "weapon_type_id": 21,
+      "weapon_type_name": "Crystal Staff",
+      "prereq_class_id": 10,
+      "prereq_class_name": "Arcane Wavemaster",
+      "total_stats": {
+        "HP": 170,
+        "SP": 66,
+        "TP": 18,
+        "MP": 168
+      },
+      "notes": null
+    },
+    {
+      "id": 26,
+      "name": "Fan Elementalist",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Blunt",
+        "Relic"
+      ],
+      "weapon_type_id": 23,
+      "weapon_type_name": "War Fans",
+      "prereq_class_id": 11,
+      "prereq_class_name": "Tome Summoner",
+      "total_stats": {
+        "HP": 166,
+        "SP": 62,
+        "TP": 19,
+        "MP": 176
+      },
+      "notes": null
+    },
+    {
+      "id": 27,
+      "name": "Cursed Necromancer",
+      "tier": "master",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Cursing",
+        "Arcane"
+      ],
+      "weapon_type_id": 24,
+      "weapon_type_name": "Necronomicon",
+      "prereq_class_id": 11,
+      "prereq_class_name": "Tome Summoner",
+      "total_stats": {
+        "HP": 178,
+        "SP": 62,
+        "TP": 18,
+        "MP": 172
+      },
+      "notes": null
+    },
+    {
+      "id": 28,
+      "name": "Grim Hierophant",
+      "tier": "master",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Arcane",
+        "Cursing"
+      ],
+      "weapon_type_id": 27,
+      "weapon_type_name": "Grimoire",
+      "prereq_class_id": 12,
+      "prereq_class_name": "Aura Priest",
+      "total_stats": {
+        "HP": 188,
+        "SP": 62,
+        "TP": 8,
+        "MP": 158
+      },
+      "notes": null
+    },
+    {
+      "id": 29,
+      "name": "Reliquary Archbishop",
+      "tier": "master",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Relic",
+        "Support"
+      ],
+      "weapon_type_id": 28,
+      "weapon_type_name": "Holy Relic",
+      "prereq_class_id": 12,
+      "prereq_class_name": "Aura Priest",
+      "total_stats": {
+        "HP": 184,
+        "SP": 62,
+        "TP": 8,
+        "MP": 178
+      },
+      "notes": null
+    },
+    {
+      "id": 30,
+      "name": "Arts Master",
+      "tier": "master",
+      "class_type": "Ranged Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Blunt",
+        "Support"
+      ],
+      "weapon_type_id": 30,
+      "weapon_type_name": "Whip",
+      "prereq_class_id": 13,
+      "prereq_class_name": "Martial Monk",
+      "total_stats": {
+        "HP": 198,
+        "SP": 78,
+        "TP": 66,
+        "MP": 142
+      },
+      "notes": null
+    },
+    {
+      "id": 31,
+      "name": "Macabre Dancer",
+      "tier": "master",
+      "class_type": "Melee Magical",
+      "weight_class": "Light",
+      "damage_types": [
+        "Slashing",
+        "Cursing"
+      ],
+      "weapon_type_id": 31,
+      "weapon_type_name": "Bladed Fans",
+      "prereq_class_id": 13,
+      "prereq_class_name": "Martial Monk",
+      "total_stats": {
+        "HP": 188,
+        "SP": 78,
+        "TP": 62,
+        "MP": 126
+      },
+      "notes": null
+    }
+  ]
+}

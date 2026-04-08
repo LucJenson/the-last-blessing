@@ -1,0 +1,137 @@
+{
+  "stats": [
+    {
+      "id": 0,
+      "abbreviation": "HP",
+      "full_name": "Health Points",
+      "description": "Character health. Reaches 0 = death.",
+      "notes": null
+    },
+    {
+      "id": 1,
+      "abbreviation": "SP",
+      "full_name": "Skill Points",
+      "description": "Resource for physical skills.",
+      "notes": null
+    },
+    {
+      "id": 2,
+      "abbreviation": "TP",
+      "full_name": "Technique Points",
+      "description": "Resource for technique-based skills.",
+      "notes": null
+    },
+    {
+      "id": 3,
+      "abbreviation": "MP",
+      "full_name": "Magic Points",
+      "description": "Resource for magic/wave skills.",
+      "notes": null
+    },
+    {
+      "id": 4,
+      "abbreviation": "PATK",
+      "full_name": "Physical Attack",
+      "description": "Base physical damage.",
+      "notes": null
+    },
+    {
+      "id": 5,
+      "abbreviation": "PDEF",
+      "full_name": "Physical Defence",
+      "description": "Reduces incoming physical damage.",
+      "notes": null
+    },
+    {
+      "id": 6,
+      "abbreviation": "PHIT",
+      "full_name": "Physical Hit",
+      "description": "Accuracy for physical attacks.",
+      "notes": null
+    },
+    {
+      "id": 7,
+      "abbreviation": "PEVA",
+      "full_name": "Physical Evasion",
+      "description": "Chance to dodge physical attacks.",
+      "notes": null
+    },
+    {
+      "id": 8,
+      "abbreviation": "MATK",
+      "full_name": "Magic Attack",
+      "description": "Base magic damage.",
+      "notes": null
+    },
+    {
+      "id": 9,
+      "abbreviation": "MDEF",
+      "full_name": "Magic Defence",
+      "description": "Reduces incoming magic damage.",
+      "notes": null
+    },
+    {
+      "id": 10,
+      "abbreviation": "MHIT",
+      "full_name": "Magic Hit",
+      "description": "Accuracy for magic attacks.",
+      "notes": null
+    },
+    {
+      "id": 11,
+      "abbreviation": "MEVA",
+      "full_name": "Magic Evasion",
+      "description": "Chance to dodge magic attacks.",
+      "notes": null
+    },
+    {
+      "id": 12,
+      "abbreviation": "FIR",
+      "full_name": "Fire Affinity",
+      "description": "Fire resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 13,
+      "abbreviation": "WTR",
+      "full_name": "Water Affinity",
+      "description": "Water resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 14,
+      "abbreviation": "AIR",
+      "full_name": "Air Affinity",
+      "description": "Air resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 15,
+      "abbreviation": "ERT",
+      "full_name": "Earth Affinity",
+      "description": "Earth resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 16,
+      "abbreviation": "LGT",
+      "full_name": "Light Affinity",
+      "description": "Light resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 17,
+      "abbreviation": "DRK",
+      "full_name": "Dark Affinity",
+      "description": "Dark resistance and potency.",
+      "notes": null
+    },
+    {
+      "id": 18,
+      "abbreviation": "STAM",
+      "full_name": "Stamina",
+      "description": "Stamina is used to conduct professions such as crafting, farming, fishing, etc. Can be recovered over time or by consuming stamina-healing items.",
+      "notes": null
+    }
+  ]
+}

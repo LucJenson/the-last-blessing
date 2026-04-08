@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "element": "Fire",
+    "counter_element": "Earth",
+    "notes": null
+  },
+  {
+    "id": 1,
+    "element": "Water",
+    "counter_element": "Air",
+    "notes": null
+  },
+  {
+    "id": 2,
+    "element": "Air",
+    "counter_element": "Fire",
+    "notes": null
+  },
+  {
+    "id": 3,
+    "element": "Earth",
+    "counter_element": "Water",
+    "notes": null
+  },
+  {
+    "id": 4,
+    "element": "Light",
+    "counter_element": "Dark",
+    "notes": null
+  },
+  {
+    "id": 5,
+    "element": "Dark",
+    "counter_element": "Light",
+    "notes": null
+  }
+]

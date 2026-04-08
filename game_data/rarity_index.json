@@ -1,0 +1,60 @@
+{
+  "rarity_index": [
+    {
+      "id": 0,
+      "name": "Worthless"
+    },
+    {
+      "id": 1,
+      "name": "Common"
+    },
+    {
+      "id": 2,
+      "name": "Uncommon"
+    },
+    {
+      "id": 3,
+      "name": "Quality"
+    },
+    {
+      "id": 4,
+      "name": "Rare"
+    },
+    {
+      "id": 5,
+      "name": "Epic"
+    },
+    {
+      "id": 6,
+      "name": "Unique"
+    },
+    {
+      "id": 7,
+      "name": "Arcane"
+    },
+    {
+      "id": 8,
+      "name": "Legendary"
+    },
+    {
+      "id": 9,
+      "name": "Mythical"
+    },
+    {
+      "id": 10,
+      "name": "Demonic"
+    },
+    {
+      "id": 11,
+      "name": "Blessed"
+    },
+    {
+      "id": 12,
+      "name": "Divine"
+    },
+    {
+      "id": 13,
+      "name": "Cosmic"
+    }
+  ]
+}

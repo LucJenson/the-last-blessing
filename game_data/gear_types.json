@@ -1,0 +1,39 @@
+{
+  "gear_types": [
+    {
+      "id": 0,
+      "type": "Cap",
+      "gear_slot": "Head",
+      "rarity": "Common",
+      "notes": null
+    },
+    {
+      "id": 1,
+      "type": "Cuirras",
+      "gear_slot": "Chest",
+      "rarity": "Common",
+      "notes": null
+    },
+    {
+      "id": 2,
+      "type": "Boots",
+      "gear_slot": "Boots",
+      "rarity": "Common",
+      "notes": null
+    },
+    {
+      "id": 3,
+      "type": "Ring",
+      "gear_slot": "Accessory 1",
+      "rarity": "Common",
+      "notes": null
+    },
+    {
+      "id": 4,
+      "type": "Amulet",
+      "gear_slot": "Accessory 2",
+      "rarity": "Common",
+      "notes": null
+    }
+  ]
+}

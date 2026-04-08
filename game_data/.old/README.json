@@ -1,0 +1,28 @@
+{
+  "game": "The Last Blessing",
+  "description": "SWG-style action RPG. Players spend Learning Points (LP) to unlock skill boxes within class trees. Enough boxes in a prereq class unlocks the next tier class. Stat bonuses from boxes are earned on learn and lost on unlearn.",
+  "files": {
+    "classes.json": "32 classes (base→advanced→master). FK: prereq_class links to name in this file.",
+    "species.json": "6 playable sub-races across 3 beings (Elf/Human/Beast). FK: banned_classes links to class names.",
+    "skill_boxes.json": "576 skill boxes. FK: class_id→classes.id. stat_bonuses is a nested object. lp_cost=LP to learn, sp_earned=SP gained (used for combat level calc).",
+    "class_promotion_rules.json": "28 promotion paths. boxes_required is a list of skill_box IDs that must be learned. FK: unlocks_class_id→classes.id.",
+    "skills.json": "Individual skills. FK: skill_box_id→skill_boxes.id. Most names TBD (placeholders present).",
+    "weapon_types.json": "32 weapon categories with EXP pools and certificate requirements.",
+    "weapons.json": "32 starter weapons (one per weapon type). stat_bonuses nested. FK: type→weapon_types.type.",
+    "gear_types.json": "Gear slot definitions (Head, Chest, Boots, etc).",
+    "gear_sets.json": "Named gear sets with bonus/curse stat pairs.",
+    "gear_set_bonuses.json": "Calculated bonuses per pieces equipped (2–6).",
+    "stats.json": "Stat reference. Use by_abbreviation dict for fast lookup.",
+    "elements.json": "6 elements with counter relationships.",
+    "combat_level_formula.json": "Formula constants: combat_level = floor(total_sp_earned / sp_per_combat_level) + base_combat_level."
+  },
+  "key_rules": [
+    "LP (Learning Points) = currency spent to unlock skill boxes.",
+    "SP (earned) = points credited per box unlocked, used to calculate combat level.",
+    "Combat level = floor(total SP earned / 25) + 1, capped at 150.",
+    "Unlearning a box refunds LP and removes its stat bonuses and skills.",
+    "Weapons without a license operate at 70% effectiveness.",
+    "Stat bonuses NOT yet balanced — treat as placeholder values.",
+    "Promotion branch requirements in class_promotion_rules.json are player-defined."
+  ]
+}

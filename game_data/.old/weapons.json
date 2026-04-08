@@ -1,0 +1,618 @@
+[
+  {
+    "id": 0,
+    "name": "Rusty Blade",
+    "type": "Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 14,
+      "TP": 7,
+      "PATK": 4,
+      "PDEF": 1,
+      "PHIT": 3,
+      "PEVA": 1
+    }
+  },
+  {
+    "id": 1,
+    "name": "Rusty Long Blade",
+    "type": "Long Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 4,
+      "TP": 4,
+      "PATK": 1,
+      "PDEF": 1,
+      "PHIT": 3,
+      "PEVA": 1,
+      "MHIT": 1
+    }
+  },
+  {
+    "id": 2,
+    "name": "Rusty Shield",
+    "type": "Shield",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 4,
+      "TP": 6,
+      "PATK": 3,
+      "PDEF": 1,
+      "PHIT": 3,
+      "PEVA": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1
+    }
+  },
+  {
+    "id": 3,
+    "name": "Rusty Spear",
+    "type": "Spear",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 6,
+      "TP": 7,
+      "PATK": 3,
+      "PDEF": 3,
+      "PHIT": 4,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "LGT": 1
+    }
+  },
+  {
+    "id": 4,
+    "name": "Rusty Heavy Axe",
+    "type": "Heavy Axe",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 7,
+      "TP": 9,
+      "PATK": 4,
+      "PDEF": 3,
+      "PHIT": 6,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 3,
+      "MEVA": 3,
+      "AIR": 1,
+      "LGT": 1
+    }
+  },
+  {
+    "id": 5,
+    "name": "Rusty Heavy Blade",
+    "type": "Heavy Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 6,
+      "TP": 6,
+      "PATK": 3,
+      "PDEF": 1,
+      "PHIT": 1,
+      "PEVA": 1,
+      "MDEF": 1
+    }
+  },
+  {
+    "id": 6,
+    "name": "Rusty Cursed Blade",
+    "type": "Cursed Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 7,
+      "TP": 7,
+      "PATK": 4,
+      "PDEF": 1,
+      "PHIT": 1,
+      "PEVA": 1,
+      "MDEF": 1,
+      "MEVA": 1
+    }
+  },
+  {
+    "id": 7,
+    "name": "Rusty Spell Blade",
+    "type": "Spell Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 9,
+      "TP": 9,
+      "PATK": 4,
+      "PDEF": 3,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MEVA": 1
+    }
+  },
+  {
+    "id": 8,
+    "name": "Rusty Jian Blade",
+    "type": "Jian Blade",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 10,
+      "TP": 10,
+      "PATK": 6,
+      "PDEF": 3,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MEVA": 1
+    }
+  },
+  {
+    "id": 9,
+    "name": "Rusty Twin Blades",
+    "type": "Twin Blades",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 6,
+      "TP": 4,
+      "PATK": 4,
+      "PDEF": 2,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1
+    }
+  },
+  {
+    "id": 10,
+    "name": "Rusty Bow",
+    "type": "Bow",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "SP": 7,
+      "TP": 5,
+      "PATK": 4,
+      "PDEF": 2,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1
+    }
+  },
+  {
+    "id": 11,
+    "name": "Rusty Heavy Bow",
+    "type": "Heavy Bow",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 9,
+      "TP": 6,
+      "PATK": 6,
+      "PDEF": 2,
+      "PHIT": 3,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1
+    }
+  },
+  {
+    "id": 12,
+    "name": "Rusty Rifle",
+    "type": "Rifle",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 10,
+      "TP": 7,
+      "PATK": 6,
+      "PDEF": 2,
+      "PHIT": 3,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1
+    }
+  },
+  {
+    "id": 13,
+    "name": "Rusty Dual Guns",
+    "type": "Dual Guns",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 6,
+      "TP": 5,
+      "PATK": 4,
+      "PDEF": 2,
+      "PHIT": 3,
+      "PEVA": 3,
+      "AIR": 1
+    }
+  },
+  {
+    "id": 14,
+    "name": "Rusty Bayonet",
+    "type": "Bayonet",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 7,
+      "SP": 6,
+      "TP": 6,
+      "PATK": 4,
+      "PDEF": 2,
+      "PHIT": 3,
+      "PEVA": 3,
+      "AIR": 1
+    }
+  },
+  {
+    "id": 15,
+    "name": "Rusty Claws",
+    "type": "Claws",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 11,
+      "SP": 7,
+      "TP": 7,
+      "PATK": 6,
+      "PDEF": 2,
+      "PHIT": 4,
+      "PEVA": 3,
+      "MHIT": 1,
+      "AIR": 1,
+      "LGT": 1
+    }
+  },
+  {
+    "id": 16,
+    "name": "Rusty Gauntlets",
+    "type": "Gauntlets",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 11,
+      "SP": 7,
+      "TP": 8,
+      "PATK": 6,
+      "PDEF": 2,
+      "PHIT": 4,
+      "PEVA": 3,
+      "MHIT": 1,
+      "AIR": 1,
+      "LGT": 1
+    }
+  },
+  {
+    "id": 17,
+    "name": "Rusty Scythe",
+    "type": "Scythe",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 22,
+      "SP": 11,
+      "TP": 10,
+      "PATK": 6,
+      "PDEF": 4,
+      "PHIT": 5,
+      "PEVA": 4,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "LGT": 2
+    }
+  },
+  {
+    "id": 18,
+    "name": "Rusty Focus",
+    "type": "Focus",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 9,
+      "TP": 9,
+      "MP": 2,
+      "PATK": 3,
+      "PDEF": 1,
+      "PHIT": 3,
+      "PEVA": 2,
+      "MATK": 1,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 19,
+    "name": "Rusty Staff",
+    "type": "Staff",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 6,
+      "SP": 3,
+      "TP": 5,
+      "PATK": 2,
+      "PHIT": 3,
+      "PEVA": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1
+    }
+  },
+  {
+    "id": 20,
+    "name": "Rusty Heavy Staff",
+    "type": "Heavy Staff",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 6,
+      "SP": 3,
+      "TP": 5,
+      "PATK": 2,
+      "PHIT": 3,
+      "PEVA": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1
+    }
+  },
+  {
+    "id": 21,
+    "name": "Rusty Crystal Staff",
+    "type": "Crystal Staff",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 6,
+      "PATK": 3,
+      "PHIT": 3,
+      "PEVA": 1,
+      "MHIT": 2,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 22,
+    "name": "Rusty Runes",
+    "type": "Runes",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 6,
+      "PATK": 3,
+      "PHIT": 5,
+      "PEVA": 1,
+      "MHIT": 2,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 23,
+    "name": "Rusty War Fans",
+    "type": "War Fans",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 3,
+      "PATK": 3,
+      "PDEF": 1,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 24,
+    "name": "Rusty Necronomicon",
+    "type": "Necronomicon",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 3,
+      "PATK": 3,
+      "PDEF": 1,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 25,
+    "name": "Rusty Wand",
+    "type": "Wand",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 18,
+      "SP": 6,
+      "TP": 4,
+      "PATK": 4,
+      "PDEF": 1,
+      "PHIT": 2,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 26,
+    "name": "Rusty Tome",
+    "type": "Tome",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 18,
+      "SP": 6,
+      "TP": 4,
+      "PATK": 4,
+      "PDEF": 1,
+      "PHIT": 4,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 27,
+    "name": "Rusty Grimoire",
+    "type": "Grimoire",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 6,
+      "SP": 4,
+      "TP": 4,
+      "PATK": 2,
+      "PHIT": 2,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 28,
+    "name": "Rusty Holy Relic",
+    "type": "Holy Relic",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 6,
+      "SP": 4,
+      "TP": 4,
+      "PATK": 2,
+      "PHIT": 2,
+      "PEVA": 3,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 29,
+    "name": "Rusty Bo Staff",
+    "type": "Bo Staff",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 5,
+      "PATK": 3,
+      "PHIT": 2,
+      "PEVA": 4,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 30,
+    "name": "Rusty Whip",
+    "type": "Whip",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 12,
+      "SP": 5,
+      "TP": 5,
+      "PATK": 3,
+      "PHIT": 4,
+      "PEVA": 4,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  },
+  {
+    "id": 31,
+    "name": "Rusty Bladed Fans",
+    "type": "Bladed Fans",
+    "rarity": "common",
+    "notes": null,
+    "stat_bonuses": {
+      "HP": 6,
+      "SP": 3,
+      "TP": 4,
+      "MP": 1,
+      "PATK": 2,
+      "PDEF": 1,
+      "PHIT": 2,
+      "PEVA": 2,
+      "MDEF": 1,
+      "MHIT": 1,
+      "MEVA": 1,
+      "WTR": 1,
+      "AIR": 1,
+      "DRK": 1
+    }
+  }
+]

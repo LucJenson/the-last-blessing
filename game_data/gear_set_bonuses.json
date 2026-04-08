@@ -1,0 +1,364 @@
+{
+  "gear_set_bonuses": [
+    {
+      "id": 0,
+      "set_id": 0,
+      "set_name": "Berserker",
+      "pieces_equipped": 2,
+      "bonus_total": 10,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 1,
+      "set_id": 0,
+      "set_name": "Berserker",
+      "pieces_equipped": 3,
+      "bonus_total": 15,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 2,
+      "set_id": 0,
+      "set_name": "Berserker",
+      "pieces_equipped": 4,
+      "bonus_total": 20,
+      "curse_total": -12,
+      "notes": null
+    },
+    {
+      "id": 3,
+      "set_id": 0,
+      "set_name": "Berserker",
+      "pieces_equipped": 5,
+      "bonus_total": 25,
+      "curse_total": -15,
+      "notes": null
+    },
+    {
+      "id": 4,
+      "set_id": 0,
+      "set_name": "Berserker",
+      "pieces_equipped": 6,
+      "bonus_total": 30,
+      "curse_total": -18,
+      "notes": null
+    },
+    {
+      "id": 5,
+      "set_id": 1,
+      "set_name": "Phantom",
+      "pieces_equipped": 2,
+      "bonus_total": 2.1,
+      "curse_total": -3,
+      "notes": null
+    },
+    {
+      "id": 6,
+      "set_id": 1,
+      "set_name": "Phantom",
+      "pieces_equipped": 3,
+      "bonus_total": 3.15,
+      "curse_total": -4.5,
+      "notes": null
+    },
+    {
+      "id": 7,
+      "set_id": 1,
+      "set_name": "Phantom",
+      "pieces_equipped": 4,
+      "bonus_total": 4.2,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 8,
+      "set_id": 1,
+      "set_name": "Phantom",
+      "pieces_equipped": 5,
+      "bonus_total": 5.25,
+      "curse_total": -7.5,
+      "notes": null
+    },
+    {
+      "id": 9,
+      "set_id": 1,
+      "set_name": "Phantom",
+      "pieces_equipped": 6,
+      "bonus_total": 6.3,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 10,
+      "set_id": 2,
+      "set_name": "Sentinel",
+      "pieces_equipped": 2,
+      "bonus_total": 10,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 11,
+      "set_id": 2,
+      "set_name": "Sentinel",
+      "pieces_equipped": 3,
+      "bonus_total": 15,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 12,
+      "set_id": 2,
+      "set_name": "Sentinel",
+      "pieces_equipped": 4,
+      "bonus_total": 20,
+      "curse_total": -12,
+      "notes": null
+    },
+    {
+      "id": 13,
+      "set_id": 2,
+      "set_name": "Sentinel",
+      "pieces_equipped": 5,
+      "bonus_total": 25,
+      "curse_total": -15,
+      "notes": null
+    },
+    {
+      "id": 14,
+      "set_id": 2,
+      "set_name": "Sentinel",
+      "pieces_equipped": 6,
+      "bonus_total": 30,
+      "curse_total": -18,
+      "notes": null
+    },
+    {
+      "id": 15,
+      "set_id": 3,
+      "set_name": "Warden",
+      "pieces_equipped": 2,
+      "bonus_total": 2.1,
+      "curse_total": -3,
+      "notes": null
+    },
+    {
+      "id": 16,
+      "set_id": 3,
+      "set_name": "Warden",
+      "pieces_equipped": 3,
+      "bonus_total": 3.15,
+      "curse_total": -4.5,
+      "notes": null
+    },
+    {
+      "id": 17,
+      "set_id": 3,
+      "set_name": "Warden",
+      "pieces_equipped": 4,
+      "bonus_total": 4.2,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 18,
+      "set_id": 3,
+      "set_name": "Warden",
+      "pieces_equipped": 5,
+      "bonus_total": 5.25,
+      "curse_total": -7.5,
+      "notes": null
+    },
+    {
+      "id": 19,
+      "set_id": 3,
+      "set_name": "Warden",
+      "pieces_equipped": 6,
+      "bonus_total": 6.3,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 20,
+      "set_id": 4,
+      "set_name": "Glacier",
+      "pieces_equipped": 2,
+      "bonus_total": 10,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 21,
+      "set_id": 4,
+      "set_name": "Glacier",
+      "pieces_equipped": 3,
+      "bonus_total": 15,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 22,
+      "set_id": 4,
+      "set_name": "Glacier",
+      "pieces_equipped": 4,
+      "bonus_total": 20,
+      "curse_total": -12,
+      "notes": null
+    },
+    {
+      "id": 23,
+      "set_id": 4,
+      "set_name": "Glacier",
+      "pieces_equipped": 5,
+      "bonus_total": 25,
+      "curse_total": -15,
+      "notes": null
+    },
+    {
+      "id": 24,
+      "set_id": 4,
+      "set_name": "Glacier",
+      "pieces_equipped": 6,
+      "bonus_total": 30,
+      "curse_total": -18,
+      "notes": null
+    },
+    {
+      "id": 25,
+      "set_id": 5,
+      "set_name": "Storm",
+      "pieces_equipped": 2,
+      "bonus_total": 2.1,
+      "curse_total": -3,
+      "notes": null
+    },
+    {
+      "id": 26,
+      "set_id": 5,
+      "set_name": "Storm",
+      "pieces_equipped": 3,
+      "bonus_total": 3.15,
+      "curse_total": -4.5,
+      "notes": null
+    },
+    {
+      "id": 27,
+      "set_id": 5,
+      "set_name": "Storm",
+      "pieces_equipped": 4,
+      "bonus_total": 4.2,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 28,
+      "set_id": 5,
+      "set_name": "Storm",
+      "pieces_equipped": 5,
+      "bonus_total": 5.25,
+      "curse_total": -7.5,
+      "notes": null
+    },
+    {
+      "id": 29,
+      "set_id": 5,
+      "set_name": "Storm",
+      "pieces_equipped": 6,
+      "bonus_total": 6.3,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 30,
+      "set_id": 6,
+      "set_name": "Viper",
+      "pieces_equipped": 2,
+      "bonus_total": 10,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 31,
+      "set_id": 6,
+      "set_name": "Viper",
+      "pieces_equipped": 3,
+      "bonus_total": 15,
+      "curse_total": -9,
+      "notes": null
+    },
+    {
+      "id": 32,
+      "set_id": 6,
+      "set_name": "Viper",
+      "pieces_equipped": 4,
+      "bonus_total": 20,
+      "curse_total": -12,
+      "notes": null
+    },
+    {
+      "id": 33,
+      "set_id": 6,
+      "set_name": "Viper",
+      "pieces_equipped": 5,
+      "bonus_total": 25,
+      "curse_total": -15,
+      "notes": null
+    },
+    {
+      "id": 34,
+      "set_id": 6,
+      "set_name": "Viper",
+      "pieces_equipped": 6,
+      "bonus_total": 30,
+      "curse_total": -18,
+      "notes": null
+    },
+    {
+      "id": 35,
+      "set_id": 7,
+      "set_name": "Trickster",
+      "pieces_equipped": 2,
+      "bonus_total": 2.1,
+      "curse_total": -3,
+      "notes": null
+    },
+    {
+      "id": 36,
+      "set_id": 7,
+      "set_name": "Trickster",
+      "pieces_equipped": 3,
+      "bonus_total": 3.15,
+      "curse_total": -4.5,
+      "notes": null
+    },
+    {
+      "id": 37,
+      "set_id": 7,
+      "set_name": "Trickster",
+      "pieces_equipped": 4,
+      "bonus_total": 4.2,
+      "curse_total": -6,
+      "notes": null
+    },
+    {
+      "id": 38,
+      "set_id": 7,
+      "set_name": "Trickster",
+      "pieces_equipped": 5,
+      "bonus_total": 5.25,
+      "curse_total": -7.5,
+      "notes": null
+    },
+    {
+      "id": 39,
+      "set_id": 7,
+      "set_name": "Trickster",
+      "pieces_equipped": 6,
+      "bonus_total": 6.3,
+      "curse_total": -9,
+      "notes": null
+    }
+  ]
+}
